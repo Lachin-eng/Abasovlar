@@ -21,9 +21,7 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-
 html { scroll-behavior: smooth; }
-
 body {
 background: var(--dark);
 color: var(--cream);
@@ -32,7 +30,6 @@ font-weight: 300;
 overflow-x: hidden;
 }
 
-/* ── NOISE TEXTURE OVERLAY ── */
 body::before {
 content: '';
 position: fixed;
@@ -43,7 +40,6 @@ z-index: 9999;
 opacity: 0.4;
 }
 
-/* ── HEADER ── */
 header {
 position: fixed;
 top: 0; left: 0; right: 0;
@@ -77,7 +73,6 @@ margin-top: 2px;
 }
 
 nav { display: flex; gap: 36px; align-items: center; }
-
 nav a {
 color: var(--cream2);
 text-decoration: none;
@@ -89,19 +84,6 @@ transition: color 0.3s;
 position: relative;
 }
 
-nav a::after {
-content: '';
-position: absolute;
-bottom: -4px; left: 0;
-width: 0; height: 1px;
-background: var(--gold);
-transition: width 0.3s;
-}
-
-nav a:hover { color: var(--gold); }
-nav a:hover::after { width: 100%; }
-
-/* ── HERO ── */
 .hero {
 min-height: 100vh;
 display: flex;
@@ -111,166 +93,25 @@ align-items: center;
 text-align: center;
 position: relative;
 padding: 120px 40px 80px;
-overflow: hidden;
 }
 
 .hero-bg {
 position: absolute;
 inset: 0;
-background:
-radial-gradient(ellipse 80% 60% at 50% 40%, rgba(184,149,42,0.08) 0%, transparent 70%),
-radial-gradient(ellipse 40% 40% at 20% 80%, rgba(184,149,42,0.05) 0%, transparent 60%),
-linear-gradient(160deg, #0e0b07 0%, #1a1208 50%, #0e0b07 100%);
+background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(184,149,42,0.08) 0%, transparent 70%), linear-gradient(160deg, #0e0b07 0%, #1a1208 50%, #0e0b07 100%);
 }
-
-/* Decorative lines */
-.hero-bg::before {
-content: '';
-position: absolute;
-inset: 0;
-background-image:
-repeating-linear-gradient(
-90deg,
-transparent,
-transparent 119px,
-rgba(184,149,42,0.04) 120px
-);
-}
-
-.hero-ornament {
-font-family: 'Cormorant Garamond', serif;
-font-size: 0.65rem;
-letter-spacing: 0.4em;
-text-transform: uppercase;
-color: var(--gold);
-opacity: 0.8;
-margin-bottom: 28px;
-animation: fadeUp 1.2s ease both;
-}
-
-.hero-ornament::before,
-.hero-ornament::after {
-content: '— ';
-opacity: 0.5;
-}
-.hero-ornament::after { content: ' —'; }
 
 .hero-title {
 font-family: 'Cormorant Garamond', serif;
-font-size: clamp(3.5rem, 9vw, 8rem);
+font-size: clamp(3rem, 7vw, 6rem);
 font-weight: 300;
 line-height: 0.92;
-letter-spacing: -0.01em;
 color: var(--cream);
-margin-bottom: 16px;
-animation: fadeUp 1.2s 0.15s ease both;
 position: relative;
+z-index: 1;
 }
 
-.hero-title em {
-font-style: italic;
-color: var(--gold-light);
-}
-
-.hero-subtitle {
-font-family: 'Cormorant Garamond', serif;
-font-size: clamp(1.1rem, 2.5vw, 1.8rem);
-font-weight: 300;
-font-style: italic;
-color: var(--gold-pale);
-opacity: 0.75;
-margin-bottom: 48px;
-letter-spacing: 0.05em;
-animation: fadeUp 1.2s 0.3s ease both;
-}
-
-.divider {
-display: flex;
-align-items: center;
-gap: 16px;
-margin-bottom: 48px;
-animation: fadeUp 1.2s 0.45s ease both;
-}
-
-.divider-line {
-width: 80px;
-height: 1px;
-background: linear-gradient(to right, transparent, var(--gold));
-}
-
-.divider-line.right {
-background: linear-gradient(to left, transparent, var(--gold));
-}
-
-.divider-diamond {
-width: 6px; height: 6px;
-background: var(--gold);
-transform: rotate(45deg);
-}
-
-.hero-stats {
-display: flex;
-gap: 60px;
-animation: fadeUp 1.2s 0.6s ease both;
-}
-
-.stat {
-text-align: center;
-}
-
-.stat-num {
-font-family: 'Cormorant Garamond', serif;
-font-size: 2.8rem;
-font-weight: 300;
-color: var(--gold);
-line-height: 1;
-display: block;
-}
-
-.stat-label {
-font-size: 0.6rem;
-letter-spacing: 0.2em;
-text-transform: uppercase;
-color: var(--gold-pale);
-opacity: 0.7;
-margin-top: 6px;
-display: block;
-}
-
-.scroll-hint {
-position: absolute;
-bottom: 40px;
-left: 50%;
-transform: translateX(-50%);
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 8px;
-animation: fadeUp 1.2s 0.9s ease both;
-}
-
-.scroll-hint span {
-font-size: 0.55rem;
-letter-spacing: 0.3em;
-text-transform: uppercase;
-color: var(--gold-pale);
-opacity: 0.5;
-}
-
-.scroll-line {
-width: 1px;
-height: 50px;
-background: linear-gradient(to bottom, var(--gold), transparent);
-animation: scrollPulse 2s ease-in-out infinite;
-}
-
-/* ── SECTION BASE ── */
-section {
-padding: 120px 60px;
-max-width: 1400px;
-margin: 0 auto;
-position: relative;
-}
+.hero-title em { color: var(--gold-light); font-style: italic; }
 
 .section-label {
 font-size: 0.6rem;
@@ -278,1096 +119,107 @@ letter-spacing: 0.3em;
 text-transform: uppercase;
 color: var(--gold);
 margin-bottom: 20px;
-display: flex;
-align-items: center;
-gap: 16px;
-}
-
-.section-label::before {
-content: '';
-display: inline-block;
-width: 30px;
-height: 1px;
-background: var(--gold);
-}
-
-.section-title {
-font-family: 'Cormorant Garamond', serif;
-font-size: clamp(2.2rem, 4vw, 3.8rem);
-font-weight: 300;
-color: var(--cream);
-line-height: 1.1;
-margin-bottom: 24px;
-}
-
-.section-title em { color: var(--gold-light); font-style: italic; }
-
-/* ── GENERATIONS SECTION ── */
-.generations {
-background: linear-gradient(to bottom, var(--dark), var(--dark2), var(--dark));
-padding: 0;
-max-width: 100%;
-}
-
-.generations-inner {
-max-width: 1400px;
-margin: 0 auto;
-padding: 120px 60px;
 }
 
 .gen-grid {
 display: grid;
-grid-template-columns: repeat(3, 1fr);
-gap: 2px;
-margin-top: 60px;
+grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+gap: 20px;
+padding: 60px;
+max-width: 1400px;
+margin: 0 auto;
 }
 
 .gen-card {
 background: rgba(255,255,255,0.02);
 border: 1px solid rgba(184,149,42,0.15);
-padding: 48px 40px;
-position: relative;
-overflow: hidden;
-cursor: pointer;
+padding: 40px;
 transition: all 0.4s ease;
-text-decoration: none;
-display: block;
-color: inherit;
-}
-
-.gen-card::before {
-content: '';
-position: absolute;
-inset: 0;
-background: linear-gradient(135deg, rgba(184,149,42,0.06) 0%, transparent 60%);
-opacity: 0;
-transition: opacity 0.4s;
 }
 
 .gen-card:hover {
-border-color: rgba(184,149,42,0.4);
-background: rgba(184,149,42,0.04);
-transform: translateY(-2px);
+border-color: var(--gold);
+background: rgba(184,149,42,0.05);
 }
 
-.gen-card:hover::before { opacity: 1; }
-
-.gen-num {
-font-family: 'Cormorant Garamond', serif;
-font-size: 5rem;
-font-weight: 300;
-color: rgba(184,149,42,0.12);
-line-height: 1;
-position: absolute;
-top: 20px;
-right: 24px;
-letter-spacing: -0.03em;
-transition: color 0.4s;
-}
-
-.gen-card:hover .gen-num { color: rgba(184,149,42,0.22); }
-
-.gen-era {
-font-size: 0.55rem;
-letter-spacing: 0.25em;
-text-transform: uppercase;
-color: var(--gold);
-margin-bottom: 16px;
-opacity: 0.8;
-}
-
-.gen-name {
-font-family: 'Cormorant Garamond', serif;
-font-size: 1.6rem;
-font-weight: 400;
-color: var(--cream);
-margin-bottom: 12px;
-line-height: 1.2;
-}
-
-.gen-desc {
-font-size: 0.72rem;
-line-height: 1.8;
-color: var(--gold-pale);
-opacity: 0.65;
-font-weight: 300;
-}
-
-.gen-count {
-margin-top: 28px;
-font-size: 0.6rem;
-letter-spacing: 0.15em;
-color: var(--gold);
-opacity: 0.6;
-display: flex;
-align-items: center;
-gap: 10px;
-}
-
-.gen-count::before {
-content: '';
-display: inline-block;
-width: 20px;
-height: 1px;
-background: var(--gold);
-opacity: 0.5;
-}
-
-/* ── TREE PREVIEW ── */
-.tree-section {
-padding: 120px 0;
-background: var(--dark2);
-overflow: hidden;
-max-width: 100%;
-}
-
-.tree-inner {
-max-width: 1400px;
-margin: 0 auto;
-padding: 0 60px;
-}
-
-.tree-visual {
-margin-top: 60px;
-position: relative;
-height: 400px;
-display: flex;
-align-items: center;
-justify-content: center;
-}
-
-/* SVG tree visualization */
-.tree-svg {
-width: 100%;
-max-width: 900px;
-opacity: 0.9;
-}
-
-/* ── HISTORY SECTION ── */
-.history-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 80px;
-align-items: start;
-margin-top: 60px;
-}
-
-.history-text p {
-font-size: 0.82rem;
-line-height: 2;
-color: var(--gold-pale);
-opacity: 0.8;
-margin-bottom: 20px;
-font-weight: 300;
-}
-
-.history-quote {
-border-left: 2px solid var(--gold);
-padding: 24px 32px;
-margin: 32px 0;
-background: rgba(184,149,42,0.04);
-}
-
-.history-quote p {
-font-family: 'Cormorant Garamond', serif;
-font-size: 1.2rem;
-font-style: italic;
-color: var(--cream);
-opacity: 0.9 !important;
-line-height: 1.7;
-}
-
-.history-timeline {
-display: flex;
-flex-direction: column;
-gap: 0;
-}
-
-.timeline-item {
-display: grid;
-grid-template-columns: 80px 1fr;
-gap: 24px;
-padding: 28px 0;
-border-bottom: 1px solid rgba(184,149,42,0.1);
-position: relative;
-}
-
-.timeline-item:last-child { border-bottom: none; }
-
-.timeline-year {
-font-family: 'Cormorant Garamond', serif;
-font-size: 1.1rem;
-color: var(--gold);
-font-weight: 300;
-padding-top: 2px;
-}
-
-.timeline-content h4 {
-font-size: 0.75rem;
-font-weight: 500;
-color: var(--cream);
-letter-spacing: 0.05em;
-margin-bottom: 6px;
-}
-
-.timeline-content p {
-font-size: 0.7rem;
-line-height: 1.8;
-color: var(--gold-pale);
-opacity: 0.65;
-}
-
-/* ── MAP/GEOGRAPHY SECTION ── */
-.geo-section {
-background: var(--dark);
-padding: 0;
-max-width: 100%;
-}
-
-.geo-inner {
-max-width: 1400px;
-margin: 0 auto;
-padding: 120px 60px;
-}
-
-.geo-locations {
-display: grid;
-grid-template-columns: repeat(4, 1fr);
-gap: 24px;
-margin-top: 60px;
-}
-
-.geo-card {
-padding: 32px 28px;
-border: 1px solid rgba(184,149,42,0.12);
-background: rgba(255,255,255,0.015);
-position: relative;
-transition: all 0.3s;
-}
-
-.geo-card:hover {
-border-color: rgba(184,149,42,0.35);
-background: rgba(184,149,42,0.03);
-}
-
-.geo-flag {
-font-size: 2rem;
-margin-bottom: 16px;
-display: block;
-}
-
-.geo-country {
-font-size: 0.55rem;
-letter-spacing: 0.2em;
-text-transform: uppercase;
-color: var(--gold);
-margin-bottom: 8px;
-opacity: 0.7;
-}
-
-.geo-place {
-font-family: 'Cormorant Garamond', serif;
-font-size: 1.3rem;
-color: var(--cream);
-margin-bottom: 10px;
-}
-
-.geo-detail {
-font-size: 0.68rem;
-line-height: 1.7;
-color: var(--gold-pale);
-opacity: 0.55;
-}
-
-/* ── GALLERY SECTION ── */
-.gallery-section {
-background: var(--dark2);
-padding: 0;
-max-width: 100%;
-}
-
-.gallery-inner {
-max-width: 1400px;
-margin: 0 auto;
-padding: 120px 60px;
-}
-
-.gallery-grid {
-display: grid;
-grid-template-columns: 2fr 1fr 1fr;
-grid-template-rows: auto auto;
-gap: 4px;
-margin-top: 60px;
-}
-
-.gallery-item {
-position: relative;
-overflow: hidden;
-background: var(--dark3);
-aspect-ratio: 4/3;
-cursor: pointer;
-}
-
-.gallery-item:first-child {
-grid-row: span 2;
-aspect-ratio: auto;
-}
-
-.gallery-placeholder {
-width: 100%;
-height: 100%;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-gap: 12px;
-background: linear-gradient(135deg, rgba(184,149,42,0.06), rgba(184,149,42,0.02));
-min-height: 200px;
-transition: all 0.3s;
-}
-
-.gallery-item:hover .gallery-placeholder {
-background: linear-gradient(135deg, rgba(184,149,42,0.12), rgba(184,149,42,0.04));
-}
-
-.gallery-icon {
-font-size: 2rem;
-opacity: 0.4;
-}
-
-.gallery-caption {
-font-size: 0.6rem;
-letter-spacing: 0.15em;
-color: var(--gold-pale);
-opacity: 0.4;
-text-transform: uppercase;
-text-align: center;
-padding: 0 20px;
-}
-
-.gallery-overlay {
-position: absolute;
-bottom: 0; left: 0; right: 0;
-padding: 20px;
-background: linear-gradient(to top, rgba(14,11,7,0.9), transparent);
-opacity: 0;
-transition: opacity 0.3s;
-}
-
-.gallery-item:hover .gallery-overlay { opacity: 1; }
-
-/* ── CONTACT / FOOTER ── */
-.footer-section {
-background: var(--dark);
-padding: 0;
-max-width: 100%;
-border-top: 1px solid rgba(184,149,42,0.12);
-}
-
-.footer-inner {
-max-width: 1400px;
-margin: 0 auto;
-padding: 80px 60px 60px;
-display: grid;
-grid-template-columns: 1fr 1fr 1fr;
-gap: 60px;
-}
-
-.footer-brand .logo {
-display: inline-block;
-margin-bottom: 20px;
-}
-
-.footer-brand p {
-font-size: 0.7rem;
-line-height: 1.9;
-color: var(--gold-pale);
-opacity: 0.5;
-max-width: 260px;
-}
-
-.footer-col h4 {
-font-size: 0.6rem;
-letter-spacing: 0.2em;
-text-transform: uppercase;
-color: var(--gold);
-margin-bottom: 20px;
-opacity: 0.8;
-}
-
-.footer-col ul {
-list-style: none;
-display: flex;
-flex-direction: column;
-gap: 10px;
-}
-
-.footer-col ul li a {
-font-size: 0.72rem;
-color: var(--gold-pale);
-opacity: 0.55;
-text-decoration: none;
-transition: opacity 0.3s, color 0.3s;
-font-weight: 300;
-}
-
-.footer-col ul li a:hover { opacity: 1; color: var(--gold); }
-
-.footer-bottom {
-max-width: 1400px;
-margin: 0 auto;
-padding: 24px 60px;
-border-top: 1px solid rgba(184,149,42,0.08);
-display: flex;
-justify-content: space-between;
-align-items: center;
-}
-
-.footer-bottom p {
-font-size: 0.6rem;
-letter-spacing: 0.1em;
-color: var(--gold-pale);
-opacity: 0.3;
-}
-
-/* ── CTA BUTTON ── */
-.btn-gold {
-display: inline-flex;
-align-items: center;
-gap: 12px;
-padding: 14px 32px;
-border: 1px solid var(--gold);
-color: var(--gold);
-text-decoration: none;
-font-size: 0.65rem;
-letter-spacing: 0.2em;
-text-transform: uppercase;
-font-weight: 500;
-transition: all 0.3s;
-position: relative;
-overflow: hidden;
-cursor: pointer;
-background: transparent;
-font-family: 'Montserrat', sans-serif;
-}
-
-.btn-gold::before {
-content: '';
-position: absolute;
-inset: 0;
-background: var(--gold);
-transform: scaleX(0);
-transform-origin: left;
-transition: transform 0.4s ease;
-}
-
-.btn-gold:hover { color: var(--dark); }
-.btn-gold:hover::before { transform: scaleX(1); }
-.btn-gold span { position: relative; z-index: 1; }
-
-/* ── ANIMATIONS ── */
-@keyframes fadeUp {
-from { opacity: 0; transform: translateY(30px); }
-to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes scrollPulse {
-0%, 100% { opacity: 0.3; transform: scaleY(1); }
-50% { opacity: 0.8; transform: scaleY(1.1); }
-}
-
-.reveal {
-opacity: 0;
-transform: translateY(24px);
-transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-.reveal.visible {
-opacity: 1;
-transform: translateY(0);
-}
-
-/* ── RESPONSIVE ── */
-@media (max-width: 900px) {
-header { padding: 16px 24px; }
-nav { display: none; }
-section { padding: 80px 24px; }
-.gen-grid { grid-template-columns: 1fr; }
-.history-grid { grid-template-columns: 1fr; gap: 40px; }
-.geo-locations { grid-template-columns: 1fr 1fr; }
-.gallery-grid { grid-template-columns: 1fr 1fr; }
-.gallery-item:first-child { grid-row: auto; }
-.footer-inner { grid-template-columns: 1fr; gap: 32px; padding: 60px 24px 40px; }
-.footer-bottom { padding: 20px 24px; flex-direction: column; gap: 8px; }
-.hero-stats { gap: 32px; }
-.generations-inner, .tree-inner, .geo-inner, .gallery-inner { padding: 80px 24px; }
-}
+.gen-num { font-size: 2rem; margin-bottom: 15px; }
+.gen-name { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--gold-pale); margin-bottom: 10px; }
+.gen-desc { font-size: 0.85rem; line-height: 1.6; color: rgba(255,255,255,0.7); }
 </style>
 </head>
 <body>
 
-<!-- ── HEADER ── -->
 <header>
-<a href="#" class="logo">
-Abasovlar
-<span>Nəsil Kitabı · Saatlı · Azərbaycan</span>
-</a>
+<a href="#" class="logo">Abasovlar <span>Nəsil Kitabı</span></a>
 <nav>
 <a href="#nesiller">Nəsillər</a>
-<a href="#serece">Şəcərə</a>
 <a href="#tarix">Tarix</a>
-<a href="#cografiya">Coğrafiya</a>
 <a href="#arxiv">Arxiv</a>
-<a href="#elaqe">Əlaqə</a>
 </nav>
 </header>
 
-<!-- ── HERO ── -->
 <div class="hero">
 <div class="hero-bg"></div>
-
-<div class="hero-ornament" style="position:relative;z-index:1;">Saatlı · 1850-ci ildən bu günə</div>
-
-<h1 class="hero-title" style="position:relative;z-index:1;">
-<em>Abasovlar</em><br>Nəsil Kitabı
-</h1>
-
-<p class="hero-subtitle" style="position:relative;z-index:1;">
-Altı nəslin tarixi — xatirə, zəhmət və şərəf
-</p>
-
-<div class="divider" style="position:relative;z-index:1;">
-<div class="divider-line"></div>
-<div class="divider-diamond"></div>
-<div class="divider-line right"></div>
+<h1 class="hero-title"><em>Abasovlar</em><br>Nəsil Kitabı</h1>
+<p style="position:relative; z-index:1; margin-top:20px; color:var(--gold-pale)">Saatlı, Əhmədbəyli — 1850-ci ildən bu günə</p>
 </div>
 
-<div class="hero-stats" style="position:relative;z-index:1;">
-<div class="stat">
-<span class="stat-num">6</span>
-<span class="stat-label">Nəsil</span>
-</div>
-<div class="stat">
-<span class="stat-num">170+</span>
-<span class="stat-label">İl Tarix</span>
-</div>
-<div class="stat">
-<span class="stat-num">4</span>
-<span class="stat-label">Ölkə</span>
-</div>
-<div class="stat">
-<span class="stat-num">100+</span>
-<span class="stat-label">Ailə Üzvü</span>
-</div>
-</div>
-
-<div class="scroll-hint" style="position:relative;z-index:1;">
-<div class="scroll-line"></div>
-<span>Aşağı davam et</span>
-</div>
-</div>
-
-<!-- ── GENERATIONS ── -->
-<div class="generations" id="nesiller">
-<div class="generations-inner">
-<p class="section-label reveal">Nəsil Xətti</p>
-<h2 class="section-title reveal">Altı <em>Nəsil</em>,<br>Bir Kök</h2>
-
-<div class="gen-grid">
-
-<a class="gen-card reveal" href="#">
-<div class="gen-num">I</div>
-<div class="gen-era">1850–1890</div>
-<div class="gen-name">Birinci Nəsil</div>
-<p class="gen-desc">Saatlı rayonunda köklərin başlandığı dövr. Ailənin ilk sənədləşdirilmiş nümayəndələri.</p>
-<div class="gen-count">Əcdad nəsli</div>
-</a>
-
-<a class="gen-card reveal" href="#">
-<div class="gen-num">II</div>
-<div class="gen-era">1880–1920</div>
-<div class="gen-name">İkinci Nəsil</div>
-<p class="gen-desc">Çar Rusiyası dövründə yaşanan illər. Ailənin formalaşması və kənd həyatı.</p>
-<div class="gen-count">Çar Rusiyası dövrü</div>
-</a>
-
-<a class="gen-card reveal" href="#">
-<div class="gen-num">III</div>
-<div class="gen-era">1910–1950</div>
-<div class="gen-name">Üçüncü Nəsil</div>
-<p class="gen-desc">Sovet dövrü. Repressiyalar, soyad dəyişiklikləri, müharibə illəri. Ağır sınaqlar.</p>
-<div class="gen-count">Sovet dövrü · Repressilar</div>
-</a>
-
-<a class="gen-card reveal" href="#">
-<div class="gen-num">IV</div>
-<div class="gen-era">1940–1980</div>
-<div class="gen-name">Dördüncü Nəsil</div>
-<p class="gen-desc">SSRİ-nin inkişaf illəri. Ailənin müxtəlif respublikalara yayılması. Qazaxıstan qolu.</p>
-<div class="gen-count">SSRİ · Qazaxıstan</div>
-</a>
-
-<a class="gen-card reveal" href="#">
-<div class="gen-num">V</div>
-<div class="gen-era">1970–2000</div>
-<div class="gen-name">Beşinci Nəsil</div>
-<p class="gen-desc">İstiqlaliyyət dövrü. Qarabağ müharibəsi. Azərbaycanın yenidən qurulması illərinin nəsli.</p>
-<div class="gen-count">İstiqlaliyyət · Yenidənqurma</div>
-</a>
-
-<a class="gen-card reveal" href="#">
-<div class="gen-num">VI</div>
-<div class="gen-era">2000–bu gün</div>
-<div class="gen-name">Altıncı Nəsil</div>
-<p class="gen-desc">Müasir Azərbaycan. Texnologiya, iş, ailə. Köklərinə sahib çıxan gənc nəsil.</p>
-<div class="gen-count">Müasir dövr</div>
-</a>
-
-</div>
-</div>
-</div>
-
-<!-- ── TREE VISUAL ── -->
-<div class="tree-section" id="serece">
-<div class="tree-inner">
-<p class="section-label reveal">İnteraktiv Şəcərə</p>
-<h2 class="section-title reveal">Ailə <em>Ağacı</em></h2>
-<p class="reveal" style="font-size:0.78rem;color:var(--gold-pale);opacity:0.6;max-width:500px;line-height:1.9;margin-top:8px;">
-Hər şəxsə klik edərək bioqrafiya, şəkillər və ailə bağlantılarını görə bilərsiniz.
-</p>
-
-<div class="tree-visual reveal">
-<!-- SVG Family Tree Preview -->
-<svg class="tree-svg" viewBox="0 0 900 360" fill="none" xmlns="http://www.w3.org/2000/svg">
-<!-- Connecting lines -->
-<line x1="450" y1="60" x2="450" y2="100" stroke="#b8952a" stroke-width="1" stroke-opacity="0.4"/>
-<line x1="200" y1="140" x2="700" y2="140" stroke="#b8952a" stroke-width="1" stroke-opacity="0.3"/>
-<line x1="200" y1="100" x2="200" y2="140" stroke="#b8952a" stroke-width="1" stroke-opacity="0.3"/>
-<line x1="450" y1="100" x2="450" y2="140" stroke="#b8952a" stroke-width="1" stroke-opacity="0.3"/>
-<line x1="700" y1="100" x2="700" y2="140" stroke="#b8952a" stroke-width="1" stroke-opacity="0.3"/>
-<line x1="100" y1="220" x2="300" y2="220" stroke="#b8952a" stroke-width="1" stroke-opacity="0.25"/>
-<line x1="350" y1="220" x2="550" y2="220" stroke="#b8952a" stroke-width="1" stroke-opacity="0.25"/>
-<line x1="600" y1="220" x2="800" y2="220" stroke="#b8952a" stroke-width="1" stroke-opacity="0.25"/>
-<line x1="200" y1="140" x2="200" y2="220" stroke="#b8952a" stroke-width="1" stroke-opacity="0.25"/>
-<line x1="450" y1="140" x2="450" y2="220" stroke="#b8952a" stroke-width="1" stroke-opacity="0.25"/>
-<line x1="700" y1="140" x2="700" y2="220" stroke="#b8952a" stroke-width="1" stroke-opacity="0.25"/>
-<!-- Level 4 lines -->
-<line x1="100" y1="260" x2="100" y2="300" stroke="#b8952a" stroke-width="0.8" stroke-opacity="0.2"/>
-<line x1="300" y1="260" x2="300" y2="300" stroke="#b8952a" stroke-width="0.8" stroke-opacity="0.2"/>
-<line x1="450" y1="260" x2="450" y2="300" stroke="#b8952a" stroke-width="0.8" stroke-opacity="0.2"/>
-<line x1="700" y1="260" x2="700" y2="300" stroke="#b8952a" stroke-width="0.8" stroke-opacity="0.2"/>
-
-<!-- Root node -->
-<rect x="380" y="20" width="140" height="52" rx="2" fill="rgba(184,149,42,0.12)" stroke="#b8952a" stroke-width="1.5" stroke-opacity="0.8"/>
-<text x="450" y="42" text-anchor="middle" fill="#d4aa45" font-family="Cormorant Garamond, serif" font-size="13" font-weight="400">I Nəsil</text>
-<text x="450" y="58" text-anchor="middle" fill="#f0e0b0" font-family="Montserrat, sans-serif" font-size="8" opacity="0.6">1850–1890</text>
-
-<!-- Level 2 -->
-<rect x="130" y="104" width="140" height="48" rx="2" fill="rgba(184,149,42,0.07)" stroke="#b8952a" stroke-width="1" stroke-opacity="0.5"/>
-<text x="200" y="124" text-anchor="middle" fill="#d4aa45" font-family="Cormorant Garamond, serif" font-size="12">II Nəsil</text>
-<text x="200" y="140" text-anchor="middle" fill="#f0e0b0" font-family="Montserrat, sans-serif" font-size="7.5" opacity="0.5">1880–1920</text>
-
-<rect x="380" y="104" width="140" height="48" rx="2" fill="rgba(184,149,42,0.07)" stroke="#b8952a" stroke-width="1" stroke-opacity="0.5"/>
-<text x="450" y="124" text-anchor="middle" fill="#d4aa45" font-family="Cormorant Garamond, serif" font-size="12">III Nəsil</text>
-<text x="450" y="140" text-anchor="middle" fill="#f0e0b0" font-family="Montserrat, sans-serif" font-size="7.5" opacity="0.5">1910–1950</text>
-
-<rect x="630" y="104" width="140" height="48" rx="2" fill="rgba(184,149,42,0.07)" stroke="#b8952a" stroke-width="1" stroke-opacity="0.5"/>
-<text x="700" y="124" text-anchor="middle" fill="#d4aa45" font-family="Cormorant Garamond, serif" font-size="12">IV Nəsil</text>
-<text x="700" y="140" text-anchor="middle" fill="#f0e0b0" font-family="Montserrat, sans-serif" font-size="7.5" opacity="0.5">1940–1980</text>
-
-<!-- Level 3 small nodes -->
-<circle cx="100" cy="240" r="22" fill="rgba(184,149,42,0.06)" stroke="#b8952a" stroke-width="0.8" stroke-opacity="0.4"/>
-<text x="100" y="244" text-anchor="middle" fill="#d4aa45" font-family="Montserrat, sans-serif" font-size="7" opacity="0.8">V</text>
-
-<circle cx="300" cy="240" r="22" fill="rgba(184,149,42,0.06)" stroke="#b8952a" stroke-width="0.8" stroke-opacity="0.4"/>
-<text x="300" y="244" text-anchor="middle" fill="#d4aa45" font-family="Montserrat, sans-serif" font-size="7" opacity="0.8">V</text>
-
-<circle cx="450" cy="240" r="22" fill="rgba(184,149,42,0.06)" stroke="#b8952a" stroke-width="0.8" stroke-opacity="0.4"/>
-<text x="450" y="244" text-anchor="middle" fill="#d4aa45" font-family="Montserrat, sans-serif" font-size="7" opacity="0.8">V</text>
-
-<circle cx="700" cy="240" r="22" fill="rgba(184,149,42,0.06)" stroke="#b8952a" stroke-width="0.8" stroke-opacity="0.4"/>
-<text x="700" y="244" text-anchor="middle" fill="#d4aa45" font-family="Montserrat, sans-serif" font-size="7" opacity="0.8">V</text>
-
-<!-- Dots for level 4 -->
-<circle cx="100" cy="318" r="8" fill="rgba(184,149,42,0.08)" stroke="#b8952a" stroke-width="0.6" stroke-opacity="0.3"/>
-<circle cx="300" cy="318" r="8" fill="rgba(184,149,42,0.08)" stroke="#b8952a" stroke-width="0.6" stroke-opacity="0.3"/>
-<circle cx="450" cy="318" r="8" fill="rgba(184,149,42,0.08)" stroke="#b8952a" stroke-width="0.6" stroke-opacity="0.3"/>
-<circle cx="700" cy="318" r="8" fill="rgba(184,149,42,0.08)" stroke="#b8952a" stroke-width="0.6" stroke-opacity="0.3"/>
-
-<!-- Ellipsis dots -->
-<circle cx="820" cy="240" r="3" fill="#b8952a" opacity="0.3"/>
-<circle cx="838" cy="240" r="3" fill="#b8952a" opacity="0.2"/>
-<circle cx="856" cy="240" r="3" fill="#b8952a" opacity="0.1"/>
-</svg>
-</div>
-
-<div class="reveal" style="margin-top:40px;">
-<a class="btn-gold" href="#">
-<span>Tam şəcərəyə bax</span>
-<span>→</span>
-</a>
-</div>
-</div>
-</div>
-
-<!-- ── HISTORY ── -->
-<div style="background:var(--dark);max-width:100%;" id="tarix">
-<section>
-<p class="section-label reveal">Ailə Tarixi</p>
-<h2 class="section-title reveal">Zaman <em>Xətti</em></h2>
-
-<div class="history-grid">
-<div class="history-text">
-<div class="history-quote reveal">
-<p>"Kök möhkəm olsa, budaqlar uzanar — nəsillərin yaddaşı ailənin ən qiymətli xəzinəsidir."</p>
-</div>
-<p class="reveal">
-Abasovlar nəsli Azərbaycanın Saatlı rayonunda köklənib, 170 ildən çox tarixi əhatə edir. Bu müddət ərzində ailə Çar Rusiyası, Sovet İttifaqı və müstəqil Azərbaycan dövrlərini yaşayıb.
-</p>
-<p class="reveal">
-Sovet dövrünün ən ağır illərindən keçən nəsillərimiz repressiyalardan qorunmaq üçün soyad dəyişikliyinə məcbur olublar. Bu tarixi faktlar bugün arxiv sənədləri ilə sənədləşdirilib.
-</p>
-<div class="reveal" style="margin-top:32px;">
-<a class="btn-gold" href="#">
-<span>Tarixi oxu</span>
-<span>→</span>
-</a>
-</div>
-</div>
-
-<div class="history-timeline reveal">
-<div class="timeline-item">
-<div class="timeline-year">~1850</div>
-<div class="timeline-content">
-<h4>Köklərin Başlanğıcı</h4>
-<p>Saatlı rayonunda ailənin ilk sənədləşdirilmiş nümayəndələri</p>
-</div>
-</div>
-<div class="timeline-item">
-<div class="timeline-year">1920</div>
-<div class="timeline-content">
-<h4>Sovet Dövrü</h4>
-<p>Azərbaycan SSR-in qurulması. Ailənin həyatında yeni mərhələ</p>
-</div>
-</div>
-<div class="timeline-item">
-<div class="timeline-year">1937</div>
-<div class="timeline-content">
-<h4>Repressialar Dövrü</h4>
-<p>Soyad dəyişiklikləri. Ailənin bəzi üzvlərinin sürgün edilməsi</p>
-</div>
-</div>
-<div class="timeline-item">
-<div class="timeline-year">1941</div>
-<div class="timeline-content">
-<h4>İkinci Dünya Müharibəsi</h4>
-<p>Ailədən döyüşçülərin cəbhəyə getməsi</p>
-</div>
-</div>
-<div class="timeline-item">
-<div class="timeline-year">1991</div>
-<div class="timeline-content">
-<h4>İstiqlaliyyət</h4>
-<p>Müstəqil Azərbaycan. Ailənin yeni mərhələsi</p>
-</div>
-</div>
-<div class="timeline-item">
-<div class="timeline-year">2024</div>
-<div class="timeline-content">
-<h4>Nəsil Kitabı</h4>
-<p>Altı nəsilin tarixi ilk dəfə bir kitabda toplanır</p>
-</div>
-</div>
-</div>
+<section id="nesiller" style="padding: 100px 0;">
+<center><p class="section-label">Ailə Üzvləri</p></center>
+<div class="gen-grid" id="familyGrid">
+<!-- JavaScript məlumatları bura dolduracaq -->
 </div>
 </section>
-</div>
-
-<!-- ── GEOGRAPHY ── -->
-<div class="geo-section" id="cografiya">
-<div class="geo-inner">
-<p class="section-label reveal">Coğrafi Yayılma</p>
-<h2 class="section-title reveal">Dünyanın Dörd <em>Guşəsindəki</em><br>Abasovlar</h2>
-
-<div class="geo-locations">
-<div class="geo-card reveal">
-<span class="geo-flag">🇦🇿</span>
-<div class="geo-country">Azərbaycan</div>
-<div class="geo-place">Saatlı</div>
-<p class="geo-detail">Ailənin əsas yurdu. Köklərin başlandığı yer. Nəsillərin çoxunun doğulduğu rayon.</p>
-</div>
-<div class="geo-card reveal">
-<span class="geo-flag">🇦🇿</span>
-<div class="geo-country">Azərbaycan</div>
-<div class="geo-place">Bakı</div>
-<p class="geo-detail">Paytaxt. Ailənin müasir nümayəndələrinin böyük hissəsinin yaşadığı şəhər.</p>
-</div>
-<div class="geo-card reveal">
-<span class="geo-flag">🇰🇿</span>
-<div class="geo-country">Qazaxıstan</div>
-<div class="geo-place">Sayram</div>
-<p class="geo-detail">Sovet dövrü sürgünlərinin nəticəsində yaranmış Qazaxıstan qolu. Sayram rayonu.</p>
-</div>
-<div class="geo-card reveal">
-<span class="geo-flag">🌍</span>
-<div class="geo-country">Digər ölkələr</div>
-<div class="geo-place">Diaspora</div>
-<p class="geo-detail">Rusiya, Ukrayna və digər ölkələrdəki ailə üzvləri. Tədqiqat davam edir.</p>
-</div>
-</div>
-</div>
-</div>
-
-<!-- ── GALLERY ── -->
-<div class="gallery-section" id="arxiv">
-<div class="gallery-inner">
-<p class="section-label reveal">Foto Arxiv</p>
-<h2 class="section-title reveal">Tarixi <em>Şəkillər</em></h2>
-<p class="reveal" style="font-size:0.78rem;color:var(--gold-pale);opacity:0.6;max-width:500px;line-height:1.9;margin-top:8px;">
-Bərpa edilmiş və rəngləndirilmiş tarixi fotoqrafiyalar. Hər şəkil bir hekayədir.
-</p>
-
-<div class="gallery-grid reveal">
-<div class="gallery-item">
-<div class="gallery-placeholder">
-<div class="gallery-icon">🖼️</div>
-<div class="gallery-caption">Ailə Portreti<br>Tarixi Fotoqrafiya</div>
-</div>
-</div>
-<div class="gallery-item">
-<div class="gallery-placeholder">
-<div class="gallery-icon">📷</div>
-<div class="gallery-caption">Sovet Dövrü</div>
-</div>
-</div>
-<div class="gallery-item">
-<div class="gallery-placeholder">
-<div class="gallery-icon">🎖️</div>
-<div class="gallery-caption">Müharibə Dövrü</div>
-</div>
-</div>
-<div class="gallery-item">
-<div class="gallery-placeholder">
-<div class="gallery-icon">🏡</div>
-<div class="gallery-caption">Saatlı — Ev</div>
-</div>
-</div>
-<div class="gallery-item">
-<div class="gallery-placeholder">
-<div class="gallery-icon">📜</div>
-<div class="gallery-caption">Arxiv Sənədləri</div>
-</div>
-</div>
-</div>
-
-<div class="reveal" style="margin-top:40px;">
-<a class="btn-gold" href="#">
-<span>Bütün arxiv</span>
-<span>→</span>
-</a>
-</div>
-</div>
-</div>
-
-<!-- ── FOOTER ── -->
-<div class="footer-section" id="elaqe">
-<div class="footer-inner">
-<div class="footer-brand">
-<a href="#" class="logo">
-Abasovlar
-<span>Nəsil Kitabı · Saatlı · Azərbaycan</span>
-</a>
-<p>
-Bu sayt Abasovlar ailəsinin altı nəsillik tarixini gələcək nəsillərə ötürmək məqsədilə yaradılıb.
-</p>
-</div>
-<div class="footer-col">
-<h4>Bölmələr</h4>
-<ul>
-<li><a href="#nesiller">Nəsillər</a></li>
-<li><a href="#serece">Şəcərə ağacı</a></li>
-<li><a href="#tarix">Tarix xətti</a></li>
-<li><a href="#cografiya">Coğrafiya</a></li>
-<li><a href="#arxiv">Foto arxiv</a></li>
-</ul>
-</div>
-<div class="footer-col">
-<h4>Layihə haqqında</h4>
-<ul>
-<li><a href="#">Nəsil Kitabı PDF</a></li>
-<li><a href="#">Tədqiqat metodologiyası</a></li>
-<li><a href="#">Arxiv mənbələri</a></li>
-<li><a href="#">Əlaqə</a></li>
-</ul>
-</div>
-</div>
-<div class="footer-bottom">
-<p>© 2024–2025 Abasovlar Nəsil Kitabı · Bütün hüquqlar qorunur</p>
-<p>Saatlı · Azərbaycan</p>
-</div>
-</div>
 
 <script>
-// Scroll reveal
-const observer = new IntersectionObserver((entries) => {
-entries.forEach((entry, i) => {
-if (entry.isIntersecting) {
-setTimeout(() => {
-entry.target.classList.add('visible');
-}, (entry.target.dataset.delay || 0));
-observer.unobserve(entry.target);
-}
-});
-}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
-document.querySelectorAll('.reveal').forEach((el, i) => {
-// Stagger siblings
-const siblings = Array.from(el.parentElement.children).filter(c => c.classList.contains('reveal'));
-const idx = siblings.indexOf(el);
-el.dataset.delay = idx * 80;
-observer.observe(el);
-});
-
-// Header background on scroll
-const header = document.querySelector('header');
-window.addEventListener('scroll', () => {
-if (window.scrollY > 60) {
-header.style.background = 'rgba(14,11,7,0.97)';
-header.style.borderBottom = '1px solid rgba(184,149,42,0.1)';
-} else {
-header.style.background = 'linear-gradient(to bottom, rgba(14,11,7,0.98), transparent)';
-header.style.borderBottom = 'none';
-}
-});
-
-// Smooth nav
-document.querySelectorAll('a[href^="#"]').forEach(a => {
-a.addEventListener('click', e => {
-const id = a.getAttribute('href');
-if (id === '#') return;
-const el = document.querySelector(id);
-if (el) {
-e.preventDefault();
-el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-});
-});  // --- ABASOVLAR DINAMIK MƏLUMAT SİSTEMİ ---
-  const abasovlarData = [
-    {
-      ad: "Məmmədəli Abasov",
-      tarix: "1927–1978",
-      rol: "Nəsil Patriarxı",
-      qeyd: "Saatlı rayonu, Əhmədbəyli kəndi. Abasovlar nəslinin 3-cü nümayəndəsi.",
-      icon: "📜"
-    },
-    {
-      ad: "Laçın Abasov",
-      tarix: "1971–Bu gün",
-      rol: "Tədqiqatçı & Veteran",
-      qeyd: "Sosioloji tədqiqatlar üzrə ekspert. Qarabağ müharibəsi veteranı.",
-      icon: "🎖️"
-    },
-    {
-      ad: "Ayla Abaslı",
-      tarix: "2010–Bu gün",
-      rol: "Gənc Nəsil",
-      qeyd: "Kimya fənni üzrə respublika olimpiada qalibi (65 bal).",
-      icon: "🧪"
-    }
-  ];
-
-  function showFamily() {
-    const grid = document.querySelector('.gen-grid');
-    if(grid) {
-      grid.innerHTML = ""; // Köhnə yazıları silir
-      abasovlarData.forEach(p => {
-        grid.innerHTML += `
-          <div class="gen-card reveal visible" style="opacity:1; transform:none;">
-            <div class="gen-num">${p.icon}</div>
-            <div class="gen-era">${p.tarix}</div>
-            <div class="gen-name">${p.ad}</div>
-            <p class="gen-desc">${p.qeyd}</p>
-            <div class="gen-count">${p.rol}</div>
-          </div>`;
-      });
-    }
-  }
-  showFamily(); // Funksiyanı işə salır
-
-</script> // ABASOVLAR NƏSİL MƏLUMAT BAZASI
-const abasovlarData = [
+const familyData = [
 {
-id: 1,
-ad: "Məmmədəli",
-soyad: "Abasov",
-tarix: "1927–1978",
-nesil: "III Nəsil",
-qeyd: "Nəsil patriarxı, Saatlı rayonu Əhmədbəyli kəndi.",
+ad: "Azay Məmmədəli oğlu",
+tarix: "1881 – ...",
+rol: "Ulu Baba (Kök)",
+qeyd: "Abasovlar nəslinin sənədləşdirilmiş ilk böyük nümayəndələrindən biri.",
 icon: "📜"
 },
 {
-id: 2,
-ad: "Laçın",
-soyad: "Abasov",
-tarix: "1971–Bu gün",
-nesil: "IV Nəsil",
-qeyd: "Sosioloji tədqiqatlar üzrə ekspert, Qarabağ müharibəsi veteranı.",
+ad: "Məmmədəli Abasov",
+tarix: "1927 – 1978",
+rol: "Baba",
+qeyd: "Nəsil şəcərəsinin əsas dayağı. Əhmədbəyli kəndinin hörmətli ağsaqqallarından.",
+icon: "👨‍👩‍👦"
+},
+{
+ad: "Laçın Abasov",
+tarix: "1971 – Bu gün",
+rol: "Tədqiqatçı & Veteran",
+qeyd: "I Qarabağ müharibəsi veteranı. Sosioloq və bu layihənin müəllifi.",
 icon: "🎖️"
 },
 {
-id: 3,
-ad: "Ayla",
-soyad: "Abaslı",
-tarix: "2010–Bu gün",
-nesil: "V Nəsil",
-qeyd: "Kimya fənni üzrə respublika olimpiada qalibi.",
+ad: "Ayla Abaslı",
+tarix: "2010 – Bu gün",
+rol: "Gənc Nəsil",
+qeyd: "Kimya fənni üzrə respublika olimpiada qalibi. Nəslin parlaq gələcəyi.",
 icon: "🧪"
 }
-// Yeni üzvləri bura eyni formatda əlavə edə bilərsiniz
 ];
 
-function renderFamilyCards() {
-const grid = document.querySelector('.gen-grid');
-if(!grid) return;
-
-grid.innerHTML = ""; // Mövcud statik kartları təmizləyir
-
-abasovlarData.forEach(person => {
-const card = `
-<div class="gen-card reveal visible" style="opacity: 1; transform: translateY(0);">
-<div class="gen-num">${person.icon}</div>
-<div class="gen-era">${person.tarix}</div>
-<div class="gen-name">${person.ad} ${person.soyad}</div>
-<p class="gen-desc">${person.qeyd}</p>
-<div class="gen-count">${person.nesil}</div>
+function loadFamily() {
+const grid = document.getElementById('familyGrid');
+familyData.forEach(p => {
+grid.innerHTML += `
+<div class="gen-card">
+<div class="gen-num">${p.icon}</div>
+<div style="color:var(--gold); font-size:0.7rem; margin-bottom:5px;">${p.tarix}</div>
+<div class="gen-name">${p.ad}</div>
+<p class="gen-desc">${p.qeyd}</p>
+<div style="margin-top:20px; font-size:0.6rem; text-transform:uppercase; letter-spacing:1px; color:var(--gold-light)">${p.rol}</div>
 </div>
 `;
-grid.innerHTML += card;
 });
 }
 
-// Sayt yüklənəndə məlumatları doldur
-document.addEventListener('DOMContentLoaded', renderFamilyCards);
-// Ailə üzvlərinin siyahısı (Bu hissəni Excel kimi doldura bilərsiniz)
-const ailəMəlumatı = [
-{ ad: "Məmmədəli", soyad: "Abasov", nesil: "III", illər: "1927–1978", qeyd: "Nəsil patriarxı" },
-{ ad: "Laçın", soyad: "Abasov", nesil: "IV", illər: "1971–bu gün", qeyd: "Tədqiqatçı, veteran" },
-{ ad: "Ayla", soyad: "Abaslı", nesil: "V", illər: "2010–bu gün", qeyd: "Kimya üzrə qalib" }
-];
+window.onload = loadFamily;
+</script>
 
-// Bu funksiya məlumatları saytdakı "Nəsil Xətti" bölməsinə avtomatik yerləşdirir
-function nəsilləriYüklə() {
-const grid = document.querySelector('.gen-grid');
-// Buranı istədiyiniz kimi dizayn edib məlumatları bura bağlaya bilərik
-console.log("Məlumatlar hazırdır:", ailəMəlumatı);
-}
-
-nəsilləriYüklə();</body>
-</html>  // Smooth nav
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      // ... bura kodlar var ...
-    });
-  });
-</script> <!-- Bax bu həmin bağlayıcı teqdir -->
-
+</body>
+</html>
