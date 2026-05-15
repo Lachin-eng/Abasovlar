@@ -1251,7 +1251,49 @@ e.preventDefault();
 el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 });
-});
+});  // --- ABASOVLAR DINAMIK MƏLUMAT SİSTEMİ ---
+  const abasovlarData = [
+    {
+      ad: "Məmmədəli Abasov",
+      tarix: "1927–1978",
+      rol: "Nəsil Patriarxı",
+      qeyd: "Saatlı rayonu, Əhmədbəyli kəndi. Abasovlar nəslinin 3-cü nümayəndəsi.",
+      icon: "📜"
+    },
+    {
+      ad: "Laçın Abasov",
+      tarix: "1971–Bu gün",
+      rol: "Tədqiqatçı & Veteran",
+      qeyd: "Sosioloji tədqiqatlar üzrə ekspert. Qarabağ müharibəsi veteranı.",
+      icon: "🎖️"
+    },
+    {
+      ad: "Ayla Abaslı",
+      tarix: "2010–Bu gün",
+      rol: "Gənc Nəsil",
+      qeyd: "Kimya fənni üzrə respublika olimpiada qalibi (65 bal).",
+      icon: "🧪"
+    }
+  ];
+
+  function showFamily() {
+    const grid = document.querySelector('.gen-grid');
+    if(grid) {
+      grid.innerHTML = ""; // Köhnə yazıları silir
+      abasovlarData.forEach(p => {
+        grid.innerHTML += `
+          <div class="gen-card reveal visible" style="opacity:1; transform:none;">
+            <div class="gen-num">${p.icon}</div>
+            <div class="gen-era">${p.tarix}</div>
+            <div class="gen-name">${p.ad}</div>
+            <p class="gen-desc">${p.qeyd}</p>
+            <div class="gen-count">${p.rol}</div>
+          </div>`;
+      });
+    }
+  }
+  showFamily(); // Funksiyanı işə salır
+
 </script> // ABASOVLAR NƏSİL MƏLUMAT BAZASI
 const abasovlarData = [
 {
