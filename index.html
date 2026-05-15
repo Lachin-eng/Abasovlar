@@ -3,223 +3,208 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Abasovlar — Nəsil Kitabı</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Abasovlar Nəslinin Şəcərəsi</title>
 <style>
 :root {
---gold: #b8952a;
---gold-light: #d4aa45;
---gold-pale: #f0e0b0;
---dark: #0e0b07;
---dark2: #1a1510;
---dark3: #2a2015;
---brown: #4a3520;
---cream: #f5edd8;
---cream2: #ede0c4;
---text: #2a1f10;
---text-light: #6b5540;
+--primary-color: #2c3e50;
+--secondary-color: #c0392b;
+--bg-color: #f4f7f6;
+--accent-color: #d4af37; /* Qızılı rəng - bəy nəslinə uyğun */
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
 body {
-background: var(--dark);
-color: var(--cream);
-font-family: 'Montserrat', sans-serif;
-font-weight: 300;
-overflow-x: hidden;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+line-height: 1.6;
+color: #333;
+background-color: var(--bg-color);
+margin: 0;
+padding: 20px;
 }
 
-body::before {
-content: '';
-position: fixed;
-inset: 0;
-background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-pointer-events: none;
-z-index: 9999;
-opacity: 0.4;
+.container {
+max-width: 1000px;
+margin: 0 auto;
+background: white;
+padding: 40px;
+box-shadow: 0 0 20px rgba(0,0,0,0.1);
+border-radius: 8px;
 }
 
 header {
-position: fixed;
-top: 0; left: 0; right: 0;
-z-index: 100;
-padding: 20px 60px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-background: linear-gradient(to bottom, rgba(14,11,7,0.98), transparent);
-transition: background 0.4s;
-}
-
-.logo {
-font-family: 'Cormorant Garamond', serif;
-font-size: 1.5rem;
-font-weight: 600;
-color: var(--gold);
-letter-spacing: 0.08em;
-text-decoration: none;
-}
-
-.logo span {
-display: block;
-font-size: 0.55rem;
-font-family: 'Montserrat', sans-serif;
-font-weight: 400;
-letter-spacing: 0.25em;
-text-transform: uppercase;
-color: var(--gold-pale);
-margin-top: 2px;
-}
-
-nav { display: flex; gap: 36px; align-items: center; }
-nav a {
-color: var(--cream2);
-text-decoration: none;
-font-size: 0.7rem;
-letter-spacing: 0.2em;
-text-transform: uppercase;
-font-weight: 500;
-transition: color 0.3s;
-position: relative;
-}
-
-.hero {
-min-height: 100vh;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
 text-align: center;
-position: relative;
-padding: 120px 40px 80px;
+border-bottom: 3px double var(--accent-color);
+margin-bottom: 30px;
+padding-bottom: 20px;
 }
 
-.hero-bg {
-position: absolute;
-inset: 0;
-background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(184,149,42,0.08) 0%, transparent 70%), linear-gradient(160deg, #0e0b07 0%, #1a1208 50%, #0e0b07 100%);
+h1 { color: var(--primary-color); margin-bottom: 5px; }
+h2 { color: var(--secondary-color); border-left: 5px solid var(--accent-color); padding-left: 15px; margin-top: 40px; }
+h3 { color: #2980b9; margin-top: 25px; border-bottom: 1px solid #eee; }
+
+.root-section {
+background: #fffdf5;
+padding: 20px;
+border: 1px solid var(--accent-color);
+border-radius: 5px;
+margin-bottom: 30px;
 }
 
-.hero-title {
-font-family: 'Cormorant Garamond', serif;
-font-size: clamp(3rem, 7vw, 6rem);
-font-weight: 300;
-line-height: 0.92;
-color: var(--cream);
-position: relative;
-z-index: 1;
+.generation-box {
+margin-left: 20px;
+padding: 15px;
+border-left: 2px dashed #ccc;
 }
 
-.hero-title em { color: var(--gold-light); font-style: italic; }
-
-.section-label {
-font-size: 0.6rem;
-letter-spacing: 0.3em;
-text-transform: uppercase;
-color: var(--gold);
+.branch {
 margin-bottom: 20px;
+padding: 15px;
+background: #f9f9f9;
+border-radius: 5px;
 }
 
-.gen-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-gap: 20px;
-padding: 60px;
-max-width: 1400px;
-margin: 0 auto;
+.stats-table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 20px;
 }
 
-.gen-card {
-background: rgba(255,255,255,0.02);
-border: 1px solid rgba(184,149,42,0.15);
-padding: 40px;
-transition: all 0.4s ease;
+.stats-table td, .stats-table th {
+border: 1px solid #ddd;
+padding: 12px;
+text-align: left;
 }
 
-.gen-card:hover {
-border-color: var(--gold);
-background: rgba(184,149,42,0.05);
+.stats-table th {
+background-color: var(--primary-color);
+color: white;
 }
 
-.gen-num { font-size: 2rem; margin-bottom: 15px; }
-.gen-name { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--gold-pale); margin-bottom: 10px; }
-.gen-desc { font-size: 0.85rem; line-height: 1.6; color: rgba(255,255,255,0.7); }
+.badge {
+display: inline-block;
+background: var(--secondary-color);
+color: white;
+padding: 2px 8px;
+border-radius: 10px;
+font-size: 0.8em;
+margin-left: 5px;
+}
+
+.meta { font-style: italic; color: #666; }
+
+@media (max-width: 600px) {
+.container { padding: 15px; }
+.generation-box { margin-left: 5px; }
+}
 </style>
 </head>
 <body>
 
+<div class="container">
 <header>
-<a href="#" class="logo">Abasovlar <span>Nəsil Kitabı</span></a>
-<nav>
-<a href="#nesiller">Nəsillər</a>
-<a href="#tarix">Tarix</a>
-<a href="#arxiv">Arxiv</a>
-</nav>
+<h1>ABASOVLAR NƏSLİNİN ŞƏCƏRƏSİ</h1>
+<p class="meta">Zaman çərçivəsi: 1861 — 2026</p>
 </header>
 
-<div class="hero">
-<div class="hero-bg"></div>
-<h1 class="hero-title"><em>Abasovlar</em><br>Nəsil Kitabı</h1>
-<p style="position:relative; z-index:1; margin-top:20px; color:var(--gold-pale)">Saatlı, Əhmədbəyli — 1850-ci ildən bu günə</p>
-</div>
+<section class="root-section">
+<h2>I. NƏSİL — KÖK</h2>
+<p><strong>Kəlbəlayi Azay Bəy Məmmədəli oğlu Abasov (1861)</strong></p>
+<p>Şəcərənin banisi, Saatlı rayonundan. Qori Gimnaziyasının məzunu, Əhmədbəyli kəndində torpaq mülkiyyətçisi, bölgənin ziyalı və sahibkarı.</p>
+<p><strong>Həyat yoldaşı:</strong> Xurşud xanım</p>
+</section>
 
-<section id="nesiller" style="padding: 100px 0;">
-<center><p class="section-label">Ailə Üzvləri</p></center>
-<div class="gen-grid" id="familyGrid">
-<!-- JavaScript məlumatları bura dolduracaq -->
+<section>
+<h2>II. NƏSİL — Azay bəyin övladları (5 Əsas Qol)</h2>
+<ul>
+<li><strong>İskəndər bəy:</strong> 1938-ci ildə repressiya qurbanı (Nargin adası).</li>
+<li><strong>Aldost bəy:</strong> Sankt-Peterburq gimnaziyasının məzunu, sürgün həyatı (Qazaxıstan).</li>
+<li><strong>Bəybala bəy (1905–1937):</strong> 32 yaşında repressiya qurbanı.</li>
+<li><strong>Gülbəyim xanım</strong></li>
+<li><strong>Ceyran xanım</strong></li>
+</ul>
+</section>
+
+<section>
+<h2>III. NƏSİL — BƏYBALA BƏY QOLU (Ən geniş şaxə)</h2>
+<p><strong>Həyat yoldaşı:</strong> Mürşid qızı Bikə xanım</p>
+
+<div class="branch">
+<h3>IV. NƏSİL — Məmmədəli Bəy & Lumu Xanım Xətti</h3>
+<p><strong>Məmmədəli Abasov (1927–1978):</strong> Nəslin mənəvi irsini qoruyan mərkəzi şəxs.</p>
+
+<div class="generation-box">
+<p><strong>1. Maarif (1957–2019):</strong> İqtisadçı. Övladları: Məmmədəli (1989), Fuad (1990).
+<br><small>— VI Nəsil: Suad (2019), Maarif (2021)</small></p>
+
+<p><strong>2. Xanım (1959):</strong> Övladları: Elza (1979), Zöhrab, Zaur.</p>
+
+<p><strong>3. Mahir (1961):</strong> Mühəndis (ADSEA). Övladları: Taryel (1988), Samir (1989), Pünhan (1993).</p>
+
+<p><strong>4. İlham:</strong> Övladları: İradə, Samirə, Sevinc, Əli, Nərgiz.</p>
+
+<p><strong>5. Zərbikə (1965):</strong> Övladları: Səadət, Sədaqət, Xuraman, Rza.</p>
+
+<p><strong>6. Səfərəli (1967):</strong> Övladı: Banu.</p>
+
+<p><strong>7. Laçın (1969):</strong> Veteran, sosioloq, "Telsiz" MMC rəhbəri. Övladı: Ayla (2013).</p>
+
+<p><strong>8. Bəybala (1973):</strong> Mühəndis, "İlona-M" direktoru. Mülkiyyət ənənəsini bərpa edən. Övladları: Aydan (2008), Emil (2014).</p>
+
+<p><strong>9. Şəmama (1975):</strong> Övladı: Əliəkbər (2002).</p>
+</div>
 </div>
 </section>
 
-<script>
-const familyData = [
-{
-ad: "Azay Məmmədəli oğlu",
-tarix: "1881 – ...",
-rol: "Ulu Baba (Kök)",
-qeyd: "Abasovlar nəslinin sənədləşdirilmiş ilk böyük nümayəndələrindən biri.",
-icon: "📜"
-},
-{
-ad: "Məmmədəli Abasov",
-tarix: "1927 – 1978",
-rol: "Baba",
-qeyd: "Nəsil şəcərəsinin əsas dayağı. Əhmədbəyli kəndinin hörmətli ağsaqqallarından.",
-icon: "👨‍👩‍👦"
-},
-{
-ad: "Laçın Abasov",
-tarix: "1971 – Bu gün",
-rol: "Tədqiqatçı & Veteran",
-qeyd: "I Qarabağ müharibəsi veteranı. Sosioloq və bu layihənin müəllifi.",
-icon: "🎖️"
-},
-{
-ad: "Ayla Abaslı",
-tarix: "2010 – Bu gün",
-rol: "Gənc Nəsil",
-qeyd: "Kimya fənni üzrə respublika olimpiada qalibi. Nəslin parlaq gələcəyi.",
-icon: "🧪"
-}
-];
+<section>
+<h2>DİGƏR QOLLAR</h2>
 
-function loadFamily() {
-const grid = document.getElementById('familyGrid');
-familyData.forEach(p => {
-grid.innerHTML += `
-<div class="gen-card">
-<div class="gen-num">${p.icon}</div>
-<div style="color:var(--gold); font-size:0.7rem; margin-bottom:5px;">${p.tarix}</div>
-<div class="gen-name">${p.ad}</div>
-<p class="gen-desc">${p.qeyd}</p>
-<div style="margin-top:20px; font-size:0.6rem; text-transform:uppercase; letter-spacing:1px; color:var(--gold-light)">${p.rol}</div>
+<div class="branch">
+<h3>İskəndər Bəy Qolu</h3>
+<ul>
+<li><strong>Abas Abasov (1908):</strong> II Dünya Müharibəsi şəhidi (1942).</li>
+<li><strong>Qulam Məmmədov (1915–1986):</strong> Pilot, "İzvestiya" qəzetinin baş redaktoru.</li>
+<li><strong>Şirinbəyim (Rüstəmova):</strong> Övladları: Ağasər (Mühəndis), Teybikə, Oqtay və b.</li>
+<li><strong>Mirzə Azayev (1931):</strong> Övladları: Xurşud, Raziqyə, Ziyafət.</li>
+<li><strong>Hacıağa Abasov (1937):</strong> Övladları: Samirə, İskəndər, Xədicə, Nihad.</li>
+</ul>
 </div>
-`;
-});
-}
 
-window.onload = loadFamily;
-</script>
+<div class="branch">
+<h3>Aldost Bəy Qolu</h3>
+<p>Şəmidağa (Azayev) xətti, Şura (Əliyevlər) xətti və Müntəzir xətti.</p>
+</div>
+
+<div class="branch">
+<h3>Gülbəyim və Ceyran Xanım Qolları</h3>
+<p>İsmayılovlar və Minbaşılı kəndi xətti (Dadaş, Mətləb, Saleh, Valeh).</p>
+</div>
+</section>
+
+<section>
+<h2>ŞƏCƏRƏNİN STATİSTİKASI</h2>
+<table class="stats-table">
+<tr>
+<th>Göstərici</th>
+<th>Məlumat</th>
+</tr>
+<tr>
+<td>Nəsil sayı</td>
+<td>6 Nəsil</td>
+</tr>
+<tr>
+<td>Əsas Soyadlar</td>
+<td>Abasov, Abaslı, Azayev, Novruzov, Şıxalıyev, Süleymanov və s.</td>
+</tr>
+<tr>
+<td>Coğrafi Əhatə</td>
+<td>Saatlı, Bakı, Sumqayıt, Moskva</td>
+</tr>
+</table>
+</section>
+
+<footer style="text-align: center; margin-top: 50px; color: #888; font-size: 0.9em;">
+<p>© 2026 Abasovlar Nəslinin Rəqəmsal Arxivi</p>
+</footer>
+</div>
 
 </body>
 </html>
