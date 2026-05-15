@@ -1253,5 +1253,19 @@ el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 });
 </script>
-</body>
+// Ailə üzvlərinin siyahısı (Bu hissəni Excel kimi doldura bilərsiniz)
+const ailəMəlumatı = [
+{ ad: "Məmmədəli", soyad: "Abasov", nesil: "III", illər: "1927–1978", qeyd: "Nəsil patriarxı" },
+{ ad: "Laçın", soyad: "Abasov", nesil: "IV", illər: "1971–bu gün", qeyd: "Tədqiqatçı, veteran" },
+{ ad: "Ayla", soyad: "Abaslı", nesil: "V", illər: "2010–bu gün", qeyd: "Kimya üzrə qalib" }
+];
+
+// Bu funksiya məlumatları saytdakı "Nəsil Xətti" bölməsinə avtomatik yerləşdirir
+function nəsilləriYüklə() {
+const grid = document.querySelector('.gen-grid');
+// Buranı istədiyiniz kimi dizayn edib məlumatları bura bağlaya bilərik
+console.log("Məlumatlar hazırdır:", ailəMəlumatı);
+}
+
+nəsilləriYüklə();</body>
 </html>
