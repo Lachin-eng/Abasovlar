@@ -1252,7 +1252,60 @@ el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 });
 });
-</script>
+</script> // ABASOVLAR NƏSİL MƏLUMAT BAZASI
+const abasovlarData = [
+{
+id: 1,
+ad: "Məmmədəli",
+soyad: "Abasov",
+tarix: "1927–1978",
+nesil: "III Nəsil",
+qeyd: "Nəsil patriarxı, Saatlı rayonu Əhmədbəyli kəndi.",
+icon: "📜"
+},
+{
+id: 2,
+ad: "Laçın",
+soyad: "Abasov",
+tarix: "1971–Bu gün",
+nesil: "IV Nəsil",
+qeyd: "Sosioloji tədqiqatlar üzrə ekspert, Qarabağ müharibəsi veteranı.",
+icon: "🎖️"
+},
+{
+id: 3,
+ad: "Ayla",
+soyad: "Abaslı",
+tarix: "2010–Bu gün",
+nesil: "V Nəsil",
+qeyd: "Kimya fənni üzrə respublika olimpiada qalibi.",
+icon: "🧪"
+}
+// Yeni üzvləri bura eyni formatda əlavə edə bilərsiniz
+];
+
+function renderFamilyCards() {
+const grid = document.querySelector('.gen-grid');
+if(!grid) return;
+
+grid.innerHTML = ""; // Mövcud statik kartları təmizləyir
+
+abasovlarData.forEach(person => {
+const card = `
+<div class="gen-card reveal visible" style="opacity: 1; transform: translateY(0);">
+<div class="gen-num">${person.icon}</div>
+<div class="gen-era">${person.tarix}</div>
+<div class="gen-name">${person.ad} ${person.soyad}</div>
+<p class="gen-desc">${person.qeyd}</p>
+<div class="gen-count">${person.nesil}</div>
+</div>
+`;
+grid.innerHTML += card;
+});
+}
+
+// Sayt yüklənəndə məlumatları doldur
+document.addEventListener('DOMContentLoaded', renderFamilyCards);
 // Ailə üzvlərinin siyahısı (Bu hissəni Excel kimi doldura bilərsiniz)
 const ailəMəlumatı = [
 { ad: "Məmmədəli", soyad: "Abasov", nesil: "III", illər: "1927–1978", qeyd: "Nəsil patriarxı" },
