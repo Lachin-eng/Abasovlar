@@ -1,4 +1,3 @@
-cat > /mnt/user-data/outputs/abasovlar.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="az">
 <head>
@@ -7,722 +6,1123 @@ cat > /mnt/user-data/outputs/abasovlar.html << 'HTMLEOF'
 <title>Abasovlar Nəsil Kitabı</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#C9A84C;--gold-light:#E8C97A;--dark:#0C0B09;--parchment:#F0E8D5;--muted:#7A6A52;--accent:#8B2020;--border:rgba(201,168,76,0.22);}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--dark);color:var(--parchment);font-family:'EB Garamond',Georgia,serif;font-size:17px;line-height:1.8;overflow-x:hidden;}
-body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 15% 10%,rgba(201,168,76,0.06) 0%,transparent 55%),radial-gradient(ellipse 60% 40% at 85% 85%,rgba(139,32,32,0.05) 0%,transparent 55%);pointer-events:none;z-index:0;}
-header{position:relative;z-index:1;text-align:center;padding:70px 40px 50px;border-bottom:1px solid var(--border);}
-header::after{content:'';position:absolute;bottom:0;left:8%;right:8%;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
-.crest{font-size:56px;margin-bottom:16px;display:block;animation:glow 4s ease-in-out infinite;}
-@keyframes glow{0%,100%{filter:drop-shadow(0 0 18px rgba(201,168,76,.35));}50%{filter:drop-shadow(0 0 36px rgba(201,168,76,.65));}}
-h1.t{font-family:'Cinzel',serif;font-size:clamp(24px,5vw,48px);font-weight:700;color:var(--gold);letter-spacing:.09em;text-shadow:0 0 40px rgba(201,168,76,.28);margin-bottom:10px;}
-.sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(14px,2.5vw,19px);color:var(--gold-light);opacity:.8;margin-bottom:16px;}
-.meta{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;}
-.sbar{display:flex;flex-wrap:wrap;border-bottom:1px solid var(--border);position:relative;z-index:1;}
-.si{flex:1;min-width:120px;padding:22px 14px;text-align:center;border-right:1px solid var(--border);}
-.si:last-child{border-right:none;}
-.sn{display:block;font-family:'Cinzel',serif;font-size:22px;color:var(--gold);margin-bottom:4px;}
-.sl{font-size:12px;color:var(--muted);}
-nav{display:flex;flex-wrap:wrap;position:sticky;top:0;background:rgba(12,11,9,.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);z-index:200;}
-nav button{flex:1;min-width:90px;padding:14px 6px;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:'Cinzel',serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .3s;}
-nav button:hover{color:var(--gold-light);background:rgba(201,168,76,.04);}
-nav button.on{color:var(--gold);border-bottom-color:var(--gold);background:rgba(201,168,76,.06);}
-.tc{display:none;position:relative;z-index:1;}
-.tc.on{display:block;animation:fu .4s ease;}
-@keyframes fu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.wrap{max-width:1100px;margin:0 auto;padding:55px 36px;}
-.stitle{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:44px;padding-bottom:12px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
-.stitle::before{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
-.stitle::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--border));}
-.gen{margin-bottom:40px;}
-.gl{font-family:'Cinzel',serif;font-size:10.5px;letter-spacing:.22em;color:var(--accent);text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
-.gl::after{content:'';flex:1;height:1px;background:rgba(139,32,32,.22);}
-.gc{display:flex;flex-wrap:wrap;gap:12px;}
-.card{background:linear-gradient(135deg,rgba(28,24,18,.92),rgba(20,16,10,.92));border:1px solid var(--border);border-radius:2px;padding:18px 20px;flex:1;min-width:180px;position:relative;overflow:hidden;transition:all .3s;}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent);transform:scaleX(0);transform-origin:left;transition:transform .4s;}
-.card:hover::before{transform:scaleX(1);}
-.card:hover{border-color:rgba(201,168,76,.4);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.4);}
-.cn{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:600;color:var(--gold-light);margin-bottom:4px;}
-.cy{font-size:12.5px;color:var(--muted);margin-bottom:8px;font-style:italic;}
-.cd{font-size:14px;color:rgba(240,232,213,.72);line-height:1.55;}
-.cc{margin-top:9px;font-size:12.5px;color:var(--muted);border-top:1px solid rgba(201,168,76,.1);padding-top:8px;}
-.card.hl{border-color:rgba(201,168,76,.5);}
-.card.hl .cn{color:var(--gold);}
-.rc{background:linear-gradient(135deg,rgba(45,33,10,.95),rgba(26,20,8,.95));border:1px solid var(--gold);border-radius:2px;padding:34px 40px;text-align:center;position:relative;overflow:hidden;margin-bottom:32px;}
-.rc::after{content:'';position:absolute;inset:2px;border:1px solid rgba(201,168,76,.18);pointer-events:none;}
-.rn{font-family:'Cinzel',serif;font-size:clamp(17px,3.5vw,27px);color:var(--gold);margin-bottom:8px;text-shadow:0 0 28px rgba(201,168,76,.25);}
-.rs{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:var(--gold-light);opacity:.78;}
-.rno{margin-top:9px;font-size:13.5px;color:var(--muted);}
-.conn{text-align:center;color:var(--gold);opacity:.35;font-size:20px;margin:4px 0;}
-.bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(440px,1fr));gap:26px;}
-.bc{background:linear-gradient(155deg,rgba(22,18,14,.95),rgba(14,12,8,.95));border:1px solid var(--border);padding:28px 32px;position:relative;transition:border-color .3s;}
-.bc:hover{border-color:rgba(201,168,76,.32);}
-.cor{position:absolute;top:0;left:0;width:26px;height:26px;border-top:2px solid var(--gold);border-left:2px solid var(--gold);opacity:.55;}
-.cor.br{top:auto;left:auto;bottom:0;right:0;border-top:none;border-left:none;border-bottom:2px solid var(--gold);border-right:2px solid var(--gold);}
-.btag{display:inline-block;background:rgba(139,32,32,.18);border:1px solid rgba(139,32,32,.28);color:#E08080;font-size:10.5px;letter-spacing:.08em;padding:3px 9px;margin-bottom:11px;border-radius:1px;}
-.bname{font-family:'Cinzel',serif;font-size:15.5px;color:var(--gold);margin-bottom:5px;}
-.brole{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14.5px;color:var(--gold-light);opacity:.7;margin-bottom:16px;padding-bottom:13px;border-bottom:1px solid var(--border);}
-.btext{font-size:15px;color:rgba(240,232,213,.78);line-height:1.8;}
-.btext p{margin-bottom:11px;}
-.btext p:last-child{margin-bottom:0;}
-.hw{max-width:780px;margin:0 auto;}
-.hw h2{font-family:'Cinzel',serif;font-size:18px;color:var(--gold);margin:32px 0 14px;padding-bottom:9px;border-bottom:1px solid var(--border);}
-.hw h2:first-child{margin-top:0;}
-.hw p{color:rgba(240,232,213,.8);margin-bottom:16px;font-size:16px;}
-.rbox{background:rgba(139,32,32,.07);border-left:3px solid var(--accent);padding:22px 26px;margin:26px 0;}
-.rbox h3{font-family:'Cinzel',serif;font-size:12.5px;color:#E08080;letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;}
-.ri{display:flex;gap:11px;margin-bottom:12px;font-size:15px;color:rgba(240,232,213,.78);}
-.ri::before{content:'•';color:var(--accent);flex-shrink:0;margin-top:2px;}
-.ri:last-child{margin-bottom:0;}
-.qbox{text-align:center;padding:36px 18px;margin:28px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
-.qbox blockquote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(16px,2.5vw,22px);color:var(--gold-light);line-height:1.7;max-width:640px;margin:0 auto;}
-.qbox cite{display:block;margin-top:14px;font-size:11.5px;letter-spacing:.14em;color:var(--muted);font-style:normal;font-family:'Cinzel',serif;text-transform:uppercase;}
-.uz{border:2px dashed rgba(201,168,76,.28);border-radius:3px;padding:50px 28px;text-align:center;cursor:pointer;transition:all .3s;background:rgba(201,168,76,.018);}
-.uz.drag,.uz:hover{border-color:var(--gold);background:rgba(201,168,76,.055);}
-.ui{font-size:44px;margin-bottom:14px;opacity:.55;display:block;}
-.ut{font-family:'Cinzel',serif;font-size:14.5px;color:var(--gold);letter-spacing:.14em;margin-bottom:7px;}
-.uh{font-size:13.5px;color:var(--muted);margin-bottom:20px;}
-.ubtn{background:linear-gradient(135deg,rgba(201,168,76,.14),rgba(201,168,76,.07));border:1px solid var(--gold);color:var(--gold);font-family:'Cinzel',serif;font-size:11px;letter-spacing:.18em;padding:10px 26px;cursor:pointer;text-transform:uppercase;transition:all .3s;border-radius:1px;}
-.ubtn:hover{background:rgba(201,168,76,.22);}
-input[type=file]{display:none;}
-.tr{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:16px;}
-.tb{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);color:var(--muted);font-size:10.5px;padding:3px 10px;border-radius:20px;}
-.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:9px;margin-top:26px;}
-.gi{position:relative;aspect-ratio:4/3;overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:all .3s;border-radius:1px;}
-.gi:hover{border-color:var(--gold);transform:scale(1.03);}
-.gi img{width:100%;height:100%;object-fit:cover;display:block;}
-.gcap{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.82));color:var(--parchment);font-size:10.5px;padding:16px 7px 6px;opacity:0;transition:opacity .3s;}
-.gi:hover .gcap{opacity:1;}
-.grem{position:absolute;top:4px;right:4px;background:rgba(139,32,32,.75);border:none;color:#fff;font-size:12px;width:20px;height:20px;border-radius:50%;cursor:pointer;line-height:20px;text-align:center;opacity:0;transition:opacity .3s;}
-.gi:hover .grem{opacity:1;}
-.flist{margin-top:20px;}
-.fi{display:flex;align-items:center;gap:13px;padding:13px 16px;border:1px solid var(--border);margin-bottom:7px;background:rgba(255,255,255,.015);transition:all .3s;border-radius:1px;}
-.fi:hover{background:rgba(201,168,76,.04);border-color:rgba(201,168,76,.28);}
-.fic{font-size:21px;flex-shrink:0;}
-.fin{flex:1;min-width:0;}
-.fnm{font-family:'Cinzel',serif;font-size:12px;color:var(--parchment);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.fmeta{font-size:11px;color:var(--muted);}
-.frem{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:3px 7px;transition:color .2s;}
-.frem:hover{color:var(--accent);}
-.stabs{display:flex;border:1px solid var(--border);margin-bottom:26px;border-radius:2px;overflow:hidden;}
-.stabs button{flex:1;padding:12px;background:transparent;border:none;border-right:1px solid var(--border);color:var(--muted);font-family:'Cinzel',serif;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .3s;}
-.stabs button:last-child{border-right:none;}
-.stabs button:hover{background:rgba(201,168,76,.04);color:var(--gold-light);}
-.stabs button.on{background:rgba(201,168,76,.08);color:var(--gold);}
-.stc{display:none;}
-.stc.on{display:block;animation:fu .35s ease;}
-.lb{display:none;position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:1000;align-items:center;justify-content:center;padding:20px;}
-.lb.on{display:flex;}
-.lb img{max-width:88vw;max-height:84vh;object-fit:contain;border:1px solid var(--border);}
-.lbc{position:absolute;top:16px;right:20px;font-size:26px;color:var(--gold);cursor:pointer;background:none;border:none;line-height:1;}
-.lbcap{position:absolute;bottom:22px;left:0;right:0;text-align:center;font-style:italic;color:var(--gold-light);font-size:14px;}
-.emp{text-align:center;padding:55px 18px;color:var(--muted);}
-.emp .ei{font-size:36px;margin-bottom:12px;opacity:.35;}
-.emp p{font-style:italic;font-size:14.5px;}
-.gd{text-align:center;color:var(--gold);opacity:.3;letter-spacing:.5em;font-size:13px;margin:28px 0;}
-.ned{width:100%;min-height:130px;background:rgba(28,24,18,.8);border:1px solid var(--border);color:var(--parchment);font-family:'EB Garamond',serif;font-size:16px;line-height:1.7;padding:16px 18px;resize:vertical;outline:none;transition:border-color .3s;border-radius:2px;}
-.ned:focus{border-color:rgba(201,168,76,.5);}
-.ned::placeholder{color:var(--muted);font-style:italic;}
-.nsb{margin-top:9px;background:linear-gradient(135deg,rgba(201,168,76,.14),rgba(201,168,76,.07));border:1px solid var(--gold);color:var(--gold);font-family:'Cinzel',serif;font-size:10.5px;letter-spacing:.18em;padding:10px 22px;cursor:pointer;text-transform:uppercase;transition:all .3s;border-radius:1px;}
-.nsb:hover{background:rgba(201,168,76,.22);}
-.nlist{margin-top:20px;display:flex;flex-direction:column;gap:11px;}
-.ni{background:rgba(28,24,18,.7);border:1px solid var(--border);padding:14px 18px;position:relative;border-radius:2px;}
-.ni:hover{border-color:rgba(201,168,76,.3);}
-.nd{font-family:'Cinzel',serif;font-size:10px;letter-spacing:.12em;color:var(--muted);margin-bottom:7px;text-transform:uppercase;}
-.nt{font-size:15px;color:rgba(240,232,213,.82);line-height:1.7;white-space:pre-wrap;}
-.nr{position:absolute;top:9px;right:11px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;transition:color .2s;}
-.nr:hover{color:var(--accent);}
-.nh{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.25em;color:var(--gold);text-transform:uppercase;margin-bottom:14px;padding-bottom:11px;border-top:1px solid var(--border);padding-top:30px;}
-.nh:first-child{border-top:none;padding-top:0;}
-footer{border-top:1px solid var(--border);text-align:center;padding:36px 40px;position:relative;z-index:1;}
-footer p{font-family:'Cinzel',serif;font-size:11px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;}
-@media(max-width:680px){
-  .wrap{padding:36px 15px;}header{padding:44px 15px 36px;}
-  .bgrid{grid-template-columns:1fr;}
-  nav button{font-size:9.5px;padding:12px 4px;letter-spacing:.04em;}
-  .si{min-width:90px;padding:18px 8px;}
-  .rc{padding:22px 16px;}
+:root {
+--gold: #C9A84C;
+--gold-light: #E8C97A;
+--gold-pale: #F5E6C0;
+--dark: #0C0B09;
+--dark2: #151210;
+--dark3: #1C1812;
+--parchment: #F0E8D5;
+--muted: #7A6A52;
+--accent: #8B2020;
+--border: rgba(201,168,76,0.22);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+background: var(--dark);
+color: var(--parchment);
+font-family: 'EB Garamond', Georgia, serif;
+font-size: 17px;
+line-height: 1.8;
+overflow-x: hidden;
+}
+
+body::before {
+content:'';
+position:fixed; inset:0;
+background:
+radial-gradient(ellipse 80% 50% at 15% 10%, rgba(201,168,76,0.06) 0%, transparent 55%),
+radial-gradient(ellipse 60% 40% at 85% 85%, rgba(139,32,32,0.05) 0%, transparent 55%),
+repeating-linear-gradient(45deg, transparent, transparent 70px, rgba(201,168,76,0.012) 70px, rgba(201,168,76,0.012) 71px);
+pointer-events:none; z-index:0;
+}
+
+/* ── HEADER ── */
+header {
+position:relative; z-index:1;
+text-align:center;
+padding: 80px 40px 55px;
+border-bottom: 1px solid var(--border);
+}
+header::after {
+content:'';
+position:absolute; bottom:0; left:8%; right:8%;
+height:1px;
+background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.crest { font-size:58px; margin-bottom:18px; display:block; animation: glow 4s ease-in-out infinite; }
+@keyframes glow {
+0%,100% { filter: drop-shadow(0 0 18px rgba(201,168,76,0.35)); }
+50% { filter: drop-shadow(0 0 38px rgba(201,168,76,0.65)); }
+}
+h1.main-title {
+font-family:'Cinzel',serif;
+font-size: clamp(26px,5vw,50px);
+font-weight:700;
+color: var(--gold);
+letter-spacing:.09em;
+text-shadow: 0 0 40px rgba(201,168,76,0.28);
+margin-bottom:10px;
+}
+.subtitle {
+font-family:'Cormorant Garamond',serif;
+font-style:italic;
+font-size: clamp(15px,2.5vw,20px);
+color: var(--gold-light);
+opacity:.8;
+margin-bottom:18px;
+}
+.meta-line {
+font-family:'Cinzel',serif;
+font-size:12px;
+letter-spacing:.2em;
+color: var(--muted);
+text-transform:uppercase;
+}
+
+/* ── STATS ── */
+.stats-bar {
+display:flex; flex-wrap:wrap;
+border-bottom:1px solid var(--border);
+position:relative; z-index:1;
+}
+.stat-item {
+flex:1; min-width:130px;
+padding:26px 16px;
+text-align:center;
+border-right:1px solid var(--border);
+transition:background .3s;
+}
+.stat-item:last-child { border-right:none; }
+.stat-item:hover { background:rgba(201,168,76,0.04); }
+.stat-num {
+display:block;
+font-family:'Cinzel',serif;
+font-size:26px; color:var(--gold);
+margin-bottom:4px;
+}
+.stat-label { font-size:13px; color:var(--muted); }
+
+/* ── TABS ── */
+nav.tabs {
+display:flex; flex-wrap:wrap;
+position:sticky; top:0;
+background:rgba(12,11,9,0.97);
+backdrop-filter:blur(14px);
+border-bottom:1px solid var(--border);
+z-index:200;
+}
+nav.tabs button {
+flex:1; min-width:100px;
+padding:15px 8px;
+background:transparent; border:none;
+border-bottom:2px solid transparent;
+color:var(--muted);
+font-family:'Cinzel',serif;
+font-size:11.5px; letter-spacing:.1em;
+text-transform:uppercase;
+cursor:pointer; transition:all .3s;
+}
+nav.tabs button:hover { color:var(--gold-light); background:rgba(201,168,76,0.04); }
+nav.tabs button.active { color:var(--gold); border-bottom-color:var(--gold); background:rgba(201,168,76,0.06); }
+
+/* ── CONTENT ── */
+.tab-content { display:none; position:relative; z-index:1; }
+.tab-content.active { display:block; animation: fadeUp .45s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+
+.wrap {
+max-width:1120px; margin:0 auto;
+padding:60px 40px;
+}
+
+.sec-title {
+font-family:'Cinzel',serif;
+font-size:12px; letter-spacing:.3em;
+color:var(--gold); text-transform:uppercase;
+margin-bottom:50px; padding-bottom:14px;
+border-bottom:1px solid var(--border);
+display:flex; align-items:center; gap:14px;
+}
+.sec-title::before { content:''; flex:1; height:1px; background:linear-gradient(90deg,var(--border),transparent); }
+.sec-title::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--border)); }
+
+/* ── GEN TREE ── */
+.generation { margin-bottom:44px; }
+.gen-label {
+font-family:'Cinzel',serif; font-size:11px;
+letter-spacing:.22em; color:var(--accent);
+text-transform:uppercase; margin-bottom:18px;
+display:flex; align-items:center; gap:12px;
+}
+.gen-label::after { content:''; flex:1; height:1px; background:rgba(139,32,32,0.22); }
+
+.gen-cards { display:flex; flex-wrap:wrap; gap:14px; }
+
+.card {
+background:linear-gradient(135deg,rgba(28,24,18,.92),rgba(20,16,10,.92));
+border:1px solid var(--border);
+border-radius:2px;
+padding:20px 22px;
+flex:1; min-width:190px;
+position:relative; overflow:hidden;
+transition:all .3s;
+}
+.card::before {
+content:''; position:absolute; top:0;left:0;right:0; height:2px;
+background:linear-gradient(90deg,var(--gold),transparent);
+transform:scaleX(0); transform-origin:left; transition:transform .4s;
+}
+.card:hover::before { transform:scaleX(1); }
+.card:hover { border-color:rgba(201,168,76,.4); transform:translateY(-2px); box-shadow:0 8px 30px rgba(0,0,0,.4); }
+
+.card-name {
+font-family:'Cormorant Garamond',serif;
+font-size:17.5px; font-weight:600;
+color:var(--gold-light); margin-bottom:5px;
+}
+.card-years { font-size:13px; color:var(--muted); margin-bottom:9px; font-style:italic; }
+.card-desc { font-size:14.5px; color:rgba(240,232,213,.72); line-height:1.55; }
+.card-children {
+margin-top:10px; font-size:13px; color:var(--muted);
+border-top:1px solid rgba(201,168,76,.1); padding-top:9px;
+}
+.card.highlight { border-color:rgba(201,168,76,.5); }
+.card.highlight .card-name { color:var(--gold); }
+
+.root-card {
+background:linear-gradient(135deg,rgba(45,33,10,.95),rgba(26,20,8,.95));
+border:1px solid var(--gold);
+border-radius:2px; padding:38px 44px;
+text-align:center; position:relative;
+overflow:hidden; margin-bottom:36px;
+}
+.root-card::after {
+content:''; position:absolute; inset:2px;
+border:1px solid rgba(201,168,76,.18);
+pointer-events:none;
+}
+.root-name {
+font-family:'Cinzel',serif;
+font-size:clamp(18px,3.5vw,28px);
+color:var(--gold); margin-bottom:8px;
+text-shadow:0 0 30px rgba(201,168,76,.25);
+}
+.root-sub {
+font-family:'Cormorant Garamond',serif;
+font-style:italic; font-size:18px;
+color:var(--gold-light); opacity:.78;
+}
+.root-note { margin-top:10px; font-size:14px; color:var(--muted); }
+
+.connector { text-align:center; color:var(--gold); opacity:.35; font-size:22px; margin:4px 0; }
+
+/* ── BIO GRID ── */
+.bio-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(460px,1fr)); gap:28px; }
+
+.bio-card {
+background:linear-gradient(155deg,rgba(22,18,14,.95),rgba(14,12,8,.95));
+border:1px solid var(--border);
+padding:30px 34px; position:relative;
+transition:border-color .3s;
+}
+.bio-card:hover { border-color:rgba(201,168,76,.32); }
+.corner {
+position:absolute; top:0; left:0;
+width:28px; height:28px;
+border-top:2px solid var(--gold);
+border-left:2px solid var(--gold);
+opacity:.55;
+}
+.corner.br { top:auto;left:auto;bottom:0;right:0; border-top:none;border-left:none; border-bottom:2px solid var(--gold);border-right:2px solid var(--gold); }
+
+.bio-tag {
+display:inline-block;
+background:rgba(139,32,32,.18);
+border:1px solid rgba(139,32,32,.28);
+color:#E08080; font-size:11px;
+letter-spacing:.08em; padding:3px 10px;
+margin-bottom:12px; border-radius:1px;
+}
+.bio-name {
+font-family:'Cinzel',serif;
+font-size:16px; color:var(--gold); margin-bottom:5px;
+}
+.bio-role {
+font-family:'Cormorant Garamond',serif;
+font-style:italic; font-size:15px;
+color:var(--gold-light); opacity:.7;
+margin-bottom:18px; padding-bottom:14px;
+border-bottom:1px solid var(--border);
+}
+.bio-text { font-size:15.5px; color:rgba(240,232,213,.78); line-height:1.8; }
+.bio-text p { margin-bottom:12px; }
+.bio-text p:last-child { margin-bottom:0; }
+
+/* ── HISTORY ── */
+.history-wrap { max-width:800px; margin:0 auto; }
+.history-wrap h2 {
+font-family:'Cinzel',serif; font-size:19px;
+color:var(--gold); margin:36px 0 16px;
+padding-bottom:10px; border-bottom:1px solid var(--border);
+}
+.history-wrap h2:first-child { margin-top:0; }
+.history-wrap p { color:rgba(240,232,213,.8); margin-bottom:18px; font-size:16px; }
+
+.rep-box {
+background:rgba(139,32,32,.07);
+border-left:3px solid var(--accent);
+padding:24px 28px; margin:28px 0;
+}
+.rep-box h3 {
+font-family:'Cinzel',serif; font-size:13px;
+color:#E08080; letter-spacing:.14em;
+text-transform:uppercase; margin-bottom:16px;
+}
+.rep-item { display:flex; gap:12px; margin-bottom:13px; font-size:15.5px; color:rgba(240,232,213,.78); }
+.rep-item::before { content:'•'; color:var(--accent); flex-shrink:0; margin-top:2px; }
+.rep-item:last-child { margin-bottom:0; }
+
+.quote-box {
+text-align:center; padding:40px 20px; margin:30px 0;
+border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+}
+.quote-box blockquote {
+font-family:'Cormorant Garamond',serif;
+font-style:italic;
+font-size:clamp(17px,2.5vw,23px);
+color:var(--gold-light); line-height:1.7;
+max-width:660px; margin:0 auto;
+}
+.quote-box cite {
+display:block; margin-top:16px;
+font-size:12px; letter-spacing:.14em;
+color:var(--muted); font-style:normal;
+font-family:'Cinzel',serif; text-transform:uppercase;
+}
+
+/* ── UPLOAD / FOTO ── */
+.upload-zone {
+border:2px dashed rgba(201,168,76,.28);
+border-radius:3px; padding:55px 30px;
+text-align:center; cursor:pointer;
+transition:all .3s;
+background:rgba(201,168,76,.018);
+}
+.upload-zone.drag-over, .upload-zone:hover {
+border-color:var(--gold);
+background:rgba(201,168,76,.055);
+}
+.upload-icon { font-size:46px; margin-bottom:16px; opacity:.55; display:block; }
+.upload-title {
+font-family:'Cinzel',serif; font-size:15px;
+color:var(--gold); letter-spacing:.14em; margin-bottom:8px;
+}
+.upload-hint { font-size:14px; color:var(--muted); margin-bottom:22px; }
+.upload-btn {
+background:linear-gradient(135deg,rgba(201,168,76,.14),rgba(201,168,76,.07));
+border:1px solid var(--gold); color:var(--gold);
+font-family:'Cinzel',serif; font-size:11.5px;
+letter-spacing:.18em; padding:11px 28px;
+cursor:pointer; text-transform:uppercase;
+transition:all .3s; border-radius:1px;
+}
+.upload-btn:hover { background:rgba(201,168,76,.22); }
+input[type="file"] { display:none; }
+
+.type-row { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-top:18px; }
+.type-badge {
+background:rgba(255,255,255,.04);
+border:1px solid rgba(255,255,255,.07);
+color:var(--muted); font-size:11px;
+letter-spacing:.08em; padding:3px 11px;
+border-radius:20px;
+}
+
+/* Gallery */
+.gallery-grid {
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+gap:10px; margin-top:28px;
+}
+.gal-item {
+position:relative; aspect-ratio:4/3;
+overflow:hidden; border:1px solid var(--border);
+cursor:pointer; transition:all .3s; border-radius:1px;
+}
+.gal-item:hover { border-color:var(--gold); transform:scale(1.03); }
+.gal-item img { width:100%;height:100%;object-fit:cover; display:block; }
+.gal-caption {
+position:absolute; bottom:0;left:0;right:0;
+background:linear-gradient(transparent,rgba(0,0,0,.82));
+color:var(--parchment); font-size:11px;
+padding:18px 8px 6px;
+opacity:0; transition:opacity .3s;
+}
+.gal-item:hover .gal-caption { opacity:1; }
+.gal-remove {
+position:absolute; top:5px;right:5px;
+background:rgba(139,32,32,.75); border:none;
+color:#fff; font-size:13px; width:22px;height:22px;
+border-radius:50%; cursor:pointer; line-height:22px;
+text-align:center; opacity:0; transition:opacity .3s;
+}
+.gal-item:hover .gal-remove { opacity:1; }
+
+/* File list */
+.file-list { margin-top:22px; }
+.file-item {
+display:flex; align-items:center; gap:14px;
+padding:14px 18px; border:1px solid var(--border);
+margin-bottom:8px; background:rgba(255,255,255,.015);
+transition:all .3s; border-radius:1px;
+}
+.file-item:hover { background:rgba(201,168,76,.04); border-color:rgba(201,168,76,.28); }
+.file-icon { font-size:22px; flex-shrink:0; }
+.file-info { flex:1; min-width:0; }
+.file-name { font-family:'Cinzel',serif; font-size:12.5px; color:var(--parchment); margin-bottom:2px; white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+.file-meta { font-size:11.5px; color:var(--muted); }
+.file-remove {
+background:none; border:none;
+color:var(--muted); cursor:pointer;
+font-size:17px; padding:3px 8px;
+transition:color .2s; flex-shrink:0;
+}
+.file-remove:hover { color:var(--accent); }
+
+/* Lightbox */
+.lightbox {
+display:none; position:fixed; inset:0;
+background:rgba(0,0,0,.93); z-index:1000;
+align-items:center; justify-content:center; padding:20px;
+}
+.lightbox.open { display:flex; }
+.lightbox img { max-width:88vw; max-height:84vh; object-fit:contain; border:1px solid var(--border); }
+.lb-close {
+position:absolute; top:18px;right:22px;
+font-size:28px; color:var(--gold);
+cursor:pointer; background:none; border:none; line-height:1;
+}
+.lb-caption {
+position:absolute; bottom:24px; left:0;right:0;
+text-align:center; font-style:italic;
+color:var(--gold-light); font-size:15px;
+}
+
+/* Empty state */
+.empty { text-align:center; padding:60px 20px; color:var(--muted); }
+.empty .ei { font-size:38px; margin-bottom:14px; opacity:.35; }
+.empty p { font-style:italic; font-size:15px; }
+
+/* Divider */
+.gold-div { text-align:center; color:var(--gold); opacity:.3; letter-spacing:.5em; font-size:14px; margin:32px 0; }
+
+/* Section tabs in upload page */
+.subtabs { display:flex; gap:0; border:1px solid var(--border); margin-bottom:28px; border-radius:2px; overflow:hidden; }
+.subtabs button {
+flex:1; padding:13px; background:transparent;
+border:none; border-right:1px solid var(--border);
+color:var(--muted); font-family:'Cinzel',serif;
+font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+cursor:pointer; transition:all .3s;
+}
+.subtabs button:last-child { border-right:none; }
+.subtabs button:hover { background:rgba(201,168,76,.04); color:var(--gold-light); }
+.subtabs button.active { background:rgba(201,168,76,.08); color:var(--gold); }
+
+.subtab-content { display:none; }
+.subtab-content.active { display:block; animation:fadeUp .35s ease; }
+
+/* Footer */
+footer {
+border-top:1px solid var(--border);
+text-align:center; padding:38px 40px;
+position:relative; z-index:1;
+}
+footer p { font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:.18em; color:var(--muted); text-transform:uppercase; }
+
+/* Responsive */
+@media(max-width:700px){
+.wrap { padding:40px 18px; }
+header { padding:50px 18px 40px; }
+.bio-grid { grid-template-columns:1fr; }
+nav.tabs button { font-size:10px; padding:13px 5px; letter-spacing:.05em; }
+.stat-item { min-width:100px; padding:20px 10px; }
+.root-card { padding:26px 20px; }
 }
 </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <header>
-  <span class="crest">🌳</span>
-  <h1 class="t">ABASOVLAR NƏSİL KİTABI</h1>
-  <div class="sub">Şəcərə Ağacı · Rodoslovnoe Derevo · Family Tree</div>
-  <div class="meta">Kəlbəlayi Azay Bəy Məmmədəli oğlu Abasov · Saatlı rayonu · 1861 — 2026</div>
+<span class="crest">🌳</span>
+<h1 class="main-title">ABASOVLAR NƏSİL KİTABI</h1>
+<div class="subtitle">Şəcərə Ağacı · Rodoslovnoe Derevo · Family Tree</div>
+<div class="meta-line">Kəlbəlayi Azay Bəy Məmmədəli oğlu Abasov · Saatlı rayonu · 1861 — 2026</div>
 </header>
 
-<div class="sbar">
-  <div class="si"><span class="sn">6</span><span class="sl">Nəsil</span></div>
-  <div class="si"><span class="sn">1861–2026</span><span class="sl">Dövr</span></div>
-  <div class="si"><span class="sn">5</span><span class="sl">Əsas Qol</span></div>
-  <div class="si"><span class="sn">10+</span><span class="sl">Soyad Xətti</span></div>
-  <div class="si"><span class="sn">Saatlı</span><span class="sl">Kök</span></div>
+<!-- STATS -->
+<div class="stats-bar">
+<div class="stat-item"><span class="stat-num">6</span><span class="stat-label">Nəsil</span></div>
+<div class="stat-item"><span class="stat-num">1861–2026</span><span class="stat-label">Dövr</span></div>
+<div class="stat-item"><span class="stat-num">5</span><span class="stat-label">Əsas Qol</span></div>
+<div class="stat-item"><span class="stat-num">10+</span><span class="stat-label">Soyad Xətti</span></div>
+<div class="stat-item"><span class="stat-num">Saatlı</span><span class="stat-label">Kök</span></div>
 </div>
 
-<nav>
-  <button class="on" onclick="tab('secere',this)">🌿 Şəcərə</button>
-  <button onclick="tab('bio',this)">📜 Bioqrafiyalar</button>
-  <button onclick="tab('tarix',this)">⚔️ Tarix</button>
-  <button onclick="tab('foto',this)">🖼️ Foto</button>
-  <button onclick="tab('fayl',this)">📁 Fayllar</button>
-  <button onclick="tab('qeyd',this)">✍️ Qeydlər</button>
+<!-- TABS -->
+<nav class="tabs">
+<button class="active" onclick="showTab('secere',this)">🌿 Şəcərə</button>
+<button onclick="showTab('bio',this)">📜 Bioqrafiyalar</button>
+<button onclick="showTab('tarix',this)">⚔️ Tarix</button>
+<button onclick="showTab('foto',this)">🖼️ Foto Arxivi</button>
+<button onclick="showTab('fayllar',this)">📁 Fayllar</button>
 </nav>
 
-<!-- ŞƏCƏRƏ -->
-<div id="tab-secere" class="tc on">
+<!-- ═══ TAB: ŞƏCƏRƏ ═══ -->
+<div id="tab-secere" class="tab-content active">
 <div class="wrap">
-<div class="stitle">Nəsil Şəcərəsi · 6 Nəsil</div>
+<div class="sec-title">Nəsil Şəcərəsi · 6 Nəsil</div>
 
-<div class="gen">
-  <div class="gl">I Nəsil — Kök</div>
-  <div class="rc">
-    <div class="rn">Azay Məmmədəli oğlu ABASOV</div>
-    <div class="rs">&amp; Xursud xanım · Saatlı rayonu · 1861</div>
-    <div class="rno">Gori Gimnaziyasının məzunu · Əhmədbəyli kəndinin banisi · Bölgənin ziyalı təbəqəsinin formalaşdırıcısı</div>
-  </div>
-</div>
-<div class="conn">┃</div>
-
-<div class="gen">
-  <div class="gl">II Nəsil — Azay Bəyin Övladları</div>
-  <div class="gc">
-    <div class="card">
-      <div class="cn">İskəndər Bəy Abasov</div>
-      <div class="cy">Repressiya qurbanı</div>
-      <div class="cd">Bəy nəslinə mənsub olduğu üçün təqib edilmiş, 1938-ci ildə Nargın adasında güllələnmişdir.</div>
-    </div>
-    <div class="card">
-      <div class="cn">Aldost Bəy Abasov</div>
-      <div class="cy">Sankt-Peterburq məzunu</div>
-      <div class="cd">1937-ci ildə Qazaxıstana sürgün edilmiş, orada vəfat etmişdir.</div>
-    </div>
-    <div class="card">
-      <div class="cn">Bəybala Bəy Abasov</div>
-      <div class="cy">1905 — 1937 · Repressiya qurbanı</div>
-      <div class="cd">Ən geniş şaxənin banisi. 32 yaşında şəhid oldu.</div>
-      <div class="cc">Əsas qol: Məmmədəli bəy xətti (Lumu xanım ilə)</div>
-    </div>
-    <div class="card">
-      <div class="cn">Gülbəyim Xanım</div>
-      <div class="cy">İsmayılova (Fərrux ilə)</div>
-      <div class="cd">Tahir və Fail Fərrux oğulları. Tahirin qızları: Ülviyyə, Zülfiyyə, Sevinc. Failin övladları: Rəşad 1970, Afaq 1974.</div>
-    </div>
-    <div class="card">
-      <div class="cn">Ceyran Xanım</div>
-      <div class="cy">Minbaşıllı kəndi</div>
-      <div class="cd">Övladları: Dadaş, Mətləb, Saleh, Valeh.</div>
-    </div>
-  </div>
-</div>
-<div class="conn">┃</div>
-
-<div class="gen">
-  <div class="gl">III Nəsil — Bəybala Bəy Qolu · Bikə xanım Mürşid qızı ilə</div>
-  <div class="gc">
-    <div class="card" style="flex:2;min-width:250px;">
-      <div class="cn">Məmmədəli Bəy Xətti</div>
-      <div class="cy">&amp; Lumu xanım · 9 övlad</div>
-      <div class="cd">Nəslin əsas davamçısı.</div>
-      <div class="cc">Maarif · Xanım · Mahir · İlham · Zərbikə · Səfərəli · Laçın · Bəybala · Samama</div>
-    </div>
-    <div class="card">
-      <div class="cn">Balabikə Xanım</div>
-      <div class="cy">Sixaliyevlər</div>
-      <div class="cc">Əliağa 1955 · Böyükağa 1956 · Əlifağa 1958 · Sona 1961 · Bikəxanım 1962 · Azər 1963 · Tərané 1965 · Pərvanə 1968</div>
-    </div>
-    <div class="card">
-      <div class="cn">Xoşqədəm Xanım</div>
-      <div class="cy">Novruzovlar</div>
-      <div class="cc">Əflan 1959 · Qəmar 1961 · Ədalət 1963 · Aidə 1967 · Leyla 1969 · Elçin 1971</div>
-    </div>
-    <div class="card">
-      <div class="cn">Solmaz Xanım</div>
-      <div class="cy">Süleymanovlar</div>
-      <div class="cc">Almaz 1961 · Balaxanım 1963 · Şahbaz 1965 · Şahla 1967 · Yaqut 1970 · Tahirə 1975</div>
-    </div>
-  </div>
-</div>
-<div class="conn">┃</div>
-
-<div class="gen">
-  <div class="gl">IV Nəsil — Məmmədəli Bəy &amp; Lumu Xanımın Övladları</div>
-  <div class="gc">
-    <div class="card">
-      <div class="cn">Maarif (1957–2019)</div>
-      <div class="cy">İqtisadçı · Universam Direktoru</div>
-      <div class="cc">Məmmədəli 1989 · Fuad 1990</div>
-    </div>
-    <div class="card">
-      <div class="cn">Xanım (1959)</div>
-      <div class="cy">Nasirovlar</div>
-      <div class="cc">Elza 1979 · Zöhrab · Zaur</div>
-    </div>
-    <div class="card">
-      <div class="cn">Mahir (1961)</div>
-      <div class="cy">Mühəndis · Su Ehtiyatları Agentliyi</div>
-      <div class="cc">Taryel 1988 · Samir 1989 · Pünhan 1993</div>
-    </div>
-    <div class="card">
-      <div class="cn">İlham</div>
-      <div class="cc">İradə · Samirə · Sevinc · Əli · Nərgiiz</div>
-    </div>
-    <div class="card">
-      <div class="cn">Zərbikə (1965)</div>
-      <div class="cc">Saadət · Sadaqət · Xuraman · Rza</div>
-    </div>
-    <div class="card">
-      <div class="cn">Səfərəli (1967)</div>
-      <div class="cy">Abaslı</div>
-      <div class="cc">Banu</div>
-    </div>
-    <div class="card hl">
-      <div class="cn">Laçın (1969)</div>
-      <div class="cy">Abaslı · CEO Telsim MMC</div>
-      <div class="cd">Sosioloq · Nəsil Kitabının müəllifi · Veteran</div>
-      <div class="cc">Övladı: Ayla Abaslı — 2013</div>
-    </div>
-    <div class="card">
-      <div class="cn">Bəybala (1973)</div>
-      <div class="cy">Müəllim · Əhmədbəyli kəndi</div>
-      <div class="cc">Aydan 2008 · Emil 2014</div>
-    </div>
-    <div class="card">
-      <div class="cn">Samama (1975)</div>
-      <div class="cy">Əsədullayev</div>
-      <div class="cc">Alaəkbər 2002</div>
-    </div>
-  </div>
-</div>
-<div class="conn">┃</div>
-
-<div class="gen">
-  <div class="gl">V–VI Nəsil — Nəticələr</div>
-  <div class="gc">
-    <div class="card" style="background:linear-gradient(135deg,rgba(201,168,76,.07),rgba(20,16,10,.95));">
-      <div class="cn">Suad — 2019</div>
-      <div class="cy">VI Nəsil · Məmmədəlinin oğlu</div>
-      <div class="cd">Azay→Bəybala→Məmmədəli→Maarif→Məmmədəli→Suad</div>
-    </div>
-    <div class="card" style="background:linear-gradient(135deg,rgba(201,168,76,.07),rgba(20,16,10,.95));">
-      <div class="cn">Maarif — 2021</div>
-      <div class="cy">VI Nəsil · Fuadın oğlu</div>
-      <div class="cd">Azay→Bəybala→Məmmədəli→Maarif→Fuad→Maarif</div>
-    </div>
-  </div>
-</div>
-
-<div class="gd">— ✦ —</div>
-<div class="stitle">İskəndər Bəy Qolu · Həyat yoldaşları: Zərxanım və Gülstan</div>
-<div class="gen">
-  <div class="gl">III Nəsil — İskəndər Bəyin Övladları</div>
-  <div class="gc">
-    <div class="card">
-      <div class="cn">Abas İskəndər oğlu (1908)</div>
-      <div class="cy">&amp; Xanım xanım</div>
-      <div class="cc">Şölə 1938 → Kərəm 1959, Ramiz 1961, Qorxmaz 1983</div>
-    </div>
-    <div class="card">
-      <div class="cn">Qulam İskəndər oğlu (1915–1986)</div>
-      <div class="cy">Məmmədov · Pilot · Baş Redaktor</div>
-      <div class="cd">«İzvestiya» Azərbaycan. Leninqrad müdafiəsi iştirakçısı.</div>
-      <div class="cc">Gülzadə Axundova 1948 → Faiq Hüseynov, Nəsir Axundov · Oğlu: Mübariz Məmmədov 1951</div>
-    </div>
-    <div class="card">
-      <div class="cn">Şirinbəyim İskəndər qızı (1928)</div>
-      <div class="cy">Rüstəmova</div>
-      <div class="cc">Teybikə 1951 · Ağasər 1947 · Oktay 1954 · Susan 1957 · Gündüz 1959 · Sənubər 1962 · Xavər 1964</div>
-    </div>
-    <div class="card">
-      <div class="cn">Mirzə İskəndər oğlu (1931)</div>
-      <div class="cy">Azayev</div>
-      <div class="cc">Xursud 1966 · Raziyyə 1968 · Ziyafət 1969 → Nicat 1992 (övladları: Gülüstan, Məhəmməd), Nemət 1994</div>
-    </div>
-    <div class="card">
-      <div class="cn">Kubra İskəndər qızı</div>
-      <div class="cy">Babayeva</div>
-      <div class="cc">Sevil · Zəfər · Şənayə · Mehbubə · Səliqə · Yavər · Qumru · Eyvaz</div>
-    </div>
-    <div class="card">
-      <div class="cn">Hacıağa İskəndər oğlu (1937)</div>
-      <div class="cy">Abasov</div>
-      <div class="cc">Samirə 1973 · İskəndər 1975 → Deniz, Xədicə, Hacıağa, Nihad</div>
-    </div>
-  </div>
-</div>
-
-<div class="gd">— ✦ —</div>
-<div class="stitle">Aldost Bəy Qolu · Mənsumə xanım ilə</div>
-<div class="gen">
-  <div class="gl">III Nəsil — Aldost Bəyin Övladları</div>
-  <div class="gc">
-    <div class="card">
-      <div class="cn">Məmmədağa Xətti</div>
-      <div class="cy">Oğlu: Səmidağa (Azayev)</div>
-      <div class="cc">Vusal 1974 · Eldost 1978 (övladı: Mustafa) · Azay</div>
-    </div>
-    <div class="card">
-      <div class="cn">Sura Xətti</div>
-      <div class="cy">Əliyevlər</div>
-      <div class="cc">Şəfiqə · Həmid 1961 · Minayə · Əhmədağa 1958 · İlqar 1960 · Canpolad 1966 · Alimə 1969</div>
-    </div>
-    <div class="card">
-      <div class="cn">Mintəzir Xətti</div>
-      <div class="cy">Övladı yoxdur</div>
-    </div>
-  </div>
-</div>
-
+<!-- I NƏSİL -->
+<div class="generation">
+<div class="gen-label">I Nəsil — Kök</div>
+<div class="root-card">
+<div class="root-name">Azay Məmmədəli oğlu ABASOV</div>
+<div class="root-sub">& Xursud xanım · Saatlı rayonu · 1861</div>
+<div class="root-note">Gori Gimnaziyasının məzunu · Əhmədbəyli kəndinin banisi · Bölgənin ziyalı təbəqəsinin formalaşdırıcısı</div>
 </div>
 </div>
 
-<!-- BİOQRAFİYALAR -->
-<div id="tab-bio" class="tc">
+<div class="connector">┃</div>
+
+<!-- II NƏSİL -->
+<div class="generation">
+<div class="gen-label">II Nəsil — Azay Bəyin Övladları</div>
+<div class="gen-cards">
+<div class="card">
+<div class="card-name">İskəndər Bəy Abasov</div>
+<div class="card-years">Repressiya qurbanı</div>
+<div class="card-desc">Bəy nəslinə mənsub olduğu üçün təqib edilmiş, 1938-ci ildə Bakıda Nargində güllələnmişdir.</div>
+</div>
+<div class="card">
+<div class="card-name">Aldost Bəy Abasov</div>
+<div class="card-years">Sankt-Peterburq məzunu</div>
+<div class="card-desc">Sankt-Peterburq gimnaziyasının məzunu. 1937-ci ildə Qazaxıstana sürgün edilmiş, orada vəfat etmişdir.</div>
+</div>
+<div class="card">
+<div class="card-name">Bəybala Bəy Abasov</div>
+<div class="card-years">1905 — 1937 · Repressiya qurbanı</div>
+<div class="card-desc">Ən geniş şaxənin banisi. 32 yaşında repressiya maşının qurbanı oldu. Ailəsi nəsli yaşatdı.</div>
+<div class="card-children">Əsas qol: Məmmədəli bəy xətti (Lumu xanım ilə)</div>
+</div>
+<div class="card">
+<div class="card-name">Gülbəyim Xanım</div>
+<div class="card-years">İsmayılova (Fərrux ilə)</div>
+<div class="card-desc">Tahir Fərrux oğlu İsmayılov (qızları: Ülviyyə, Zülfiyyə, Sevinc). Fail Fərrux oğlu İsmayılov (Rəşad, Afaq).</div>
+</div>
+<div class="card">
+<div class="card-name">Ceyran Xanım</div>
+<div class="card-years">Minbaşıllı kəndi</div>
+<div class="card-desc">Övladları: Dadaş, Mətləb, Saleh, Valeh (Sumqayıt — ingilis dili müəllimi)</div>
+</div>
+</div>
+</div>
+
+<div class="connector">┃</div>
+
+<!-- III NƏSİL - Bəybala Qolu -->
+<div class="generation">
+<div class="gen-label">III Nəsil — Bəybala Bəy Qolu (Ən Geniş Şaxə) · Bikə xanım Mürşid qızı ilə</div>
+<div class="gen-cards">
+<div class="card" style="flex:2;min-width:260px;">
+<div class="card-name">Məmmədəli Bəy Xətti</div>
+<div class="card-years">& Lumu xanım · 9 övlad</div>
+<div class="card-desc">Nəslin əsas davamçısı. Atasının adını və şərəfini qoruyaraq böyük bir ailə qurdu.</div>
+<div class="card-children">Maarif · Xanım · Mahir · İlham · Zərbikə · Səfərəli · Laçın · Bəybala · Samaşa</div>
+</div>
+<div class="card">
+<div class="card-name">Balabikə Xanım</div>
+<div class="card-years">Sixaliyevlər</div>
+<div class="card-children">Əliağa 1955 · Böyükağa 1956 · Əlifağa 1958 · Sona 1961 · Bikəxanım 1962 · Azər 1963 · Tərané 1965 · Pərvanə 1968</div>
+</div>
+<div class="card">
+<div class="card-name">Xoşqədəm Xanım</div>
+<div class="card-years">Novruzovlar</div>
+<div class="card-children">Eflan 1959 · Qəmar 1961 · Ədalət 1963 · Aidə 1967 · Leyla 1969 · Elçin 1971</div>
+</div>
+<div class="card">
+<div class="card-name">Solmaz Xanım</div>
+<div class="card-years">Süleymanovlar</div>
+<div class="card-children">Almaz 1961 · Balaxanım 1963 · Şahbaz 1965 · Şahla 1967 · Yaqut 1970 · Tahirə 1975</div>
+</div>
+</div>
+</div>
+
+<div class="connector">┃</div>
+
+<!-- IV NƏSİL -->
+<div class="generation">
+<div class="gen-label">IV Nəsil — Məmmədəli Bəy & Lumu Xanımın Övladları</div>
+<div class="gen-cards">
+<div class="card">
+<div class="card-name">Maarif (1957–2019)</div>
+<div class="card-years">İqtisadçı · Universam Direktoru</div>
+<div class="card-children">Məmmədəli 1989 · Fuad 1990</div>
+</div>
+<div class="card">
+<div class="card-name">Xanım (1959)</div>
+<div class="card-years">Nasirovlar</div>
+<div class="card-children">Elza 1979 · Zöhrab · Zaur</div>
+</div>
+<div class="card">
+<div class="card-name">Mahir (1961)</div>
+<div class="card-years">Mühəndis · Dövlət Su Ehtiyatları Agentliyi</div>
+<div class="card-children">Taryel 1988 · Samir 1989 · Pünhan 1993</div>
+</div>
+<div class="card">
+<div class="card-name">İlham</div>
+<div class="card-years"></div>
+<div class="card-children">İradə · Samirə · Sevinc · Əli · Nərgiiz</div>
+</div>
+<div class="card">
+<div class="card-name">Zərbikə (1965)</div>
+<div class="card-years"></div>
+<div class="card-children">Saadət · Sadaqət · Xuraman · Rza</div>
+</div>
+<div class="card">
+<div class="card-name">Səfərəli (1967)</div>
+<div class="card-years">Abaslı</div>
+<div class="card-children">Banu</div>
+</div>
+<div class="card highlight">
+<div class="card-name">Laçın (1969)</div>
+<div class="card-years">Abaslı · CEO Telsim MMC</div>
+<div class="card-desc">Sosioloq · Nəsil Kitabının müəllifi · Xüsusi təyinatlı veteran</div>
+<div class="card-children">Ayla 2013</div>
+</div>
+<div class="card">
+<div class="card-name">Bəybala (1973)</div>
+<div class="card-years">Müəllim · Əhmədbəyli kəndi</div>
+<div class="card-children">Aydan 2008 · Emil 2014</div>
+</div>
+<div class="card">
+<div class="card-name">Samaşa (1975)</div>
+<div class="card-years">Əsədullayev</div>
+<div class="card-children">Alaəkbər 2002</div>
+</div>
+</div>
+</div>
+
+<div class="connector">┃</div>
+
+<!-- V–VI NƏSİL -->
+<div class="generation">
+<div class="gen-label">V–VI Nəsil — Nəticələr</div>
+<div class="gen-cards">
+<div class="card" style="background:linear-gradient(135deg,rgba(201,168,76,0.07),rgba(20,16,10,.95));">
+<div class="card-name">Suad — 2019</div>
+<div class="card-years">VI Nəsil · Məmmədəlinin oğlu</div>
+<div class="card-desc">Azay Bəy → Bəybala → Məmmədəli → Maarif → Məmmədəli → Suad</div>
+</div>
+<div class="card" style="background:linear-gradient(135deg,rgba(201,168,76,0.07),rgba(20,16,10,.95));">
+<div class="card-name">Maarif — 2021</div>
+<div class="card-years">VI Nəsil · Fuadın oğlu</div>
+<div class="card-desc">Azay Bəy → Bəybala → Məmmədəli → Maarif → Fuad → Maarif</div>
+</div>
+</div>
+</div>
+
+<div class="gold-div">— ✦ —</div>
+
+<!-- İSKƏNDƏR BƏY QOLU -->
+<div class="sec-title">İskəndər Bəy Qolu</div>
+<div class="generation">
+<div class="gen-label">IV Nəsil — Abas İskəndər oğlu Xətti</div>
+<div class="gen-cards">
+<div class="card">
+<div class="card-name">Abas İskəndər oğlu (1908)</div>
+<div class="card-years">& Xanım xanım</div>
+<div class="card-children">Solə Abasova 1938 → Kərəm Əskərov 1959, Ramiz 1961, Qorxmaz 1980</div>
+</div>
+<div class="card">
+<div class="card-name">Qulam İskəndər oğlu (1915–1986)</div>
+<div class="card-years">Məmmədov · Pilot · Baş Redaktor</div>
+<div class="card-desc">«İzvestiya» Azərbaycan qəzetinin Baş redaktoru. II Dünya Müharibəsi qəhrəmanı.</div>
+<div class="card-children">Qızı: Gülzadə Axundova 1948</div>
+</div>
+<div class="card">
+<div class="card-name">Şirinbəyim İskəndər qızı (1928)</div>
+<div class="card-years">Rüstəmova</div>
+<div class="card-children">Teybikə 1951 · Ağasər 1947 · Oktay 1954 · Susan 1957 · Gündüz 1959 · Sənubər 1962 · Xavər 1964</div>
+</div>
+<div class="card">
+<div class="card-name">Mirzə İskəndər oğlu (1931)</div>
+<div class="card-years">Azayev</div>
+<div class="card-children">Xursud 1966 · Raziyyə 1968 · Ziyafət 1969 → Nicat 1992, Nemət 1994</div>
+</div>
+<div class="card">
+<div class="card-name">Kübrə İskəndər qızı</div>
+<div class="card-years">Babayeva</div>
+<div class="card-children">Sevil 1959 · Zəfər 1960 · Şənayə 1963 · Mehbubə 1965 · Səliqə 1966 · Yavər 1968 · Qumru 1970 · Eyvaz 1973</div>
+</div>
+<div class="card">
+<div class="card-name">Hacıağa İskəndər oğlu (1937)</div>
+<div class="card-years">Abasov</div>
+<div class="card-children">Samirə Abbasova 1973 · İskəndər Abbasov 1975 → Deniz, Xədicə, Hacıağa, Nihad</div>
+</div>
+</div>
+</div>
+
+<div class="gold-div">— ✦ —</div>
+
+<!-- ALDOST QOL -->
+<div class="sec-title">Aldost Bəy Qolu</div>
+<div class="generation">
+<div class="gen-label">Mənsumə xanım ilə</div>
+<div class="gen-cards">
+<div class="card">
+<div class="card-name">Məmmədağa Xətti</div>
+<div class="card-years">Səmidağa (Azayev)</div>
+<div class="card-children">Vusal 1974 · Eldost 1978 · Azay</div>
+</div>
+<div class="card">
+<div class="card-name">Sura Xətti</div>
+<div class="card-years">Əliyevlər</div>
+<div class="card-children">Şəfiqə · Həmid · Minayə · Əhməd 1958 · İlqar 1960 · Canpolad 1966 · Alimə 1969</div>
+</div>
+<div class="card">
+<div class="card-name">Mintəzir Xətti</div>
+<div class="card-years">Övladı yoxdur</div>
+<div class="card-desc">—</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- ═══ TAB: BİOQRAFİYALAR ═══ -->
+<div id="tab-bio" class="tab-content">
 <div class="wrap">
-<div class="stitle">Şəxsiyyət Portretləri</div>
-<div class="bgrid">
+<div class="sec-title">Şəxsiyyət Portretləri</div>
+<div class="bio-grid">
 
-<div class="bc">
-  <div class="cor"></div><div class="cor br"></div>
-  <div class="btag">1905 — 1937 · Repressiya Qurbanı</div>
-  <div class="bname">Bəybala Azay oğlu Abasov</div>
-  <div class="brole">Zülmə Əyilməyən Şərəf</div>
-  <div class="btext">
-    <p>1905-ci ildə dünyaya göz açan Bəybala kişi ailəsinin dayağı, ocağının çırağı idi. 32 yaşının ən gənc və verimli çağında, heç bir günahı olmadan dövrün repressiya maşını tərəfindən hədəf seçildi.</p>
-    <p>O, sadəcə bir ad deyil — ədalətsizliyə qarşı sükutla verilən bir cavab, sarsılmaz bir iradə rəmzidir. Oğlu Məmmədəli onun adını və şərəfini çiyinlərində daşıdı.</p>
-    <p><em>Allah rəhmət eləsin! Onun nuru hər zaman nəslimizin üzərində olsun.</em></p>
-  </div>
-</div>
-
-<div class="bc">
-  <div class="cor"></div><div class="cor br"></div>
-  <div class="btag">1927 — 1978 · Ailə Başçısı</div>
-  <div class="bname">Məmmədəli Bəybala oğlu Abasov</div>
-  <div class="brole">Ocağımızın Dayağı · Böyük Ailə Başçısı</div>
-  <div class="btext">
-    <p>1927-ci ildə dünyaya göz açan Məmmədəli müəllim, uşaq yaşlarında atasını repressiya qasırğasında itirsə də, onun adını və şərəfini qorumağı özünə həyat amalı seçdi.</p>
-    <p>1978-ci il oktyabrın 27-də ömrünün 51-ci baharında Rusiya Federasiyasının Stavropol diyarında, Svetloqrad şəhəri yaxınlığında avtomobil qəzasında həyatını itirdi.</p>
-    <p><em>«O, bir çinar kimi kökü ilə torpağına, budaqları ilə gələcəyə bağlı idi.»</em></p>
-  </div>
-</div>
-
-<div class="bc">
-  <div class="cor"></div><div class="cor br"></div>
-  <div class="btag">1915 — 1986 · Pilot · Baş Redaktor</div>
-  <div class="bname">Qulam İskəndər oğlu Məmmədov</div>
-  <div class="brole">«İzvestiya» Azərbaycan · 40-cı Aviabriqada</div>
-  <div class="btext">
-    <p>21 aprel 1915-ci ildə Əhmədbəyli kəndində anadan olmuşdur. 22 iyun 1941-ci ildə orduya çağırılmış, 40-cı aviabriqudada pilot kimi xidmət etmişdir.</p>
-    <p>Volxov cəbhəsində Leninqradın mühasirəsinin yarılmasında iştirak etmiş. «Leninqrad uğrunda döyüşün xatirəsinə» nişanı, «I Dərəcəli Vətən Müharibəsi» Ordeni sahibidir. «Ölməz Alay» beynəlxalq arxivlərindədir.</p>
-    <p>Müharibədən sonra «İzvestiya» (Azərbaycan) qəzetinin Baş redaktoru olmuşdur. Qızı Gülzadə (1948) → Faiq Hüseynov, Nəsir Axundov. Oğlu Mübariz Məmmədov (1951).</p>
-  </div>
-</div>
-
-<div class="bc">
-  <div class="cor"></div><div class="cor br"></div>
-  <div class="btag">1948 — 2003 · İnşaat Mühəndisi</div>
-  <div class="bname">Ağasər Hüseynəli oğlu Rüstəmov</div>
-  <div class="brole">Baş Direktor · «Azərbaycan Kurort Tikinti»</div>
-  <div class="btext">
-    <p>Şirinbəyim xanım qolunun nümayəndəsi. 1976-cı ildə Azərbaycan İnşaat-Memarlıq Universitetini bitirmiş. Baş Bakı Tikinti İdarəsinin 7 saylı idarəsinin 15 illik rəisi, sonra «Azərbaycan Kurort Tikinti»nin Baş direktoru.</p>
-    <p>Əməkdar mühəndis professor Lətif Zeynalovla ömürlük dost. 4 övlad atası. 2003-cü ildə vəfat etmişdir.</p>
-  </div>
-</div>
-
-<div class="bc">
-  <div class="cor"></div><div class="cor br"></div>
-  <div class="btag">1957 — 2019 · Maliyyəçi · Rəhbər</div>
-  <div class="bname">Maarif Məmmədəli oğlu Abasov</div>
-  <div class="brole">Direktor · Bakı 1 Nömrəli Universam</div>
-  <div class="btext">
-    <p>1974–1979-cu illərdə Gəncə Kənd Təsərrüfatı İnstitutunun İqtisadiyyat fakültəsini bitirmiş. 1995-ci ildən 1 Nömrəli Universam-ın direktoru olmuşdur.</p>
-    <p>İki oğlu: Məmmədəli 1989, Fuad 1990. 2019-cu ildə böyrək çatışmazlığından vəfat etmişdir.</p>
-  </div>
-</div>
-
-<div class="bc">
-  <div class="cor"></div><div class="cor br"></div>
-  <div class="btag">1961 · Mühəndis · Dövlət Xadimi</div>
-  <div class="bname">Mahir Məmmədəli oğlu Abasov</div>
-  <div class="brole">Azərbaycan Dövlət Su Ehtiyatları Agentliyi</div>
-  <div class="btext">
-    <p>1978–1983-cü illərdə Gəncə Kənd Təsərrüfatı İnstitutunun Mexanika fakültəsini bitirmiş. Saatlı rayon Avtobazasının müdiri, hal-hazırda Dövlət Su Ehtiyatları Agentliyinin məsul əməkdaşıdır.</p>
-    <p>Üç oğlu: Taryel 1988, Samir 1989, Pünhan 1993.</p>
-  </div>
-</div>
-
-<div class="bc" style="border-color:rgba(201,168,76,.35);">
-  <div class="cor"></div><div class="cor br"></div>
-  <div class="btag">1969 · CEO · Veteran · Tədqiqatçı</div>
-  <div class="bname">Laçın Məmmədəli oğlu Abasov</div>
-  <div class="brole">CEO — Telsim MMC · Nəsil Kitabının Müəllifi</div>
-  <div class="btext">
-    <p>1989–1994-cü illərdə Azərbaycan Politexnik İnstitutunda mühəndislik ixtisasını bitirmiş. 1993-cü ildə I Qarabağ Müharibəsində Prezident Qvardiyasının xüsusi dəstələrində xidmət etmiş — Füzuli, Laçın, Qubadlı istiqamətləri. Sovet Raket Qoşunlarında qitələrarası raket operatoru.</p>
-    <p>Karyerası: ASTİK Nazirliyi 1995, SOCAR mühəndis, Telsim MMC təsisçi, Sosial Tədqiqatlar Mərkəzi 2019–2026 (Sədr müşaviri, department rəisi). 100-dən çox sosioloji tədqiqata rəhbərlik etmişdir.</p>
-    <p>2017-ci ildə ABŞ-ın 58-ci Prezidentinin andiçmə mərasiminə dəvət edilmişdir. «Qürur immuniteti» termininin müəllifi. Hazırda Abasovlar «Nəsil Kitabı»nı hazırlayır.</p>
-  </div>
-</div>
-
-</div>
+<div class="bio-card">
+<div class="corner"></div><div class="corner br"></div>
+<div class="bio-tag">1905 — 1937 · Repressiya Qurbanı</div>
+<div class="bio-name">Bəybala Azay oğlu Abasov</div>
+<div class="bio-role">Zülmə Əyilməyən Şərəf</div>
+<div class="bio-text">
+<p>1905-ci ildə dünyaya göz açan Bəybala kişi ailəsinin dayağı, ocağının çırağı idi. 32 yaşının ən gənc və verimli çağında, heç bir günahı olmadan dövrün repressiya maşını tərəfindən hədəf seçildi və şəhidlik zirvəsinə ucaldı.</p>
+<p>Onun itkisi nəinki bir ailənin, bütün nəslin qəlbində sağalmaz bir yara açsa da, qoyub getdiyi mənəvi miras bu günə qədər yaşamaqdadır. Oğlu Məmmədəli onun adını çiyinlərində daşıdı.</p>
+<p><em>«Nəsil Kitabı»mızın bu səhifəsi onun əziz xatirəsinə bir ehtiram borcumuzdur. Allah rəhmət eləsin!</em></p>
 </div>
 </div>
 
-<!-- TARİX -->
-<div id="tab-tarix" class="tc">
+<div class="bio-card">
+<div class="corner"></div><div class="corner br"></div>
+<div class="bio-tag">1927 — 1978 · Ailə Başçısı</div>
+<div class="bio-name">Məmmədəli Bəybala oğlu Abasov</div>
+<div class="bio-role">Ocağımızın Dayağı · Böyük Ailə Başçısı</div>
+<div class="bio-text">
+<p>1927-ci ildə dünyaya göz açan Məmmədəli müəllim, uşaq yaşlarında atasını repressiya qasırğasında itirsə də, onun adını və şərəfini qorumağı özünə həyat amalı seçdi. Bu şəcərənin ən böyük ailə başçısı olaraq bütün nəslin hörmət və sevgisini qazandı.</p>
+<p>1978-ci il oktyabrın 27-də ömrünün 51-ci baharında, Rusiya Federasiyasının Stavropol diyarında, Svetloqrad şəhəri yaxınlığında avtomobil qəzasında həyatını itirdi. Bu vaxtsız itki bütün nəsil üçün dərin kədər oldu.</p>
+<p><em>«O, bir çinar kimi kökü ilə torpağına, budaqları ilə gələcəyə bağlı idi.»</em></p>
+</div>
+</div>
+
+<div class="bio-card">
+<div class="corner"></div><div class="corner br"></div>
+<div class="bio-tag">1915 — 1986 · Pilot · Baş Redaktor</div>
+<div class="bio-name">Qulam İskəndər oğlu Məmmədov</div>
+<div class="bio-role">«İzvestiya» Azərbaycan · 40-cı Aviabriqada</div>
+<div class="bio-text">
+<p>21 aprel 1915-ci ildə Əhmədbəyli kəndində anadan olmuşdur. 22 iyun 1941-ci ildə Bakı şəhəri Caparidze Rayon Hərbi Komissarlığı tərəfindən orduya çağırılmış, 40-cı aviabriqudada pilot kimi xidmət etmişdir.</p>
+<p>Volxov cəbhəsində Leninqradın mühasirəsinin yarılmasında iştirak etmiş, «Leninqrad uğrunda döyüşün xatirəsinə» nişanı ilə təltif edilmişdir. «I Dərəcəli Vətən Müharibəsi» Ordeni sahibidir (01.08.1986).</p>
+<p>Müharibədən sonra «İzvestiya» (Azərbaycan) qəzetinin Baş redaktoru vəzifəsini tutmuşdur. «Ölməz Alay» beynəlxalq arxivlərində əbədiləşdirilmişdir.</p>
+</div>
+</div>
+
+<div class="bio-card">
+<div class="corner"></div><div class="corner br"></div>
+<div class="bio-tag">1948 — 2003 · İnşaat Mühəndisi</div>
+<div class="bio-name">Ağasər Hüseynəli oğlu Rüstəmov</div>
+<div class="bio-role">Baş Direktor · «Azərbaycan Kurort Tikinti»</div>
+<div class="bio-text">
+<p>Şirinbəyim xanım qolunun nümayəndəsi. 1976-cı ildə Azərbaycan İnşaat-Memarlıq Universitetini bitirərək milli tikinti sektoruna qədəm qoymuşdur. Cəmi 23 yaşından etibarən məsul rəhbər vəzifələrini icra etməyə başlamışdır.</p>
+<p>15 il ərzində Baş Bakı Tikinti İdarəsinin 7 saylı İdarəsinin rəisi, sonra isə «Azərbaycan Kurort Tikinti» İdarəsinin Baş direktoru olmuşdur. Əməkdar mühəndis, professor Lətif Zeynalovla ömürlük dostluq bağlamışdır — hər ikisi həm orta məktəbdə, həm universitetdə eyni sinifdə oxumuşlar. 4 övlad atası. 2003-cü ildə vəfat etmişdir.</p>
+</div>
+</div>
+
+<div class="bio-card">
+<div class="corner"></div><div class="corner br"></div>
+<div class="bio-tag">1957 — 2019 · Maliyyəçi · Rəhbər</div>
+<div class="bio-name">Maarif Məmmədəli oğlu Abasov</div>
+<div class="bio-role">Direktor · Bakı 1 Nömrəli Universam</div>
+<div class="bio-text">
+<p>1974–1979-cu illərdə Gəncə Kənd Təsərrüfatı İnstitutunun İqtisadiyyat fakültəsini bitirmiş. Əmək yoluna Saatlı rayonunun «Ukrayna» kolxozunda iqtisadçı kimi başlamışdır.</p>
+<p>Abşeron Su Meliorasiya İdarəsindən, Xətai rayonu meyvə-tərəvəz bazasından keçərək 1995-ci ildən Bakının ən böyük ticarət obyektlərindən biri olan 1 Nömrəli Universam-ın direktoru olmuşdur. İki oğlu: Məmmədəli (1989), Fuad (1990). 2019-cu ildə böyrək çatışmazlığından vəfat etmişdir.</p>
+</div>
+</div>
+
+<div class="bio-card">
+<div class="corner"></div><div class="corner br"></div>
+<div class="bio-tag">1961 · Mühəndis · Dövlət Xadimi</div>
+<div class="bio-name">Mahir Məmmədəli oğlu Abasov</div>
+<div class="bio-role">Azərbaycan Dövlət Su Ehtiyatları Agentliyi</div>
+<div class="bio-text">
+<p>1978–1983-cü illərdə Gəncə Kənd Təsərrüfatı İnstitutunun Mexanika fakültəsini bitirmiş. Saatlı «Sabir» kolxozunda mühəndis kimi fəaliyyətə başlamışdır.</p>
+<p>Saatlı rayon Avtobazasının müdiri, hal-hazırda isə Azərbaycan Dövlət Su Ehtiyatları Agentliyinin məsul əməkdaşıdır. Üç oğlu var: Taryel, Samir, Pünhan.</p>
+</div>
+</div>
+
+<div class="bio-card" style="border-color:rgba(201,168,76,0.35);">
+<div class="corner"></div><div class="corner br"></div>
+<div class="bio-tag">1969 · CEO · Veteran · Tədqiqatçı</div>
+<div class="bio-name">Laçın Məmmədəli oğlu Abasov</div>
+<div class="bio-role">CEO — Telsim MMC · Nəsil Kitabının müəllifi</div>
+<div class="bio-text">
+<p>1989–1994-cü illərdə Azərbaycan Politexnik İnstitutunda mühəndislik ixtisasını bitirmiş. 1993-cü ildə I Qarabağ Müharibəsində Prezident Qvardiyasının xüsusi dəstələrində xidmət etmiş; Füzuli, Laçın, Qubadlı istiqamətlərini müdafiə etmişdir. Sovet Raket Qoşunlarında qitələrarası raket operatoru olaraq texniki hazırlıq keçmişdir.</p>
+<p>Karyerası: Azərbaycan Sənaye Tikinti Nazirliyi (1995), Torpaq və Xəritəçəkmə Komitəsi, SOCAR-ın Xəzər Qazma şirkəti (mühəndis), Telsim MMC (təsisçi, Baş direktor), Sosial Tədqiqatlar Mərkəzi (2019–2026, icraçı direktor, Sədr müşaviri).</p>
+<p>2017-ci ildə ABŞ-ın 58-ci Prezidentinin andiçmə mərasiminə dəvət edilmişdir. 20-dən artıq elmi-analitik məqalənin müəllifidir. «Qürur immuniteti» terminini siyasi leksikona daxil etmişdir. Hazırda Abasovlar nəslinin «Nəsil Kitabı»nı hazırlayır.</p>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- ═══ TAB: TARİX ═══ -->
+<div id="tab-tarix" class="tab-content">
 <div class="wrap">
-<div class="stitle">Tarixi Salnamə</div>
-<div class="hw">
+<div class="sec-title">Tarixi Salnamə</div>
+<div class="history-wrap">
 
-<h2>Azay Bəyin İrsi</h2>
-<p>Saatlı bölgəsinin tarixində xüsusi yeri olan Kəlbəlayi Azay Bəy Məmmədəli oğlu Abasov XX əsrin əvvəllərində Əhmədbəyli kəndini bərpa etmiş, bölgənin ziyalı və sahibkar təbəqəsinin formalaşmasında mühüm rol oynamışdır.</p>
+<h2>Azay Bəyin İrsi və Ziyalı Kökləri</h2>
+<p>Saatlı bölgəsinin tarixində xüsusi yeri olan Kəlbəlayi Azay Bəy Məmmədəli oğlu Abasov XX əsrin əvvəllərində Əhmədbəyli kəndində torpaq mülkiyyətini əldə edərək bölgənin sosial-iqtisadi həyatında dönüş yaratmışdır. Gori Gimnaziyasının məzunu olan Azay Bəy, bölgədə yerli ziyalı və sahibkar təbəqənin formalaşmasında mühüm rol oynamışdır.</p>
 
-<div class="rbox">
-<h3>⚔️ 1937-ci İl Repressiyaları</h3>
-<div class="ri"><span><strong>İskəndər Azay oğlu Abasov:</strong> 1938-ci ildə Nargın adasında güllələnmişdir.</span></div>
-<div class="ri"><span><strong>Aldost Azay oğlu Abasov:</strong> 1937-ci ildə Qazaxıstana sürgün edilmiş, orada vəfat etmişdir.</span></div>
-<div class="ri"><span><strong>Bəybala Azay oğlu Abasov (1905–1937):</strong> 32 yaşında repressiya qurbanı olmuşdur.</span></div>
+<div class="rep-box">
+<h3>⚔️ Tarixi Sınaq: 1937-ci İl Repressiyaları</h3>
+<p style="font-size:15px;color:rgba(240,232,213,.7);margin-bottom:16px;">Abasovlar nəsli 1937-ci il repressiyalarından ağır itkilərlə çıxmışdır:</p>
+<div class="rep-item">
+<span><strong>İskəndər Azay oğlu Abasov:</strong> Bəy nəslinə mənsub olduğu üçün təqib edilmiş və 1938-ci ildə Bakıda Nargın adasında güllələnmişdir.</span>
+</div>
+<div class="rep-item">
+<span><strong>Aldost Azay oğlu Abasov:</strong> Sankt-Peterburq gimnaziyasının məzunu. 1937-ci ildə Qazaxıstana sürgün edilmiş, orada vəfat etmişdir.</span>
+</div>
+<div class="rep-item">
+<span><strong>Bəybala Azay oğlu Abasov (1905–1937):</strong> Cəmi 32 yaşında ikən repressiya qurbanı olmuşdur. Onun gənc yaşda həyatdan qoparılması ailə üçün böyük sınaq olsa da, adı nəsillər boyu yaşadılmışdır.</span>
+</div>
 </div>
 
 <h2>Varislik Körpüsü: Məmmədəli Abasov</h2>
-<p>Məmmədəli Bəybala oğlu Abasov (1927–1978) atasının repressiya olunduğu ağır illərdə böyümüş, ailənin mənəvi irsini qoruyub növbəti nəslə ötürmüşdür. 1978-ci ildə Stavropol diyarında avtomobil qəzasında 51 yaşında vəfat etmişdir.</p>
+<p>Məmmədəli Bəybala oğlu Abasov (1927–1978) atasının repressiya olunduğu ağır illərdə böyümüş və ailənin mənəvi irsini növbəti nəslə ötürən əsas şəxs olmuşdur. Onun 51 illik ömür yolu Azay Bəy ocağının sönməməsi baxımından tarixi əhəmiyyət kəsb edir. 1978-ci ildə Stavropol diyarında avtomobil qəzasında vəfat etmişdir.</p>
 
-<div class="qbox">
+<div class="quote-box">
 <blockquote>«O, bir çinar kimi kökü ilə torpağına, budaqları ilə gələcəyə bağlı idi.»</blockquote>
 <cite>Məmmədəli Bəybala oğlu Abasov haqqında</cite>
 </div>
 
 <h2>Qulam Məmmədov: Göylərdə və Söz Sənətində</h2>
-<p>Qulam İskəndər oğlu Məmmədov (1915–1986) həm döyüşçü pilot, həm də milli jurnalizmimizin sütunlarından biri olmuşdur. Volxov cəbhəsindəki Leninqrad mühasirəsinin açılmasında iştirak etmişdir.</p>
+<p>İskəndər bəy qolunun nümayəndəsi Qulam İskəndər oğlu Məmmədov (1915–1986) eyni zamanda həm döyüşçü pilot, həm də milli jurnalizmimizin sütunlarından biri olmuşdur. 1941-ci ildən başlayaraq 40-cı aviabriqudada pilot kimi xidmət etmiş, Volxov cəbhəsindəki Leninqrad mühasirəsinin açılmasında iştirak etmişdir.</p>
+<p>Onun adı «Ölməz Alay» (Бессмертный полк) beynəlxalq arxivlərində əbədiləşdirilmişdir. Müharibədən sonra «İzvestiya» Azərbaycan qəzetinin Baş redaktoru olmuşdur.</p>
 
-<div class="rbox">
-<h3>🏅 Hərbi Təltiflər — Qulam Məmmədov</h3>
-<div class="ri"><span><strong>«Leninqrad uğrunda döyüşün xatirəsinə» nişanı</strong> — general-mayor L. Qraçov, 6 dekabr 1979.</span></div>
-<div class="ri"><span><strong>«I Dərəcəli Vətən Müharibəsi» Ordeni</strong> — 01.08.1986.</span></div>
+<div class="rep-box">
+<h3>🏅 Hərbi Təltiflər</h3>
+<div class="rep-item"><span><strong>«Leninqrad uğrunda döyüşün xatirəsinə» nişanı</strong> — Volxov cəbhəsi Veteranlar Şurasının sədri general-mayor L. Qraçov tərəfindən verilmişdir (6 dekabr 1979).</span></div>
+<div class="rep-item"><span><strong>«I Dərəcəli Vətən Müharibəsi» Ordeni</strong> — 01.08.1986, müharibə veteranlarına verilən ən ali döyüş mükafatlarından biridir.</span></div>
 </div>
 
-<h2>Abas Abasov — Şəhid Qardaş</h2>
-<p>Qulam bəyin qardaşı Abas Abasov 1942-ci ilin avqustunda Volxov cəbhəsindəki «Sinyavino əməliyyatı»nda həlak olmuşdur. Abas bəyin nəvəsi Əskər Ramiz Məhərrəm oğlu (1961) hazırda Moskvadadır.</p>
+<h2>Yeni Dövr: Əhmədbəyli Kəndində Yeni Yurd</h2>
+<p>Ailənin şərəfli tarixçəsi 1973-cü ildə Əhmədbəyli kəndində doğulan Bəybala Məmmədəli oğlu Abasov ilə yeni mərhələyə qədəm qoymuşdur. 1937-ci ildə şəhid olan babasının adını daşıyan Bəybala müəllim Əhmədbəyli kəndində ucaltdığı yeni əzəməyli evlə həm babalarının ruhunu şad etmiş, həm də ailənin bu torpaqlardakı ənənəsini bərpa etmişdir.</p>
 
-<h2>Yeni Yurd</h2>
-<p>Bəybala Məmmədəli oğlu Abasov (1973) babasının adını daşıyır. Əhmədbəyli kəndindəki yeni ev ailənin torpaqla bağlılığının rəmzidir.</p>
-
-<div class="qbox">
-<blockquote>Azay Bəyin təməlini qoyduğu, Məmmədəli Abasovun qoruduğu, bu gün Bəybala Abasovun davam etdirdiyi bu yol Saatlı bölgəsinin etnoqrafik yaddaşının bir hissəsidir.</blockquote>
+<div class="quote-box">
+<blockquote>Azay Bəyin təməlini qoyduğu, Məmmədəli Abasovun qoruduğu və bu gün Bəybala Abasovun davam etdirdiyi bu yol, Saatlı bölgəsinin etnoqrafik yaddaşının bir hissəsidir.</blockquote>
 <cite>Abasovlar Nəsil Kitabı · 2026</cite>
 </div>
 
 <h2>Coğrafi Yayılma</h2>
-<p><strong>Kök:</strong> Saatlı — Əhmədbəyli kəndi (keçmiş adı: Telmankənd).<br>
-<strong>Müasir:</strong> Bakı, Sumqayıt.<br>
-<strong>Moskva:</strong> Əskər Ramiz Məhərrəm oğlu 1961.<br>
-<strong>Qazaxıstan:</strong> Sayram rayonu — Aldost Bəyin nəsli.</p>
+<p><strong>Kök:</strong> Saatlı rayonu — Əhmədbəyli kəndi (1999-a qədər: Telmankənd). <strong>Müasir:</strong> Bakı, Sumqayıt, Moskva (Əskər Ramiz Məhərrəm oğlu, 1961). <strong>Qazaxıstan:</strong> Sayram rayonu — Aldost Bəyin sürgündəki nəsli.</p>
 
 </div>
 </div>
 </div>
 
-<!-- FOTO -->
-<div id="tab-foto" class="tc">
+<!-- ═══ TAB: FOTO ARXİVİ ═══ -->
+<div id="tab-foto" class="tab-content">
 <div class="wrap">
-<div class="stitle">Foto Arxivi</div>
-<div class="uz" id="pz"
-  onclick="document.getElementById('pi').click()"
-  ondragover="event.preventDefault();this.classList.add('drag')"
-  ondragleave="this.classList.remove('drag')"
-  ondrop="pdrop(event)">
-  <span class="ui">📸</span>
-  <div class="ut">Foto Yüklə</div>
-  <div class="uh">Köhnə foto, ailə anları — buraya sürükləyin və ya klikləyin</div>
-  <button class="ubtn" onclick="event.stopPropagation();document.getElementById('pi').click()">Foto Seç</button>
-  <div class="tr">
-    <span class="tb">JPG</span><span class="tb">PNG</span><span class="tb">WEBP</span><span class="tb">GIF</span><span class="tb">HEIC</span>
-  </div>
+<div class="sec-title">Foto Arxivi</div>
+
+<div class="upload-zone" id="photoZone" onclick="document.getElementById('photoInput').click()"
+ondragover="ev.preventDefault();this.classList.add('drag-over')"
+ondragleave="this.classList.remove('drag-over')"
+ondrop="handlePhotoDrop(event)">
+<span class="upload-icon">📸</span>
+<div class="upload-title">Foto Yüklə</div>
+<div class="upload-hint">Köhnə foto, şəxsiyyət vəsiqəsi, həyat anları — hamısını buraya əlavə edin</div>
+<button class="upload-btn" onclick="event.stopPropagation();document.getElementById('photoInput').click()">Foto Seç</button>
+<div class="type-row">
+<span class="type-badge">JPG</span>
+<span class="type-badge">PNG</span>
+<span class="type-badge">WEBP</span>
+<span class="type-badge">GIF</span>
+<span class="type-badge">HEIC</span>
 </div>
-<input type="file" id="pi" accept="image/*" multiple onchange="addP(this.files)">
-<div id="gg" class="ggrid"></div>
-<div id="eg" class="emp"><div class="ei">🖼️</div><p>Hələ foto əlavə edilməyib.</p></div>
+</div>
+<input type="file" id="photoInput" accept="image/*" multiple onchange="addPhotos(this.files)">
+
+<div id="galleryGrid" class="gallery-grid"></div>
+<div id="emptyGallery" class="empty">
+<div class="ei">🖼️</div>
+<p>Hələ foto əlavə edilməyib. Yuxarıdan foto seçin.</p>
+</div>
 </div>
 </div>
 
-<!-- FAYLLAR -->
-<div id="tab-fayl" class="tc">
+<!-- ═══ TAB: FAYLLAR ═══ -->
+<div id="tab-fayllar" class="tab-content">
 <div class="wrap">
-<div class="stitle">Sənəd Arxivi</div>
-<div class="stabs">
-  <button class="on" onclick="stab('d',this)">📄 Sənədlər</button>
-  <button onclick="stab('v',this)">🎬 Video</button>
-  <button onclick="stab('a',this)">🎙️ Audio</button>
-  <button onclick="stab('o',this)">📦 Digər</button>
+<div class="sec-title">Sənəd Arxivi</div>
+
+<div class="subtabs">
+<button class="active" onclick="showSubtab('docs',this)">📄 Sənədlər</button>
+<button onclick="showSubtab('video',this)">🎬 Video</button>
+<button onclick="showSubtab('audio',this)">🎙️ Audio</button>
+<button onclick="showSubtab('diger',this)">📦 Digər</button>
 </div>
 
-<div id="stab-d" class="stc on">
-  <div class="uz" onclick="document.getElementById('fi-d').click()"
-    ondragover="event.preventDefault();this.classList.add('drag')"
-    ondragleave="this.classList.remove('drag')"
-    ondrop="fdrop(event,'d')">
-    <span class="ui">📄</span>
-    <div class="ut">Sənəd Yüklə</div>
-    <div class="uh">Doğum şəhadətnaməsi, hərbi bilet, diplom, arxiv çıxarışı</div>
-    <button class="ubtn" onclick="event.stopPropagation();document.getElementById('fi-d').click()">Sənəd Seç</button>
-    <div class="tr"><span class="tb">PDF</span><span class="tb">DOCX</span><span class="tb">XLSX</span><span class="tb">TXT</span><span class="tb">JPG</span><span class="tb">PNG</span></div>
-  </div>
-  <input type="file" id="fi-d" multiple onchange="addF(this.files,'d')">
-  <div id="fl-d" class="flist"></div>
-  <div id="ef-d" class="emp"><div class="ei">📄</div><p>Hələ sənəd əlavə edilməyib.</p></div>
+<!-- SƏNƏDLƏR -->
+<div id="subtab-docs" class="subtab-content active">
+<div class="upload-zone" onclick="document.getElementById('docInput').click()"
+ondragover="event.preventDefault();this.classList.add('drag-over')"
+ondragleave="this.classList.remove('drag-over')"
+ondrop="handleFileDrop(event,'docs')">
+<span class="upload-icon">📄</span>
+<div class="upload-title">Sənəd Yüklə</div>
+<div class="upload-hint">Doğum şəhadətnaməsi, hərbi bilet, diplom, vəsiqə, arxiv çıxarışı — hər növ sənəd</div>
+<button class="upload-btn" onclick="event.stopPropagation();document.getElementById('docInput').click()">Sənəd Seç</button>
+<div class="type-row">
+<span class="type-badge">PDF</span>
+<span class="type-badge">DOCX</span>
+<span class="type-badge">XLSX</span>
+<span class="type-badge">TXT</span>
+<span class="type-badge">JPG</span>
+<span class="type-badge">PNG</span>
+</div>
+</div>
+<input type="file" id="docInput" multiple onchange="addFiles(this.files,'docs')">
+<div id="docList" class="file-list"></div>
+<div id="emptyDocs" class="empty"><div class="ei">📄</div><p>Hələ sənəd əlavə edilməyib.</p></div>
 </div>
 
-<div id="stab-v" class="stc">
-  <div class="uz" onclick="document.getElementById('fi-v').click()"
-    ondragover="event.preventDefault();this.classList.add('drag')"
-    ondragleave="this.classList.remove('drag')"
-    ondrop="fdrop(event,'v')">
-    <span class="ui">🎬</span>
-    <div class="ut">Video Yüklə</div>
-    <div class="uh">Ailə görüşləri, mərasimlər, xatirə videoları</div>
-    <button class="ubtn" onclick="event.stopPropagation();document.getElementById('fi-v').click()">Video Seç</button>
-    <div class="tr"><span class="tb">MP4</span><span class="tb">MOV</span><span class="tb">AVI</span><span class="tb">MKV</span></div>
-  </div>
-  <input type="file" id="fi-v" accept="video/*" multiple onchange="addF(this.files,'v')">
-  <div id="fl-v" class="flist"></div>
-  <div id="ef-v" class="emp"><div class="ei">🎬</div><p>Hələ video əlavə edilməyib.</p></div>
+<!-- VİDEO -->
+<div id="subtab-video" class="subtab-content">
+<div class="upload-zone" onclick="document.getElementById('videoInput').click()"
+ondragover="event.preventDefault();this.classList.add('drag-over')"
+ondragleave="this.classList.remove('drag-over')"
+ondrop="handleFileDrop(event,'video')">
+<span class="upload-icon">🎬</span>
+<div class="upload-title">Video Yüklə</div>
+<div class="upload-hint">Ailə görüşləri, mərasim videolarını buraya əlavə edin</div>
+<button class="upload-btn" onclick="event.stopPropagation();document.getElementById('videoInput').click()">Video Seç</button>
+<div class="type-row">
+<span class="type-badge">MP4</span>
+<span class="type-badge">MOV</span>
+<span class="type-badge">AVI</span>
+<span class="type-badge">MKV</span>
+</div>
+</div>
+<input type="file" id="videoInput" accept="video/*" multiple onchange="addFiles(this.files,'video')">
+<div id="videoList" class="file-list"></div>
+<div id="emptyVideo" class="empty"><div class="ei">🎬</div><p>Hələ video əlavə edilməyib.</p></div>
 </div>
 
-<div id="stab-a" class="stc">
-  <div class="uz" onclick="document.getElementById('fi-a').click()"
-    ondragover="event.preventDefault();this.classList.add('drag')"
-    ondragleave="this.classList.remove('drag')"
-    ondrop="fdrop(event,'a')">
-    <span class="ui">🎙️</span>
-    <div class="ut">Audio Yüklə</div>
-    <div class="uh">Söhbətlər, xatirə hekayələri, mahnılar</div>
-    <button class="ubtn" onclick="event.stopPropagation();document.getElementById('fi-a').click()">Audio Seç</button>
-    <div class="tr"><span class="tb">MP3</span><span class="tb">WAV</span><span class="tb">M4A</span><span class="tb">OGG</span></div>
-  </div>
-  <input type="file" id="fi-a" accept="audio/*" multiple onchange="addF(this.files,'a')">
-  <div id="fl-a" class="flist"></div>
-  <div id="ef-a" class="emp"><div class="ei">🎙️</div><p>Hələ audio əlavə edilməyib.</p></div>
+<!-- AUDİO -->
+<div id="subtab-audio" class="subtab-content">
+<div class="upload-zone" onclick="document.getElementById('audioInput').click()"
+ondragover="event.preventDefault();this.classList.add('drag-over')"
+ondragleave="this.classList.remove('drag-over')"
+ondrop="handleFileDrop(event,'audio')">
+<span class="upload-icon">🎙️</span>
+<div class="upload-title">Audio Yüklə</div>
+<div class="upload-hint">Söhbətlər, xatirə hekayələri, mahnılar</div>
+<button class="upload-btn" onclick="event.stopPropagation();document.getElementById('audioInput').click()">Audio Seç</button>
+<div class="type-row">
+<span class="type-badge">MP3</span>
+<span class="type-badge">WAV</span>
+<span class="type-badge">M4A</span>
+<span class="type-badge">OGG</span>
+</div>
+</div>
+<input type="file" id="audioInput" accept="audio/*" multiple onchange="addFiles(this.files,'audio')">
+<div id="audioList" class="file-list"></div>
+<div id="emptyAudio" class="empty"><div class="ei">🎙️</div><p>Hələ audio əlavə edilməyib.</p></div>
 </div>
 
-<div id="stab-o" class="stc">
-  <div class="uz" onclick="document.getElementById('fi-o').click()"
-    ondragover="event.preventDefault();this.classList.add('drag')"
-    ondragleave="this.classList.remove('drag')"
-    ondrop="fdrop(event,'o')">
-    <span class="ui">📦</span>
-    <div class="ut">Digər Fayl Yüklə</div>
-    <div class="uh">Hər növ fayl — zip, arxiv, xəritə, sxem</div>
-    <button class="ubtn" onclick="event.stopPropagation();document.getElementById('fi-o').click()">Fayl Seç</button>
-  </div>
-  <input type="file" id="fi-o" multiple onchange="addF(this.files,'o')">
-  <div id="fl-o" class="flist"></div>
-  <div id="ef-o" class="emp"><div class="ei">📦</div><p>Hələ fayl əlavə edilməyib.</p></div>
+<!-- DİGƏR -->
+<div id="subtab-diger" class="subtab-content">
+<div class="upload-zone" onclick="document.getElementById('otherInput').click()"
+ondragover="event.preventDefault();this.classList.add('drag-over')"
+ondragleave="this.classList.remove('drag-over')"
+ondrop="handleFileDrop(event,'diger')">
+<span class="upload-icon">📦</span>
+<div class="upload-title">Digər Fayl Yüklə</div>
+<div class="upload-hint">Hər növ fayl əlavə edə bilərsiniz</div>
+<button class="upload-btn" onclick="event.stopPropagation();document.getElementById('otherInput').click()">Fayl Seç</button>
+</div>
+<input type="file" id="otherInput" multiple onchange="addFiles(this.files,'diger')">
+<div id="digerList" class="file-list"></div>
+<div id="emptyDiger" class="empty"><div class="ei">📦</div><p>Hələ fayl əlavə edilməyib.</p></div>
 </div>
 
-</div>
-</div>
-
-<!-- QEYDLƏR -->
-<div id="tab-qeyd" class="tc">
-<div class="wrap">
-<div class="stitle">Ailə Qeydləri · Xatirələr · Əlavələr</div>
-<div class="nh">Yeni Qeyd Əlavə Et</div>
-<textarea class="ned" id="ni" placeholder="Buraya xatirə, əlavə məlumat, düzəliş yaza bilərsiniz..."></textarea>
-<div style="display:flex;gap:12px;align-items:center;margin-top:9px;flex-wrap:wrap;">
-  <button class="nsb" onclick="saveN()">✦ Qeydi Saxla</button>
-  <span id="ns" style="font-size:13px;color:var(--gold);opacity:0;transition:opacity .4s;font-style:italic;">Saxlanıldı ✓</span>
-</div>
-<div class="nh" style="margin-top:36px;">Saxlanılmış Qeydlər</div>
-<div id="nl" class="nlist"></div>
-<div id="en" class="emp"><div class="ei">✍️</div><p>Hələ qeyd əlavə edilməyib.</p></div>
 </div>
 </div>
 
 <!-- LIGHTBOX -->
-<div class="lb" id="lb" onclick="clb()">
-  <button class="lbc" onclick="clb()">✕</button>
-  <img id="li" src="" alt="">
-  <div class="lbcap" id="lc"></div>
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+<button class="lb-close" onclick="closeLightbox()">✕</button>
+<img id="lbImg" src="" alt="">
+<div class="lb-caption" id="lbCaption"></div>
 </div>
 
+<!-- FOOTER -->
 <footer>
-  <p>Abasovlar Nəsil Kitabı · Kəlbəlayi Azay Bəy Məmmədəli oğlu Abasov · Saatlı Rayonu · 1861 — 2026</p>
+<p>Abasovlar Nəsil Kitabı · Kəlbəlayi Azay Bəy Məmmədəli oğlu Abasov · Saatlı Rayonu · 1861 — 2026</p>
 </footer>
 
 <script>
-function tab(id,b){
-  document.querySelectorAll('.tc').forEach(e=>e.classList.remove('on'));
-  document.querySelectorAll('nav button').forEach(e=>e.classList.remove('on'));
-  document.getElementById('tab-'+id).classList.add('on');
-  b.classList.add('on');
+// ── Tab navigation ──
+function showTab(id, btn) {
+document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+document.querySelectorAll('nav.tabs button').forEach(el => el.classList.remove('active'));
+document.getElementById('tab-' + id).classList.add('active');
+btn.classList.add('active');
 }
-function stab(id,b){
-  document.querySelectorAll('.stc').forEach(e=>e.classList.remove('on'));
-  document.querySelectorAll('.stabs button').forEach(e=>e.classList.remove('on'));
-  document.getElementById('stab-'+id).classList.add('on');
-  b.classList.add('on');
+
+// ── Subtab navigation ──
+function showSubtab(id, btn) {
+document.querySelectorAll('.subtab-content').forEach(el => el.classList.remove('active'));
+document.querySelectorAll('.subtabs button').forEach(el => el.classList.remove('active'));
+document.getElementById('subtab-' + id).classList.add('active');
+btn.classList.add('active');
 }
-const photos=[];
-function addP(files){
-  Array.from(files).forEach(f=>{
-    if(!f.type.startsWith('image/'))return;
-    const r=new FileReader();
-    r.onload=e=>{photos.push({name:f.name,src:e.target.result});renderG();};
-    r.readAsDataURL(f);
-  });
+
+// ── Photo handling ──
+const photos = [];
+
+function addPhotos(files) {
+Array.from(files).forEach(file => {
+if (!file.type.startsWith('image/')) return;
+const reader = new FileReader();
+reader.onload = e => {
+photos.push({ name: file.name, src: e.target.result });
+renderGallery();
+};
+reader.readAsDataURL(file);
+});
 }
-function pdrop(e){e.preventDefault();document.getElementById('pz').classList.remove('drag');addP(e.dataTransfer.files);}
-function renderG(){
-  const g=document.getElementById('gg'),em=document.getElementById('eg');
-  if(!photos.length){g.innerHTML='';em.style.display='block';return;}
-  em.style.display='none';
-  g.innerHTML=photos.map((p,i)=>`<div class="gi" onclick="olb(${i})"><img src="${p.src}" alt="${p.name}" loading="lazy"><div class="gcap">${p.name}</div><button class="grem" onclick="event.stopPropagation();remP(${i})">✕</button></div>`).join('');
+
+function handlePhotoDrop(e) {
+e.preventDefault();
+document.getElementById('photoZone').classList.remove('drag-over');
+addPhotos(e.dataTransfer.files);
 }
-function remP(i){photos.splice(i,1);renderG();}
-function olb(i){document.getElementById('li').src=photos[i].src;document.getElementById('lc').textContent=photos[i].name;document.getElementById('lb').classList.add('on');}
-function clb(){document.getElementById('lb').classList.remove('on');}
-const fs={d:[],v:[],a:[],o:[]};
-const ic={pdf:'📕',doc:'📝',docx:'📝',xls:'📊',xlsx:'📊',txt:'📃',mp4:'🎬',mov:'🎬',avi:'🎬',mkv:'🎬',mp3:'🎵',wav:'🎵',m4a:'🎵',ogg:'🎵',jpg:'🖼️',jpeg:'🖼️',png:'🖼️',gif:'🖼️',zip:'📦',rar:'📦'};
-function gi(n){const e=n.split('.').pop().toLowerCase();return ic[e]||'📎';}
-function sz(b){if(b<1024)return b+' B';if(b<1048576)return(b/1024).toFixed(1)+' KB';return(b/1048576).toFixed(1)+' MB';}
-function addF(files,c){Array.from(files).forEach(f=>{fs[c].push({name:f.name,size:f.size});renderF(c);});}
-function fdrop(e,c){e.preventDefault();e.currentTarget.classList.remove('drag');addF(e.dataTransfer.files,c);}
-function renderF(c){
-  const l=document.getElementById('fl-'+c),em=document.getElementById('ef-'+c),files=fs[c];
-  if(!files.length){l.innerHTML='';em.style.display='block';return;}
-  em.style.display='none';
-  l.innerHTML=files.map((f,i)=>`<div class="fi"><span class="fic">${gi(f.name)}</span><div class="fin"><div class="fnm" title="${f.name}">${f.name}</div><div class="fmeta">${sz(f.size)}</div></div><button class="frem" onclick="remF('${c}',${i})">✕</button></div>`).join('');
+
+function renderGallery() {
+const grid = document.getElementById('galleryGrid');
+const empty = document.getElementById('emptyGallery');
+if (photos.length === 0) { grid.innerHTML=''; empty.style.display='block'; return; }
+empty.style.display = 'none';
+grid.innerHTML = photos.map((p, i) => `
+<div class="gal-item" onclick="openLightbox(${i})">
+<img src="${p.src}" alt="${p.name}" loading="lazy">
+<div class="gal-caption">${p.name}</div>
+<button class="gal-remove" onclick="event.stopPropagation();removePhoto(${i})" title="Sil">✕</button>
+</div>
+`).join('');
 }
-function remF(c,i){fs[c].splice(i,1);renderF(c);}
-const notes=[];
-function saveN(){
-  const txt=document.getElementById('ni').value.trim();
-  if(!txt)return;
-  const d=new Date().toLocaleDateString('az-AZ',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
-  notes.unshift({text:txt,date:d});
-  document.getElementById('ni').value='';
-  renderN();
-  const s=document.getElementById('ns');
-  s.style.opacity='1';setTimeout(()=>s.style.opacity='0',2200);
+
+function removePhoto(i) {
+photos.splice(i, 1);
+renderGallery();
 }
-function renderN(){
-  const l=document.getElementById('nl'),em=document.getElementById('en');
-  if(!notes.length){l.innerHTML='';em.style.display='block';return;}
-  em.style.display='none';
-  l.innerHTML=notes.map((n,i)=>`<div class="ni"><div class="nd">${n.date}</div><div class="nt">${n.text}</div><button class="nr" onclick="remN(${i})">✕</button></div>`).join('');
+
+function openLightbox(i) {
+document.getElementById('lbImg').src = photos[i].src;
+document.getElementById('lbCaption').textContent = photos[i].name;
+document.getElementById('lightbox').classList.add('open');
 }
-function remN(i){notes.splice(i,1);renderN();}
-renderG();['d','v','a','o'].forEach(renderF);renderN();
+
+function closeLightbox() {
+document.getElementById('lightbox').classList.remove('open');
+}
+
+// ── File handling ──
+const fileStore = { docs:[], video:[], audio:[], diger:[] };
+
+const fileIcons = {
+'pdf':'📕','doc':'📝','docx':'📝','xls':'📊','xlsx':'📊',
+'txt':'📃','mp4':'🎬','mov':'🎬','avi':'🎬','mkv':'🎬',
+'mp3':'🎵','wav':'🎵','m4a':'🎵','ogg':'🎵',
+'jpg':'🖼️','jpeg':'🖼️','png':'🖼️','gif':'🖼️',
+'zip':'📦','rar':'📦','default':'📎'
+};
+
+function getIcon(name) {
+const ext = name.split('.').pop().toLowerCase();
+return fileIcons[ext] || fileIcons['default'];
+}
+
+function formatSize(bytes) {
+if (bytes < 1024) return bytes + ' B';
+if (bytes < 1048576) return (bytes/1024).toFixed(1) + ' KB';
+return (bytes/1048576).toFixed(1) + ' MB';
+}
+
+function addFiles(files, category) {
+Array.from(files).forEach(file => {
+fileStore[category].push({ name: file.name, size: file.size, type: file.type });
+renderFileList(category);
+});
+}
+
+function handleFileDrop(e, category) {
+e.preventDefault();
+e.currentTarget.classList.remove('drag-over');
+addFiles(e.dataTransfer.files, category);
+}
+
+function renderFileList(category) {
+const list = document.getElementById(category + 'List');
+const empty = document.getElementById('empty' + category.charAt(0).toUpperCase() + category.slice(1));
+const files = fileStore[category];
+if (files.length === 0) { list.innerHTML=''; empty.style.display='block'; return; }
+empty.style.display = 'none';
+list.innerHTML = files.map((f, i) => `
+<div class="file-item">
+<span class="file-icon">${getIcon(f.name)}</span>
+<div class="file-info">
+<div class="file-name" title="${f.name}">${f.name}</div>
+<div class="file-meta">${formatSize(f.size)}</div>
+</div>
+<button class="file-remove" onclick="removeFile('${category}',${i})" title="Sil">✕</button>
+</div>
+`).join('');
+}
+
+function removeFile(category, i) {
+fileStore[category].splice(i, 1);
+renderFileList(category);
+}
+
+// Init empty states
+renderGallery();
+['docs','video','audio','diger'].forEach(renderFileList);
 </script>
 </body>
 </html>
-HTMLEOF
-echo "Done: $(wc -c < /mnt/user-data/outputs/abasovlar.html) bytes"
- 
- json 
-  {
-  "returncode" : 0,
-  "stdout" : "Done: 42609 bytes\n",
-  "stderr" : ""
-}
