@@ -228,7 +228,13 @@ color:var(--gold-light); opacity:.78;
 .connector { text-align:center; color:var(--gold); opacity:.35; font-size:22px; margin:4px 0; }
 
 /* ── BIO GRID ── */
-.bio-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(460px,1fr)); gap:28px; }
+.bio-grid bio-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:24px;
+align-items:start;
+width:100%;
+}{ display:grid; grid-template-columns:repeat(auto-fill,minmax(460px,1fr)); gap:28px; }
 
 .bio-card {
 background:linear-gradient(155deg,rgba(22,18,14,.95),rgba(14,12,8,.95));
