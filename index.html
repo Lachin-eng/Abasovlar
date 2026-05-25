@@ -216,7 +216,7 @@ color:var(--gold-light); opacity:.78;
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
 gap:24px;
-align-items:start;
+align-items: stretch;
 width:100%;
 }
 
@@ -225,6 +225,8 @@ background:linear-gradient(155deg,rgba(22,18,14,.95),rgba(14,12,8,.95));
 border:1px solid var(--border);
 padding:30px 34px; position:relative;
 transition:border-color .3s;
+display: flex;
+flex-direction: column;
 }
 .bio-card:hover { border-color:rgba(201,168,76,.32); }
 .corner {
@@ -255,9 +257,48 @@ color:var(--gold-light); opacity:.7;
 margin-bottom:18px; padding-bottom:14px;
 border-bottom:1px solid var(--border);
 }
-.bio-text { font-size:15.5px; color:rgba(240,232,213,.78); line-height:1.8; }
+.bio-text {
+font-size:15.5px; color:rgba(240,232,213,.78); line-height:1.8;
+flex: 1;
+position: relative;
+overflow: hidden;
+}
 .bio-text p { margin-bottom:12px; }
 .bio-text p:last-child { margin-bottom:0; }
+
+/* ── BIO-CARD EYNİ HÜNDÜRLÜKLƏRİ + MORE/LESS ── */
+.bio-text.collapsed {
+  max-height: 118px;
+}
+.bio-text.collapsed::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 44px;
+  background: linear-gradient(transparent, rgba(14,12,8,0.97));
+  pointer-events: none;
+}
+.bio-read-more {
+  display: none;
+  color: var(--gold);
+  font-size: 12px;
+  font-family: 'Cinzel', serif;
+  letter-spacing: .1em;
+  cursor: pointer;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(201,168,76,.18);
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  background: none;
+  text-align: left;
+  transition: color .25s, opacity .25s;
+  width: 100%;
+  opacity: .8;
+}
+.bio-read-more:hover { color: var(--gold-light); opacity: 1; }
+.bio-read-more.visible { display: block; }
 
 .history-wrap { max-width:800px; margin:0 auto; }
 .history-wrap h2 {
@@ -907,10 +948,9 @@ Ayla Abaslı
 <div class="corner"></div><div class="corner br"></div>
 <div class="bio-tag">1910 — 1971 · Stilist · Rəhbər</div>
 <div class="bio-name">Bikə Mürşid qızı Abasova</div>
-<div class="bio-role">Direktor · Öz dövründə ən yaxşı dərzi qadınlara paltartikirmiş, Xalq təbabəti ilə xəstə insanları sağaldırmış şəfa verirmiş </div>
+<div class="bio-role">Direktor · Öz dövründə ən yaxşı dərzi qadınlara paltartikirmiş, Xalq təbabəti ilə xəstə insanları sağaldırmış şəfa verirmiş</div>
 <div class="bio-text">
-<p>.</p>
-<p> 1971-ci ildə vəfat etmişdir.</p>
+<p>1971-ci ildə vəfat etmişdir.</p>
 </div>
 </div>
   
@@ -963,7 +1003,6 @@ Ayla Abaslı
 <div class="corner"></div><div class="corner br"></div>
 <div class="bio-tag">1954 · İqtisadçı · Dövlət Xadimi</div>
 <div class="bio-name">Əliağa Saday oğlu Şıxəliyev</div>
-<!-- DÜZƏLİŞ 1: bağlayıcı teq əlavə edildi -->
 <div class="bio-role">Saatlı Rayonu Kolxozda Baş mühasib</div>
 <div class="bio-text">
 <p>1972–1977-cü illərdə Gəncə Kənd Təsərrüfatı İnstitutunun İktisadiyyat fakültəsini bitirmiş. Saatlı «MirBəşir» kolxozunda iqtisadçı kimi fəaliyyətə başlamışdır.</p>
@@ -1008,11 +1047,12 @@ Ayla Abaslı
 <div class="corner"></div><div class="corner br"></div>
 <div class="bio-tag">1958 · Fermer</div>
 <div class="bio-name">Gündüz Hüseynəli oğlu Rüstəmov</div>
-<div class="bio-role">Saatlı rayonu fermer təsərrüfatı </div>
+<div class="bio-role">Saatlı rayonu fermer təsərrüfatı</div>
 <div class="bio-text">
 <p>1976–1981-cı illərdə Ukraynada Universtetdə oxuyub. Energetika, tikinti və sənaye sahələrində fəaliyyət göstərmişdir.</p>
 </div>
 </div>
+
 <div class="bio-card">
 <div class="corner"></div><div class="corner br"></div>
 <div class="bio-tag">1967 · Biznesmen</div>
@@ -1083,7 +1123,7 @@ Ayla Abaslı
 </div>
 </div>
 
-  <div class="bio-card">
+<div class="bio-card">
 <div class="corner"></div><div class="corner br"></div>
 <div class="bio-tag">1977 · Hüquqşunas</div>
 <div class="bio-name">Könül Əlisəftər qızı Abasova</div>
@@ -1093,21 +1133,21 @@ Ayla Abaslı
 </div>
 </div>
   
-  <div class="bio-card">
+<div class="bio-card">
 <div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1988 Menecer · </div>
+<div class="bio-tag">1988 · Menecer</div>
 <div class="bio-name">İradə İlham qızı Abasova</div>
-<div class="bio-role"> Vaşinqton şəhərində İT şirkətində PR Menecer </div>
+<div class="bio-role">Vaşinqton şəhərində İT şirkətində PR Menecer</div>
 <div class="bio-text">
 <p>2003–2009-cu illərdə Azərbaycan Dillər Universtetində sonra isə təhsilini Voşinqton şəhərində davam etdirib.</p>
 </div>
 </div>
   
-  <div class="bio-card">
+<div class="bio-card">
 <div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">2006 Menecer · </div>
+<div class="bio-tag">2006 · Tələbə</div>
 <div class="bio-name">Aydan Bəybala qızı Abaslı</div>
-<div class="bio-role"> Tələbə </div>
+<div class="bio-role">Tələbə</div>
 <div class="bio-text">
 <p>2023-cü ildə ADA-ya qəbul olub.</p>
 </div>
@@ -1136,7 +1176,6 @@ Ayla Abaslı
 <div class="bio-card">
 <div class="corner"></div><div class="corner br"></div>
 <div class="bio-tag">1969 · Mühəndis</div>
-<!-- DÜZƏLİŞ 2: "Azayevv" → "Azayev" -->
 <div class="bio-name">Ziyafət Mirzə oğlu Azayev</div>
 <div class="bio-role">AzPetrol YDM rəisi</div>
 <div class="bio-text">
@@ -1196,7 +1235,6 @@ Ayla Abaslı
 
 <div class="bio-card">
 <div class="corner"></div><div class="corner br"></div>
-<!-- DÜZƏLİŞ 3: "1960-1922" → "1960-2023" -->
 <div class="bio-tag">1960-2023 · Müşavir</div>
 <div class="bio-name">İlqar Bayram oğlu Əliyev</div>
 <div class="bio-role">«Azərişıq» Açıq Səhmdar Cəmiyyəti</div>
@@ -1424,6 +1462,7 @@ document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('act
 document.querySelectorAll('nav.tabs button').forEach(el => el.classList.remove('active'));
 document.getElementById('tab-' + id).classList.add('active');
 btn.classList.add('active');
+if (id === 'bio') setTimeout(initBioCards, 60);
 }
 
 function showSubtab(id, btn) {
@@ -1493,6 +1532,49 @@ function removeFile(cat, i) { fileStore[cat].splice(i, 1); renderFileList(cat); 
 
 renderGallery();
 ['docs','video','audio','diger'].forEach(renderFileList);
+
+// ── BIO-CARD "DAHA ÇOX / DAHA AZ" FUNKSİONALLIĞI ──
+let bioCardsInited = false;
+function initBioCards() {
+  if (bioCardsInited) return;
+  bioCardsInited = true;
+
+  document.querySelectorAll('.bio-card').forEach(card => {
+    const textDiv = card.querySelector('.bio-text');
+    if (!textDiv) return;
+
+    // Measure full scroll height before collapsing
+    const fullH = textDiv.scrollHeight;
+
+    // Apply collapse
+    textDiv.classList.add('collapsed');
+
+    // If content fits — no button needed
+    if (fullH <= 126) {
+      textDiv.classList.remove('collapsed');
+      return;
+    }
+
+    // Create "daha çox" button
+    const btn = document.createElement('button');
+    btn.className = 'bio-read-more visible';
+    btn.textContent = 'daha çox ▾';
+    card.appendChild(btn);
+
+    let expanded = false;
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      expanded = !expanded;
+      if (expanded) {
+        textDiv.classList.remove('collapsed');
+        btn.textContent = 'daha az ▴';
+      } else {
+        textDiv.classList.add('collapsed');
+        btn.textContent = 'daha çox ▾';
+      }
+    });
+  });
+}
 </script>
 </body>
 </html>
