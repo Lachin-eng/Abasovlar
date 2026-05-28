@@ -168,8 +168,9 @@ pointer-events:none; z-index:0;
   padding: 40px 20px;
   border: 1px dashed rgba(201,168,76,0.15);
   margin-bottom: 24px;
-  display: block;
+  display: none;
 }
+.admin-only-msg.visible { display: block; }
 .admin-only-msg.hidden { display: none; }
 .admin-only-msg p {
   color: var(--muted); font-style: italic; font-size: 15px;
@@ -1326,7 +1327,7 @@ Ayla Abaslı
 <div class="bio-name">Maarif Məmmədəli oğlu Abasov</div>
 <div class="bio-role">Direktor · Bakı 1 Nömrəli Universam</div>
 <div class="bio-text">
-<p>1974–1979-cu illərdə Gəncə Kənd Təsərrüfatı İnstitutunun İqtisadiyyat fakültəsini bitirib. Əmək yoluna Saatlı rayonunun «Ukrayna» kolxozunda iqtisadçı kimi başlamışdır.</p>
+<p>1974–1979-cu illərdə Gəncə Kənd Təsərrüfatı İnstitutunun İqtisadiyyat fakültəsini bitirmiş. Əmək yoluna Saatlı rayonunun «Ukrayna» kolxozunda iqtisadçı kimi başlamışdır.</p>
 <p>1995-ci ildən Bakının 1 Nömrəli Universam-ın direktoru olmuşdur. İki oğlu: Məmmədəli (1989), Fuad (1990). 2019-cu ildə vəfat etmişdir.</p>
 </div>
 </div>
@@ -1337,7 +1338,7 @@ Ayla Abaslı
 <div class="bio-name">Əliağa Saday oğlu Şıxəliyev</div>
 <div class="bio-role">Saatlı Rayonu Kolxozda Baş mühasib</div>
 <div class="bio-text">
-<p>1972–1977-ci illərdə Gəncə Kənd Təsərrüfatı İnstitutunun İktisadiyyat fakültəsini bitirib. Saatlı «MirBəşir» kolxozunda iqtisadçı kimi fəaliyyətə başlamışdır.</p>
+<p>1972–1977-ci illərdə Gəncə Kənd Təsərrüfatı İnstitutunun İktisadiyyat fakültəsini bitirmiş. Saatlı «MirBəşir» kolxozunda iqtisadçı kimi fəaliyyətə başlamışdır.</p>
 <p>Saatlı Rayonu Aqrar sənayesi idarəsinin rəisi.</p>
 </div>
 </div>
@@ -1348,8 +1349,8 @@ Ayla Abaslı
 <div class="bio-name">Mahir Məmmədəli oğlu Abasov</div>
 <div class="bio-role">Azərbaycan Dövlət Su Ehtiyatları Agentliyi</div>
 <div class="bio-text">
-<p>1978–1983-cü illərdə Gəncə Kənd Təsərrüfatı İnstitutunun Mexanika fakültəsini bitirib. Saatlı «Sabir» kolxozunda mühəndis kimi fəaliyyətə başlamışdır.</p>
-<p>Saatlı rayon Avtobazasının direktoru, hal-hazırda isə Azərbaycan Dövlət Su Ehtiyatları Agentliyinin məsul əməkdaşıdır. Üç oğlu var: Taryel, Samir, Pünhan.</p>
+<p>1978–1983-cü illərdə Gəncə Kənd Təsərrüfatı İnstitutunun Mexanika fakültəsini bitirmiş. Saatlı «Sabir» kolxozunda mühəndis kimi fəaliyyətə başlamışdır.</p>
+<p>Saatlı rayon Avtobazasının müdiri, hal-hazırda isə Azərbaycan Dövlət Su Ehtiyatları Agentliyinin məsul əməkdaşıdır. Üç oğlu var: Taryel, Samir, Pünhan.</p>
 </div>
 </div>
 
@@ -1371,7 +1372,7 @@ Ayla Abaslı
 <div class="bio-name">Bəybala Məmmədəli oğlu Abasov</div>
 <div class="bio-role">Moskva İlona M OOO-nun təsisçisi</div>
 <div class="bio-text">
-<p>1991–1996-cı illərdə Azərbaycan Texniki Universitetində təhsil alıb. Energetika, tikinti və sənaye sahələrində fəaliyyət göstərmişdir.</p>
+<p>1991–1996-cı illərdə Azərbaycan Texniki Universitetində mühəndislik diplomu əldə etmişdir. Energetika, tikinti və sənaye sahələrində fəaliyyət göstərmişdir.</p>
 </div>
 </div>
 
@@ -1381,7 +1382,7 @@ Ayla Abaslı
 <div class="bio-name">Gündüz Hüseynəli oğlu Rüstəmov</div>
 <div class="bio-role">Saatlı rayonu fermer təsərrüfatı</div>
 <div class="bio-text">
-<p>1976–1981-ci illərdə Ukraynada Universtetdə təhsil alıb. Energetika, tikinti və sənaye sahələrində fəaliyyət göstərmişdir.</p>
+<p>1976–1981-ci illərdə Ukraynada Universtetdə oxuyub. Energetika, tikinti və sənaye sahələrində fəaliyyət göstərmişdir.</p>
 </div>
 </div>
 
@@ -1391,7 +1392,7 @@ Ayla Abaslı
 <div class="bio-name">Səfərəli Məmmədəli oğlu Abasov</div>
 <div class="bio-role">Moskva İlona M OOO-nun direktoru</div>
 <div class="bio-text">
-<p>1984–1991-ci illərdə Azərbaycan Texniki Universitetinin Avtonəqliyyat fakultəsini bitirib. Müxtəlif sənaye və idarəetmə layihələrində iştirak etmişdir.</p>
+<p>1984–1991-ci illərdə Azərbaycan Texniki Universitetinin Avtonəqliyyat fakultəsini bitirmişdi. Müxtəlif sənaye və idarəetmə layihələrində iştirak etmişdir.</p>
 </div>
 </div>
 
@@ -1401,7 +1402,7 @@ Ayla Abaslı
 <div class="bio-name">Həmid Bayram oğlu Əliyev</div>
 <div class="bio-role">Elmlər Akademiyasının Fizika institutunun elmi işçisi</div>
 <div class="bio-text">
-<p>1970–1975-ci illərdə Azərbaycan Dövlət Universitetinin Tətbiqi Riyaziyyat fakultəsini bitirib, sonra isə Fizika-Riyaziyyat elmləri doktoru elmi dərəcəsini almıb.</p>
+<p>1970–1975-ci illərdə Azərbaycan Dövlət Universitetinin Fizika-Riyaziyyat fakultəsini bitirib, sonra isə Fizika-Riyaziyyat elmləri doktoru elmi dərəcəsini almışdır.</p>
 </div>
 </div>
 
@@ -1448,7 +1449,7 @@ Ayla Abaslı
 <div class="bio-card">
 <div class="corner"></div><div class="corner br"></div>
 <div class="bio-tag">1975 · Stomotoloq</div>
-<div class="bio-name">Şamama Məmmədəli qızı Abasova</div>
+<div class="bio-name">Şamam Məmmədəli qızı Abasova</div>
 <div class="bio-role">Bakı Biznes fəaliyyəti ilə məşöuldu</div>
 <div class="bio-text">
 <p>Tibb Texnikomunu bitirib.</p>
@@ -1497,11 +1498,11 @@ Ayla Abaslı
 
 <div class="bio-card">
 <div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1977 · Ədliyyə polkovnik-leytinantı</div>
+<div class="bio-tag">1977 · Hüquqşunas</div>
 <div class="bio-name">Könül Əlisəftər qızı Abasova</div>
 <div class="bio-role">Azərbaycan Respublikası Ədliyyə Nazirliyi</div>
 <div class="bio-text">
-<p>1992–1997-ci illərdə Bakı Dövlət Universtetinin Hüquq fakultəsində təhsil alıb.</p>
+<p>1992–1997-ci illərdə Bakı Dövlət Universtetinin Hüquq fakultəsini bitirib.</p>
 </div>
 </div>
 
@@ -1517,11 +1518,11 @@ Ayla Abaslı
 
 <div class="bio-card">
 <div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">2006 · Biznesin idarə olunması </div>
+<div class="bio-tag">2006 · Tələbə</div>
 <div class="bio-name">Aydan Bəybala qızı Abaslı</div>
 <div class="bio-role">Tələbə</div>
 <div class="bio-text">
-<p>2023-cü ildə ADA-Universtetinə qəbul olub.</p>
+<p>2023-cü ildə ADA-ya qəbul olub.</p>
 </div>
 </div>
 
@@ -1531,7 +1532,7 @@ Ayla Abaslı
 <div class="bio-name">Əhmədağa Bayram oğlu Əliyev</div>
 <div class="bio-role">Dədə-Qorqud Kənd orta məktəbinin direktoru</div>
 <div class="bio-text">
-<p>1975–1980-ci illərdə Naxçıvan Universitetini bitirib.</p>
+<p>1975–1980-ci illərdə Naxçıvan Universitetini bitirmişdi.</p>
 </div>
 </div>
 
@@ -1541,7 +1542,7 @@ Ayla Abaslı
 <div class="bio-name">Faiq Fazil oğlu Hüseynov</div>
 <div class="bio-role">Paşa Holding İT Menecer</div>
 <div class="bio-text">
-<p>1989–1994-ci illərdə Azərbaycan Texniki Universitetini bitirib.</p>
+<p>1989–1994-ci illərdə Azərbaycan Texniki Universitetini bitirmişdi.</p>
 </div>
 </div>
 
@@ -1551,27 +1552,7 @@ Ayla Abaslı
 <div class="bio-name">Ziyafət Mirzə oğlu Azayev</div>
 <div class="bio-role">AzPetrol YDM rəisi</div>
 <div class="bio-text">
-<p>1986–1994-ci illərdə Azərbaycan İnşaat mühəndisləri Universitetini bitirb.</p>
-</div>
-</div>
-
-   <div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1999 · Mühəndis</div>
-<div class="bio-name">Rza Ədalət oğlu Novruzov</div>
-<div class="bio-role">kiçik biznes</div>
-<div class="bio-text">
-<p>2017–2021-ci illərdə Azərbaycan İnşaat mühəndisləri Universitetini bitirb.</p>
-</div>
-</div>
-
-    <div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1990 · İnformasiya Texnologiyaları mühəndisi</div>
-<div class="bio-name">Fuad Maarif oğlu Abaszadə</div>
-<div class="bio-role">kiçik biznes</div>
-<div class="bio-text">
-<p>2007–2011-ci illərdə Azərbaycan Təvəkkül Universitetini bitirb.</p>
+<p>1986–1994-ci illərdə Azərbaycan İnşaat mühəndisləri Universitetini bitirmişdi.</p>
 </div>
 </div>
 
@@ -1581,7 +1562,7 @@ Ayla Abaslı
 <div class="bio-name">Oktay Hüseynəli oğlu Rüstəmov</div>
 <div class="bio-role">Bulvar İdarəsi baş mühəndis</div>
 <div class="bio-text">
-<p>1971–1975-ci illərdə Azərbaycan Texniki Universitetini bitirib..</p>
+<p>1971–1975-ci illərdə Azərbaycan Texniki Universitetini bitirmişdi.</p>
 </div>
 </div>
 
@@ -1591,7 +1572,7 @@ Ayla Abaslı
 <div class="bio-name">İskəndər Hacıağa oğlu Abasov</div>
 <div class="bio-role">Kiçik sahibkar</div>
 <div class="bio-text">
-<p>1993–1998-ci illərdə Biznes Universtetini bitirib.</p>
+<p>1993–1998-ci illərdə Biznes Universtetini bitirmişdi.</p>
 </div>
 </div>
 
@@ -1601,7 +1582,7 @@ Ayla Abaslı
 <div class="bio-name">Canpolad Bayram oğlu Əliyev</div>
 <div class="bio-role">Saatlı Rayonu Texnikaya nəzarət müfəttişi</div>
 <div class="bio-text">
-<p>1981–1986-ci illərdə Azərbaycan Kənd Təsərrüfatı institutunu bitirib.</p>
+<p>1981–1986-ci illərdə Azərbaycan Kənd Təsərrüfatı institutunu bitirmişdi.</p>
 </div>
 </div>
 
@@ -1611,7 +1592,7 @@ Ayla Abaslı
 <div class="bio-name">Əflan Əliqulu oğlu Novruzov</div>
 <div class="bio-role">Saatlı Rayonu İcra Hakimiyyəti</div>
 <div class="bio-text">
-<p>1976–1981-ci illərdə Azərbaycan Kənd Təsərrüfatı institutunu bitirib.</p>
+<p>1976–1981-ci illərdə Azərbaycan Kənd Təsərrüfatı institutunu bitirmişdi.</p>
 </div>
 </div>
 
@@ -1621,7 +1602,7 @@ Ayla Abaslı
 <div class="bio-name">Ədalət Əliqulu oğlu Novruzov</div>
 <div class="bio-role">Saatlı Rayonu Kənd Təsərrüfatı İdarəsi</div>
 <div class="bio-text">
-<p>1980–1985-ci illərdə Azərbaycan Kənd Təsərrüfatı institutunu bitirib.</p>
+<p>1980–1985-ci illərdə Azərbaycan Kənd Təsərrüfatı institutunu bitirmişdi.</p>
 </div>
 </div>
 
@@ -1631,7 +1612,7 @@ Ayla Abaslı
 <div class="bio-name">Azər Saday oğlu Şıxəliyev</div>
 <div class="bio-role">Azərbaycan Gömrük Komitəsi</div>
 <div class="bio-text">
-<p>1979–1986-ci illərdə Azərbaycan Texniki Universitetini bitirib.</p>
+<p>1979–1986-ci illərdə Azərbaycan Texniki Universitetini bitirmişdi.</p>
 </div>
 </div>
 
@@ -1641,27 +1622,17 @@ Ayla Abaslı
 <div class="bio-name">Zəfər Fərəc oğlu Babayev</div>
 <div class="bio-role">Daxili İşlər Nazirliyi</div>
 <div class="bio-text">
-<p>1990–1996-ci illərdə Azərbaycan Texniki Universitetini bitirib.</p>
+<p>1990–1996-ci illərdə Azərbaycan Texniki Universitetini bitirmişdi.</p>
 </div>
 </div>
 
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1965 · Mühasibr</div>
-<div class="bio-name">Şahbaz Fərman oğlu Süleymanov</div>
-<div class="bio-role">Sosial Təminat nazirliyi</div>
-<div class="bio-text">
-<p>1982–1988-ci illərdə Azərbaycan Xalq Təsərrüfatı institutunu bitirib..</p>
-</div>
-</div>
-   
 <div class="bio-card">
 <div class="corner"></div><div class="corner br"></div>
 <div class="bio-tag">1960-2023 · Müşavir</div>
 <div class="bio-name">İlqar Bayram oğlu Əliyev</div>
 <div class="bio-role">«Azərişıq» Açıq Səhmdar Cəmiyyəti</div>
 <div class="bio-text">
-<p>1978–1983-ci illərdə Azərbaycan Kənd Təsərrüfatı institutunu bitirib. Doğulduğu kəndin Kolxoz Sədri işləmişdi.</p>
+<p>1978–1983-ci illərdə Azərbaycan Kənd Təsərrüfatı institutunu bitirərək mühəndislik diplomu almışdır. Doğulduğu kəndin Kolxoz Sədri işləmişdi.</p>
 </div>
 </div>
 
@@ -1853,7 +1824,7 @@ onclick="document.getElementById('videoInput').click()">
 
 <div id="subtab-audio" class="subtab-content">
 <div id="audioAdminMsg" class="admin-only-msg">
-<p><img src="ayla1.png" alt="Ayla" width="24" height="24" style="vertical-align: middle; margin-right: 5px;"> Foto arxivini yalnız sayt administratoru idarə edə bilər.</p>
+  <p>🎙️ Audioları yalnız sayt administratoru yükləyə bilər.</p>
   <button class="admin-login-btn" onclick="openAdminModal()">Admin Girişi</button>
 </div>
 <div id="audioUpload" class="upload-zone"
@@ -1877,7 +1848,7 @@ onclick="document.getElementById('audioInput').click()">
 
 <div id="subtab-diger" class="subtab-content">
 <div id="digerAdminMsg" class="admin-only-msg">
-<p><img src="ayla1.png" alt="Ayla" width="24" height="24" style="vertical-align: middle; margin-right: 5px;"> Faylları yalnız sayt administratoru yükləyə bilər.</p>
+  <p>📦 Faylları yalnız sayt administratoru yükləyə bilər.</p>
   <button class="admin-login-btn" onclick="openAdminModal()">Admin Girişi</button>
 </div>
 <div id="digerUpload" class="upload-zone"
@@ -1960,11 +1931,18 @@ function updateAdminUI() {
     if (el) el.classList.toggle('admin-visible', isAdmin);
   });
 
-  // Admin mesajları (giriş etməyənlər üçün)
+  // Admin mesajları (giriş etməyənlər üçün) — admin deyilsə görünsün
   const msgs = ['photoAdminMsg','docAdminMsg','videoAdminMsg','audioAdminMsg','digerAdminMsg'];
   msgs.forEach(id => {
     const el = document.getElementById(id);
-    if (el) el.classList.toggle('hidden', isAdmin);
+    if (!el) return;
+    if (isAdmin) {
+      el.classList.remove('visible');
+      el.classList.add('hidden');
+    } else {
+      el.classList.add('visible');
+      el.classList.remove('hidden');
+    }
   });
 
   // Silmə düymələri
@@ -2167,18 +2145,3 @@ updateAdminUI();
 </script>
 </body>
 </html>
-<style>
-/* Saytdakı bütün admin bildirişlərinin əvvəlinə bu şəkli məcburi yapışdırır */
-.admin-only-msg p::before {
-content: "";
-display: inline-block;
-background-image: url('ayla1.png');
-background-size: cover;
-background-position: center;
-width: 28px;
-height: 28px;
-vertical-align: middle;
-margin-right: 8px;
-border-radius: 4px; /* Şəklin künclərini bir az yumşaldır */
-}
-</style>
