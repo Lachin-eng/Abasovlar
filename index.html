@@ -2167,3 +2167,18 @@ updateAdminUI();
 </script>
 </body>
 </html>
+<style>
+/* Saytdakı bütün admin bildirişlərinin əvvəlinə bu şəkli məcburi yapışdırır */
+.admin-only-msg p::before {
+content: "";
+display: inline-block;
+background-image: url('ayla1.png');
+background-size: cover;
+background-position: center;
+width: 28px;
+height: 28px;
+vertical-align: middle;
+margin-right: 8px;
+border-radius: 4px; /* Şəklin künclərini bir az yumşaldır */
+}
+</style>
