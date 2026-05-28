@@ -5,52 +5,55 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Abasovlar Nəsil Kitabı</title>
 <link rel="icon" type="image/png" href="favicon.png">
+<!-- font-display:swap — şrift gəlməzdən əvvəl sistem şrifti göstərir, səhifə bloklanmır -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
 .cards-container {
-display: flex;
-flex-wrap: wrap;
-justify-content: center;
-gap: 15px;
-width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
 }
 :root {
---gold: #C9A84C;
---gold-light: #E8C97A;
---gold-pale: #F5E6C0;
---dark: #0C0B09;
---dark2: #151210;
---dark3: #1C1812;
---parchment: #F0E8D5;
---muted: #7A6A52;
---accent: #8B2020;
---border: rgba(201,168,76,0.22);
+  --gold: #C9A84C;
+  --gold-light: #E8C97A;
+  --gold-pale: #F5E6C0;
+  --dark: #0C0B09;
+  --dark2: #151210;
+  --dark3: #1C1812;
+  --parchment: #F0E8D5;
+  --muted: #7A6A52;
+  --accent: #8B2020;
+  --border: rgba(201,168,76,0.22);
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior: smooth; }
 
 body {
-background: var(--dark);
-color: var(--parchment);
-font-family: 'EB Garamond', Georgia, serif;
-font-size: 17px;
-line-height: 1.8;
-overflow-x: hidden;
+  background: var(--dark);
+  color: var(--parchment);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.8;
+  overflow-x: hidden;
 }
 
+/* Sadələşdirilmiş fon — mürəkkəb repeating-gradient silindi, performans artdı */
 body::before {
-content:'';
-position:fixed; inset:0;
-background:
-radial-gradient(ellipse 80% 50% at 15% 10%, rgba(201,168,76,0.06) 0%, transparent 55%),
-radial-gradient(ellipse 60% 40% at 85% 85%, rgba(139,32,32,0.05) 0%, transparent 55%),
-repeating-linear-gradient(45deg, transparent, transparent 70px, rgba(201,168,76,0.012) 70px, rgba(201,168,76,0.012) 71px);
-pointer-events:none; z-index:0;
+  content:'';
+  position:fixed; inset:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 15% 10%, rgba(201,168,76,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 85% 85%, rgba(139,32,32,0.05) 0%, transparent 55%);
+  pointer-events:none; z-index:0;
+  /* will-change göstərir ki, bu element dəyişmir — brauzerin layerı öncədən hazırlamasına kömək edir */
+  will-change: auto;
 }
 
-/* ══════════════════════════════════════════
-   ADMİN GİRİŞ MODALİ
-   ══════════════════════════════════════════ */
+/* ══ ADMİN MODALİ ══ */
 #adminModal {
   display: none;
   position: fixed; inset: 0;
@@ -122,7 +125,6 @@ pointer-events:none; z-index:0;
   font-style: italic;
 }
 
-/* Admin badge - yuxarı sağda */
 #adminBadge {
   position: fixed;
   top: 14px; right: 18px;
@@ -147,14 +149,13 @@ pointer-events:none; z-index:0;
 }
 .admin-logout:hover { color: var(--gold); border-color: var(--gold); }
 
-/* Upload zona — yalnız admin görsün */
 .upload-zone {
   border: 2px dashed rgba(201,168,76,.28);
   border-radius: 3px; padding: 55px 30px;
   text-align: center; cursor: pointer;
   transition: all .3s;
   background: rgba(201,168,76,.018);
-  display: none; /* Default: gizli */
+  display: none;
 }
 .upload-zone.admin-visible { display: block; }
 .upload-zone.drag-over, .upload-zone:hover {
@@ -162,7 +163,6 @@ pointer-events:none; z-index:0;
   background: rgba(201,168,76,.055);
 }
 
-/* Admin-only mesaj — giriş etməyənlər üçün */
 .admin-only-msg {
   text-align: center;
   padding: 40px 20px;
@@ -188,9 +188,7 @@ pointer-events:none; z-index:0;
 }
 .admin-login-btn:hover { background: rgba(201,168,76,0.08); border-color: var(--gold); }
 
-/* ══════════════════════════════════════════
-   WATERMARK — KİÇİK VƏ ŞƏFFAF
-   ══════════════════════════════════════════ */
+/* ══ WATERMARK ══ */
 .img-wm {
   position: relative;
   display: inline-block;
@@ -198,411 +196,391 @@ pointer-events:none; z-index:0;
 .img-wm::after {
   content: 'ABASOVLAR';
   position: absolute;
-  bottom: 5px;
-  right: 5px;
+  bottom: 5px; right: 5px;
   font-family: 'Cinzel', serif;
-  font-size: 7px;
-  font-weight: 600;
+  font-size: 7px; font-weight: 600;
   letter-spacing: 0.18em;
-  color: rgba(201, 168, 76, 0.35);
-  background: rgba(12, 11, 9, 0.30);
+  color: rgba(201,168,76,0.35);
+  background: rgba(12,11,9,0.30);
   padding: 2px 5px;
-  border: 1px solid rgba(201, 168, 76, 0.18);
+  border: 1px solid rgba(201,168,76,0.18);
   border-radius: 1px;
-  pointer-events: none;
-  user-select: none;
+  pointer-events: none; user-select: none;
   backdrop-filter: blur(1px);
-  text-transform: uppercase;
-  white-space: nowrap;
+  text-transform: uppercase; white-space: nowrap;
   z-index: 5;
 }
-/* Avatar şəkilləri üçün — demək olar ki görünməz */
 .img-wm.img-wm-circle::after {
-  font-size: 6px;
-  bottom: 3px;
-  right: 3px;
-  padding: 1px 4px;
-  letter-spacing: 0.1em;
-  color: rgba(201, 168, 76, 0.28);
-  background: rgba(12, 11, 9, 0.25);
-  border-color: rgba(201, 168, 76, 0.14);
+  font-size: 6px; bottom: 3px; right: 3px;
+  padding: 1px 4px; letter-spacing: 0.1em;
+  color: rgba(201,168,76,0.28); background: rgba(12,11,9,0.25);
+  border-color: rgba(201,168,76,0.14);
 }
-/* Böyük şəkillər üçün */
-.img-wm.img-wm-full {
-  display: block;
-  width: 100%;
-}
+.img-wm.img-wm-full { display: block; width: 100%; }
 .img-wm.img-wm-full::after {
-  font-size: 8px;
-  bottom: 8px;
-  right: 10px;
+  font-size: 8px; bottom: 8px; right: 10px;
   padding: 3px 7px;
-  color: rgba(201, 168, 76, 0.38);
-  background: rgba(12, 11, 9, 0.38);
+  color: rgba(201,168,76,0.38); background: rgba(12,11,9,0.38);
 }
-/* Galleriya şəkilləri — yalnız hover-da */
-.gal-item .img-wm::after {
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.gal-item:hover .img-wm::after {
-  opacity: 1;
-}
+.gal-item .img-wm::after { opacity: 0; transition: opacity 0.3s; }
+.gal-item:hover .img-wm::after { opacity: 1; }
 
+/* ══ HEADER ══ */
 header {
-position:relative; z-index:1;
-text-align:center;
-padding: 80px 40px 55px;
-border-bottom: 1px solid var(--border);
+  position:relative; z-index:1;
+  text-align:center;
+  padding: 80px 40px 55px;
+  border-bottom: 1px solid var(--border);
 }
 header::after {
-content:'';
-position:absolute; bottom:0; left:8%; right:8%;
-height:1px;
-background: linear-gradient(90deg, transparent, var(--gold), transparent);
-}
-.crest { font-size:58px; margin-bottom:18px; display:block; animation: glow 4s ease-in-out infinite; }
-@keyframes glow {
-0%,100% { filter: drop-shadow(0 0 18px rgba(201,168,76,0.35)); }
-50% { filter: drop-shadow(0 0 38px rgba(201,168,76,0.65)); }
-}
-h1.main-title {
-font-family:'Cinzel',serif;
-font-size: clamp(26px,5vw,50px);
-font-weight:700;
-color: var(--gold);
-letter-spacing:.09em;
-text-shadow: 0 0 40px rgba(201,168,76,0.28);
-margin-bottom:10px;
-}
-.meta-line {
-font-family:'Cinzel',serif;
-font-size:12px;
-letter-spacing:.2em;
-color: var(--muted);
-text-transform:uppercase;
+  content:'';
+  position:absolute; bottom:0; left:8%; right:8%;
+  height:1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
 
+/* Animasiya optimallaşdırıldi: transform+opacity istifadə edir (compositor thread-də işləyir, CPU yükü yoxdur) */
+.crest {
+  font-size:58px; margin-bottom:18px; display:block;
+  animation: glowPulse 4s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+@keyframes glowPulse {
+  0%,100% { opacity: 0.85; transform: scale(1); }
+  50%      { opacity: 1;    transform: scale(1.04); }
+}
+
+h1.main-title {
+  font-family:'Cinzel',serif;
+  font-size: clamp(26px,5vw,50px);
+  font-weight:700;
+  color: var(--gold);
+  letter-spacing:.09em;
+  text-shadow: 0 0 40px rgba(201,168,76,0.28);
+  margin-bottom:10px;
+}
+.meta-line {
+  font-family:'Cinzel',serif;
+  font-size:12px; letter-spacing:.2em;
+  color: var(--muted); text-transform:uppercase;
+}
+
+/* ══ STATS ══ */
 .stats-bar {
-display:flex; flex-wrap:wrap;
-border-bottom:1px solid var(--border);
-position:relative; z-index:1;
+  display:flex; flex-wrap:wrap;
+  border-bottom:1px solid var(--border);
+  position:relative; z-index:1;
 }
 .stat-item {
-flex:1; min-width:130px;
-padding:26px 16px;
-text-align:center;
-border-right:1px solid var(--border);
-transition:background .3s;
+  flex:1; min-width:130px;
+  padding:26px 16px;
+  text-align:center;
+  border-right:1px solid var(--border);
+  transition:background .3s;
 }
 .stat-item:last-child { border-right:none; }
 .stat-item:hover { background:rgba(201,168,76,0.04); }
 .stat-num {
-display:block;
-font-family:'Cinzel',serif;
-font-size:26px; color:var(--gold);
-margin-bottom:4px;
+  display:block;
+  font-family:'Cinzel',serif;
+  font-size:26px; color:var(--gold);
+  margin-bottom:4px;
 }
 .stat-label { font-size:13px; color:var(--muted); }
 
+/* ══ NAVİQASİYA ══ */
 nav.tabs {
-display:flex; flex-wrap:wrap;
-position:sticky; top:0;
-background:rgba(12,11,9,0.97);
-backdrop-filter:blur(14px);
-border-bottom:1px solid var(--border);
-z-index:200;
+  display:flex; flex-wrap:wrap;
+  position:sticky; top:0;
+  background:rgba(12,11,9,0.97);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  z-index:200;
+  /* Brauzerə sticky nav-ın ayrı layer olacağını bildirir */
+  will-change: transform;
 }
 nav.tabs button {
-flex:1; min-width:100px;
-padding:15px 8px;
-background:transparent; border:none;
-border-bottom:2px solid transparent;
-color:var(--muted);
-font-family:'Cinzel',serif;
-font-size:11.5px; letter-spacing:.1em;
-text-transform:uppercase;
-cursor:pointer; transition:all .3s;
+  flex:1; min-width:100px;
+  padding:15px 8px;
+  background:transparent; border:none;
+  border-bottom:2px solid transparent;
+  color:var(--muted);
+  font-family:'Cinzel',serif;
+  font-size:11.5px; letter-spacing:.1em;
+  text-transform:uppercase;
+  cursor:pointer; transition:all .3s;
 }
 nav.tabs button:hover { color:var(--gold-light); background:rgba(201,168,76,0.04); }
 nav.tabs button.active { color:var(--gold); border-bottom-color:var(--gold); background:rgba(201,168,76,0.06); }
 
 .tab-content { display:none; position:relative; z-index:1; }
-.tab-content.active { display:block; animation: fadeUp .45s ease; }
-@keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+.tab-content.active { display:block; animation: fadeUp .4s ease both; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 
-.wrap {
-max-width:1120px; margin:0 auto;
-padding:60px 40px;
-}
+.wrap { max-width:1120px; margin:0 auto; padding:60px 40px; }
 
 .sec-title {
-font-family:'Cinzel',serif;
-font-size:12px; letter-spacing:.3em;
-color:var(--gold); text-transform:uppercase;
-margin-bottom:50px; padding-bottom:14px;
-border-bottom:1px solid var(--border);
-display:flex; align-items:center; gap:14px;
+  font-family:'Cinzel',serif;
+  font-size:12px; letter-spacing:.3em;
+  color:var(--gold); text-transform:uppercase;
+  margin-bottom:50px; padding-bottom:14px;
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:14px;
 }
 .sec-title::before { content:''; flex:1; height:1px; background:linear-gradient(90deg,var(--border),transparent); }
-.sec-title::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--border)); }
+.sec-title::after  { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--border)); }
 
+/* ══ KARTLAR ══ */
 .generation { margin-bottom:44px; }
 .gen-label {
-font-family:'Cinzel',serif; font-size:11px;
-letter-spacing:.22em; color:var(--accent);
-text-transform:uppercase; margin-bottom:18px;
-display:flex; align-items:center; gap:12px;
+  font-family:'Cinzel',serif; font-size:11px;
+  letter-spacing:.22em; color:var(--accent);
+  text-transform:uppercase; margin-bottom:18px;
+  display:flex; align-items:center; gap:12px;
 }
 .gen-label::after { content:''; flex:1; height:1px; background:rgba(139,32,32,0.22); }
 
 .gen-cards { display:flex; flex-wrap:wrap; gap:14px; }
 
 .card {
-background:linear-gradient(135deg,rgba(28,24,18,.92),rgba(20,16,10,.92));
-border:1px solid var(--border);
-border-radius:2px;
-padding:20px 22px;
-flex:1; min-width:190px;
-position:relative; overflow:hidden;
-transition:all .3s;
+  background:linear-gradient(135deg,rgba(28,24,18,.92),rgba(20,16,10,.92));
+  border:1px solid var(--border);
+  border-radius:2px;
+  padding:20px 22px;
+  flex:1; min-width:190px;
+  position:relative; overflow:hidden;
+  transition:border-color .25s, transform .25s, box-shadow .25s;
 }
 .card::before {
-content:''; position:absolute; top:0;left:0;right:0; height:2px;
-background:linear-gradient(90deg,var(--gold),transparent);
-transform:scaleX(0); transform-origin:left; transition:transform .4s;
+  content:''; position:absolute; top:0;left:0;right:0; height:2px;
+  background:linear-gradient(90deg,var(--gold),transparent);
+  transform:scaleX(0); transform-origin:left; transition:transform .35s;
 }
 .card:hover::before { transform:scaleX(1); }
-.card:hover { border-color:rgba(201,168,76,.4); transform:translateY(-2px); box-shadow:0 8px 30px rgba(0,0,0,.4); }
+.card:hover {
+  border-color:rgba(201,168,76,.4);
+  transform:translateY(-2px);
+  box-shadow:0 8px 30px rgba(0,0,0,.4);
+}
 
 .card-name {
-font-family:'Cormorant Garamond',serif;
-font-size:17.5px; font-weight:600;
-color:var(--gold-light); margin-bottom:5px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:17.5px; font-weight:600;
+  color:var(--gold-light); margin-bottom:5px;
 }
 .card-years { font-size:13px; color:var(--muted); margin-bottom:9px; font-style:italic; }
 .card-desc { font-size:14.5px; color:rgba(240,232,213,.72); line-height:1.55; }
 .card-children {
-margin-top:10px; font-size:13px; color:var(--muted);
-border-top:1px solid rgba(201,168,76,.1); padding-top:9px;
+  margin-top:10px; font-size:13px; color:var(--muted);
+  border-top:1px solid rgba(201,168,76,.1); padding-top:9px;
 }
 
+/* ══ KÖK KARTI ══ */
 .root-card {
-background:linear-gradient(135deg,rgba(45,33,10,.95),rgba(26,20,8,.95));
-border:1px solid var(--gold);
-border-radius:2px; padding:38px 44px;
-text-align:center; position:relative;
-overflow:hidden; margin-bottom:36px;
+  background:linear-gradient(135deg,rgba(45,33,10,.95),rgba(26,20,8,.95));
+  border:1px solid var(--gold);
+  border-radius:2px; padding:38px 44px;
+  text-align:center; position:relative;
+  overflow:hidden; margin-bottom:36px;
 }
 .root-card::after {
-content:''; position:absolute; inset:2px;
-border:1px solid rgba(201,168,76,.18);
-pointer-events:none;
+  content:''; position:absolute; inset:2px;
+  border:1px solid rgba(201,168,76,.18);
+  pointer-events:none;
 }
 .root-name {
-font-family:'Cinzel',serif;
-font-size:clamp(18px,3.5vw,28px);
-color:var(--gold); margin-bottom:8px;
-text-shadow:0 0 30px rgba(201,168,76,.25);
+  font-family:'Cinzel',serif;
+  font-size:clamp(18px,3.5vw,28px);
+  color:var(--gold); margin-bottom:8px;
+  text-shadow:0 0 30px rgba(201,168,76,.25);
 }
 .root-sub {
-font-family:'Cormorant Garamond',serif;
-font-style:italic; font-size:18px;
-color:var(--gold-light); opacity:.78;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic; font-size:18px;
+  color:var(--gold-light); opacity:.78;
 }
 .root-note { margin-top:10px; font-size:14px; color:var(--muted); }
 
 .connector { text-align:center; color:var(--gold); opacity:.35; font-size:22px; margin:4px 0; }
 
+/* ══ BİOQRAFİYA ══ */
 .bio-grid {
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-gap:24px;
-align-items: stretch;
-width:100%;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:24px;
+  align-items: stretch;
+  width:100%;
 }
-
 .bio-card {
-background:linear-gradient(155deg,rgba(22,18,14,.95),rgba(14,12,8,.95));
-border:1px solid var(--border);
-padding:30px 34px; position:relative;
-transition:border-color .3s;
-display: flex;
-flex-direction: column;
+  background:linear-gradient(155deg,rgba(22,18,14,.95),rgba(14,12,8,.95));
+  border:1px solid var(--border);
+  padding:30px 34px; position:relative;
+  transition:border-color .3s;
+  display: flex; flex-direction: column;
 }
 .bio-card:hover { border-color:rgba(201,168,76,.32); }
 .corner {
-position:absolute; top:0; left:0;
-width:28px; height:28px;
-border-top:2px solid var(--gold);
-border-left:2px solid var(--gold);
-opacity:.55;
+  position:absolute; top:0; left:0;
+  width:28px; height:28px;
+  border-top:2px solid var(--gold);
+  border-left:2px solid var(--gold);
+  opacity:.55;
 }
 .corner.br { top:auto;left:auto;bottom:0;right:0; border-top:none;border-left:none; border-bottom:2px solid var(--gold);border-right:2px solid var(--gold); }
 
 .bio-tag {
-display:inline-block;
-background:rgba(139,32,32,.18);
-border:1px solid rgba(139,32,32,.28);
-color:#E08080; font-size:11px;
-letter-spacing:.08em; padding:3px 10px;
-margin-bottom:12px; border-radius:1px;
+  display:inline-block;
+  background:rgba(139,32,32,.18);
+  border:1px solid rgba(139,32,32,.28);
+  color:#E08080; font-size:11px;
+  letter-spacing:.08em; padding:3px 10px;
+  margin-bottom:12px; border-radius:1px;
 }
 .bio-name {
-font-family:'Cinzel',serif;
-font-size:16px; color:var(--gold); margin-bottom:5px;
+  font-family:'Cinzel',serif;
+  font-size:16px; color:var(--gold); margin-bottom:5px;
 }
 .bio-role {
-font-family:'Cormorant Garamond',serif;
-font-style:italic; font-size:15px;
-color:var(--gold-light); opacity:.7;
-margin-bottom:18px; padding-bottom:14px;
-border-bottom:1px solid var(--border);
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic; font-size:15px;
+  color:var(--gold-light); opacity:.7;
+  margin-bottom:18px; padding-bottom:14px;
+  border-bottom:1px solid var(--border);
 }
 .bio-text {
-font-size:15.5px; color:rgba(240,232,213,.78); line-height:1.8;
-flex: 1;
-position: relative;
-overflow: hidden;
+  font-size:15.5px; color:rgba(240,232,213,.78); line-height:1.8;
+  flex: 1; position: relative; overflow: hidden;
 }
 .bio-text p { margin-bottom:12px; }
 .bio-text p:last-child { margin-bottom:0; }
-
-.bio-text.collapsed {
-  max-height: 118px;
-}
+.bio-text.collapsed { max-height: 118px; }
 .bio-text.collapsed::after {
   content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
+  position: absolute; bottom: 0; left: 0; right: 0;
   height: 44px;
   background: linear-gradient(transparent, rgba(14,12,8,0.97));
   pointer-events: none;
 }
 .bio-read-more {
   display: none;
-  color: var(--gold);
-  font-size: 12px;
-  font-family: 'Cinzel', serif;
-  letter-spacing: .1em;
-  cursor: pointer;
-  margin-top: 10px;
-  padding-top: 8px;
+  color: var(--gold); font-size: 12px;
+  font-family: 'Cinzel', serif; letter-spacing: .1em;
+  cursor: pointer; margin-top: 10px; padding-top: 8px;
   border-top: 1px solid rgba(201,168,76,.18);
-  border-left: none;
-  border-right: none;
-  border-bottom: none;
-  background: none;
-  text-align: left;
+  border-left: none; border-right: none; border-bottom: none;
+  background: none; text-align: left;
   transition: color .25s, opacity .25s;
-  width: 100%;
-  opacity: .8;
+  width: 100%; opacity: .8;
 }
 .bio-read-more:hover { color: var(--gold-light); opacity: 1; }
 .bio-read-more.visible { display: block; }
 
+/* ══ TARİX ══ */
 .history-wrap { max-width:800px; margin:0 auto; }
 .history-wrap h2 {
-font-family:'Cinzel',serif; font-size:19px;
-color:var(--gold); margin:36px 0 16px;
-padding-bottom:10px; border-bottom:1px solid var(--border);
+  font-family:'Cinzel',serif; font-size:19px;
+  color:var(--gold); margin:36px 0 16px;
+  padding-bottom:10px; border-bottom:1px solid var(--border);
 }
 .history-wrap h2:first-child { margin-top:0; }
 .history-wrap p { color:rgba(240,232,213,.8); margin-bottom:18px; font-size:16px; }
 
 .rep-box {
-background:rgba(139,32,32,.07);
-border-left:3px solid var(--accent);
-padding:24px 28px; margin:28px 0;
+  background:rgba(139,32,32,.07);
+  border-left:3px solid var(--accent);
+  padding:24px 28px; margin:28px 0;
 }
 .rep-box h3 {
-font-family:'Cinzel',serif; font-size:13px;
-color:#E08080; letter-spacing:.14em;
-text-transform:uppercase; margin-bottom:16px;
+  font-family:'Cinzel',serif; font-size:13px;
+  color:#E08080; letter-spacing:.14em;
+  text-transform:uppercase; margin-bottom:16px;
 }
 .rep-item { display:flex; gap:12px; margin-bottom:13px; font-size:15.5px; color:rgba(240,232,213,.78); }
 .rep-item::before { content:'•'; color:var(--accent); flex-shrink:0; margin-top:2px; }
 .rep-item:last-child { margin-bottom:0; }
 
 .quote-box {
-text-align:center; padding:40px 20px; margin:30px 0;
-border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+  text-align:center; padding:40px 20px; margin:30px 0;
+  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
 }
 .quote-box blockquote {
-font-family:'Cormorant Garamond',serif;
-font-style:italic;
-font-size:clamp(17px,2.5vw,23px);
-color:var(--gold-light); line-height:1.7;
-max-width:660px; margin:0 auto;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:clamp(17px,2.5vw,23px);
+  color:var(--gold-light); line-height:1.7;
+  max-width:660px; margin:0 auto;
 }
 .quote-box cite {
-display:block; margin-top:16px;
-font-size:12px; letter-spacing:.14em;
-color:var(--muted); font-style:normal;
-font-family:'Cinzel',serif; text-transform:uppercase;
+  display:block; margin-top:16px;
+  font-size:12px; letter-spacing:.14em;
+  color:var(--muted); font-style:normal;
+  font-family:'Cinzel',serif; text-transform:uppercase;
 }
 
+/* ══ UPLOAD ══ */
 .upload-icon { font-size:46px; margin-bottom:16px; opacity:.55; display:block; }
 .upload-title {
-font-family:'Cinzel',serif; font-size:15px;
-color:var(--gold); letter-spacing:.14em; margin-bottom:8px;
+  font-family:'Cinzel',serif; font-size:15px;
+  color:var(--gold); letter-spacing:.14em; margin-bottom:8px;
 }
 .upload-hint { font-size:14px; color:var(--muted); margin-bottom:22px; }
 .upload-btn {
-background:linear-gradient(135deg,rgba(201,168,76,.14),rgba(201,168,76,.07));
-border:1px solid var(--gold); color:var(--gold);
-font-family:'Cinzel',serif; font-size:11.5px;
-letter-spacing:.18em; padding:11px 28px;
-cursor:pointer; text-transform:uppercase;
-transition:all .3s; border-radius:1px;
+  background:linear-gradient(135deg,rgba(201,168,76,.14),rgba(201,168,76,.07));
+  border:1px solid var(--gold); color:var(--gold);
+  font-family:'Cinzel',serif; font-size:11.5px;
+  letter-spacing:.18em; padding:11px 28px;
+  cursor:pointer; text-transform:uppercase;
+  transition:all .3s; border-radius:1px;
 }
 .upload-btn:hover { background:rgba(201,168,76,.22); }
 input[type="file"] { display:none; }
 
 .type-row { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-top:18px; }
 .type-badge {
-background:rgba(255,255,255,.04);
-border:1px solid rgba(255,255,255,.07);
-color:var(--muted); font-size:11px;
-letter-spacing:.08em; padding:3px 11px;
-border-radius:20px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.07);
+  color:var(--muted); font-size:11px;
+  letter-spacing:.08em; padding:3px 11px;
+  border-radius:20px;
 }
 
+/* ══ QALEREYİ ══ */
 .gallery-grid {
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-gap:10px; margin-top:28px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:10px; margin-top:28px;
 }
 .gal-item {
-position:relative; aspect-ratio:4/3;
-overflow:hidden; border:1px solid var(--border);
-cursor:pointer; transition:all .3s; border-radius:1px;
+  position:relative; aspect-ratio:4/3;
+  overflow:hidden; border:1px solid var(--border);
+  cursor:pointer; transition:border-color .25s, transform .25s; border-radius:1px;
 }
 .gal-item:hover { border-color:var(--gold); transform:scale(1.03); }
 .gal-item img { width:100%;height:100%;object-fit:cover; display:block; }
 .gal-caption {
-position:absolute; bottom:0;left:0;right:0;
-background:linear-gradient(transparent,rgba(0,0,0,.82));
-color:var(--parchment); font-size:11px;
-padding:18px 8px 6px;
-opacity:0; transition:opacity .3s;
+  position:absolute; bottom:0;left:0;right:0;
+  background:linear-gradient(transparent,rgba(0,0,0,.82));
+  color:var(--parchment); font-size:11px;
+  padding:18px 8px 6px;
+  opacity:0; transition:opacity .3s;
 }
 .gal-item:hover .gal-caption { opacity:1; }
 .gal-remove {
-position:absolute; top:5px;right:5px;
-background:rgba(139,32,32,.75); border:none;
-color:#fff; font-size:13px; width:22px;height:22px;
-border-radius:50%; cursor:pointer; line-height:22px;
-text-align:center; opacity:0; transition:opacity .3s;
+  position:absolute; top:5px;right:5px;
+  background:rgba(139,32,32,.75); border:none;
+  color:#fff; font-size:13px; width:22px;height:22px;
+  border-radius:50%; cursor:pointer; line-height:22px;
+  text-align:center; opacity:0; transition:opacity .3s;
 }
 .gal-item:hover .gal-remove { opacity:1; }
 
+/* ══ FAYL SİYAHISI ══ */
 .file-list { margin-top:22px; }
 .file-item {
-display:flex; align-items:center; gap:14px;
-padding:14px 18px; border:1px solid var(--border);
-margin-bottom:8px; background:rgba(255,255,255,.015);
-transition:all .3s; border-radius:1px;
+  display:flex; align-items:center; gap:14px;
+  padding:14px 18px; border:1px solid var(--border);
+  margin-bottom:8px; background:rgba(255,255,255,.015);
+  transition:background .3s, border-color .3s; border-radius:1px;
 }
 .file-item:hover { background:rgba(201,168,76,.04); border-color:rgba(201,168,76,.28); }
 .file-icon { font-size:22px; flex-shrink:0; }
@@ -610,31 +588,32 @@ transition:all .3s; border-radius:1px;
 .file-name { font-family:'Cinzel',serif; font-size:12.5px; color:var(--parchment); margin-bottom:2px; white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
 .file-meta { font-size:11.5px; color:var(--muted); }
 .file-remove {
-background:none; border:none;
-color:var(--muted); cursor:pointer;
-font-size:17px; padding:3px 8px;
-transition:color .2s; flex-shrink:0;
-display: none;
+  background:none; border:none;
+  color:var(--muted); cursor:pointer;
+  font-size:17px; padding:3px 8px;
+  transition:color .2s; flex-shrink:0;
+  display: none;
 }
 .file-remove.admin-visible { display: inline-block; }
 .file-remove:hover { color:var(--accent); }
 
+/* ══ LİGHTBOX ══ */
 .lightbox {
-display:none; position:fixed; inset:0;
-background:rgba(0,0,0,.93); z-index:1000;
-align-items:center; justify-content:center; padding:20px;
+  display:none; position:fixed; inset:0;
+  background:rgba(0,0,0,.93); z-index:1000;
+  align-items:center; justify-content:center; padding:20px;
 }
 .lightbox.open { display:flex; }
 .lightbox img { max-width:88vw; max-height:84vh; object-fit:contain; border:1px solid var(--border); }
 .lb-close {
-position:absolute; top:18px;right:22px;
-font-size:28px; color:var(--gold);
-cursor:pointer; background:none; border:none; line-height:1;
+  position:absolute; top:18px;right:22px;
+  font-size:28px; color:var(--gold);
+  cursor:pointer; background:none; border:none; line-height:1;
 }
 .lb-caption {
-position:absolute; bottom:24px; left:0;right:0;
-text-align:center; font-style:italic;
-color:var(--gold-light); font-size:15px;
+  position:absolute; bottom:24px; left:0;right:0;
+  text-align:center; font-style:italic;
+  color:var(--gold-light); font-size:15px;
 }
 
 .empty { text-align:center; padding:60px 20px; color:var(--muted); }
@@ -643,28 +622,30 @@ color:var(--gold-light); font-size:15px;
 
 .gold-div { text-align:center; color:var(--gold); opacity:.3; letter-spacing:.5em; font-size:14px; margin:32px 0; }
 
+/* ══ ALT TAB ══ */
 .subtabs { display:flex; gap:0; border:1px solid var(--border); margin-bottom:28px; border-radius:2px; overflow:hidden; }
 .subtabs button {
-flex:1; padding:13px; background:transparent;
-border:none; border-right:1px solid var(--border);
-color:var(--muted); font-family:'Cinzel',serif;
-font-size:11px; letter-spacing:.12em; text-transform:uppercase;
-cursor:pointer; transition:all .3s;
+  flex:1; padding:13px; background:transparent;
+  border:none; border-right:1px solid var(--border);
+  color:var(--muted); font-family:'Cinzel',serif;
+  font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+  cursor:pointer; transition:all .3s;
 }
 .subtabs button:last-child { border-right:none; }
 .subtabs button:hover { background:rgba(201,168,76,.04); color:var(--gold-light); }
 .subtabs button.active { background:rgba(201,168,76,.08); color:var(--gold); }
 
 .subtab-content { display:none; }
-.subtab-content.active { display:block; animation:fadeUp .35s ease; }
+.subtab-content.active { display:block; animation:fadeUp .35s ease both; }
 
+/* ══ ELDOST KARTI ══ */
 .eldost-profile-card {
-max-width:850px; margin:30px auto;
-background:#111a2e;
-border:2px solid #d4af37;
-border-radius:12px; overflow:hidden;
-color:#ffffff; font-family:sans-serif;
-box-shadow:0 5px 15px rgba(0,0,0,0.3);
+  max-width:850px; margin:30px auto;
+  background:#111a2e;
+  border:2px solid #d4af37;
+  border-radius:12px; overflow:hidden;
+  color:#ffffff; font-family:sans-serif;
+  box-shadow:0 5px 15px rgba(0,0,0,0.3);
 }
 .eldost-header-block { text-align:center; padding:30px 20px; background:rgba(0,0,0,0.2); }
 .eldost-img-box img { width:220px; height:auto; border:3px solid #d4af37; border-radius:8px; }
@@ -678,29 +659,27 @@ box-shadow:0 5px 15px rgba(0,0,0,0.3);
 .eldost-text p { text-align:justify; line-height:1.6; color:#e0e6ed; margin-bottom:15px; }
 .eldost-footer-block { text-align:center; padding:15px; background:rgba(0,0,0,0.3); border-top:1px solid rgba(214,175,55,0.3); color:#d4af37; font-weight:bold; }
 
+/* ══ FOOTER ══ */
 footer {
-border-top:1px solid var(--border);
-text-align:center; padding:38px 40px;
-position:relative; z-index:1;
+  border-top:1px solid var(--border);
+  text-align:center; padding:38px 40px;
+  position:relative; z-index:1;
 }
 footer p { font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:.18em; color:var(--muted); text-transform:uppercase; }
 
 @media(max-width:700px){
-.wrap { padding:40px 18px; }
-header { padding:50px 18px 40px; }
-.bio-grid { grid-template-columns:1fr; }
-nav.tabs button { font-size:10px; padding:13px 5px; letter-spacing:.05em; }
-.stat-item { min-width:100px; padding:20px 10px; }
-.root-card { padding:26px 20px; }
+  .wrap { padding:40px 18px; }
+  header { padding:50px 18px 40px; }
+  .bio-grid { grid-template-columns:1fr; }
+  nav.tabs button { font-size:10px; padding:13px 5px; letter-spacing:.05em; }
+  .stat-item { min-width:100px; padding:20px 10px; }
+  .root-card { padding:26px 20px; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- ══════════════════════════════════════════
-     ADMİN GİRİŞ MODALİ
-     ══════════════════════════════════════════ -->
 <div id="adminModal">
   <div class="admin-box">
     <div class="admin-title">🔐 Admin Girişi</div>
@@ -714,13 +693,11 @@ nav.tabs button { font-size:10px; padding:13px 5px; letter-spacing:.05em; }
   </div>
 </div>
 
-<!-- Admin badge -->
 <div id="adminBadge">
   <span class="admin-badge-text">👑 Admin: Ayla</span>
   <button class="admin-logout" onclick="adminLogout()">Çıxış</button>
 </div>
 
-<!-- HEADER -->
 <header>
 <span class="crest">🌳</span>
 <h1 style="font-size:2.5rem;font-weight:bold;color:#D4AF37;text-align:center;margin-bottom:5px;text-transform:uppercase;letter-spacing:2px;">
@@ -745,7 +722,6 @@ Ayla Abaslı
 <div class="meta-line">Kəlbəlayi Azay Bəy Məmmədəli oğlu Abasov · Saatlı rayonu · 1861 — 2026</div>
 </header>
 
-<!-- STATS -->
 <div class="stats-bar">
 <div class="stat-item"><span class="stat-num">6</span><span class="stat-label">Nəsil</span></div>
 <div class="stat-item"><span class="stat-num">1861–2026</span><span class="stat-label">Dövr</span></div>
@@ -754,7 +730,6 @@ Ayla Abaslı
 <div class="stat-item"><span class="stat-num">Saatlı</span><span class="stat-label">Kök</span></div>
 </div>
 
-<!-- TABS -->
 <nav class="tabs">
 <button class="active" onclick="showTab('secere',this)">🌿 Şəcərə</button>
 <button onclick="showTab('bio',this)">📜 Bioqrafiyalar</button>
@@ -763,7 +738,7 @@ Ayla Abaslı
 <button onclick="showTab('fayllar',this)">📁 Fayllar</button>
 </nav>
 
-<!-- ═══ TAB: ŞƏCƏRƏ ═══ -->
+<!-- ═══ ŞƏCƏRƏ TAB ═══ -->
 <div id="tab-secere" class="tab-content active">
 <div class="wrap">
 <div class="sec-title">Nəsil Şəcərəsi · 6 Nəsil</div>
@@ -780,7 +755,8 @@ Ayla Abaslı
 <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap; margin:25px auto;">
 <div style="position: relative; display: inline-block; border: 3px solid #d4af37; padding: 5px; background: #fff; max-width: 360px; width: 100%;">
   <span class="img-wm img-wm-full">
-    <img src="Azay.png" alt="Azay Memmedelioglu Abasov" style="display: block; width: 100%; height: auto;">
+    <!-- loading="eager" — ilk görünən şəkil, lazy yükləmə olmaz -->
+    <img src="Azay.png" alt="Azay Memmedelioglu Abasov" style="display: block; width: 100%; height: auto;" loading="eager">
   </span>
   <div style="position: absolute; top: 15px; left: 50%; transform: translateX(-50%); background-color: #800020; color: #d4af37; padding: 8px 15px; font-weight: bold; font-family: 'Times New Roman', serif; font-size: 16px; border: 2px solid #d4af37; border-radius: 4px; box-shadow: 0px 4px 6px rgba(0,0,0,0.3); text-transform: uppercase; letter-spacing: 1px; z-index: 10;">
     165 Yubiley
@@ -812,7 +788,7 @@ Ayla Abaslı
 <div class="card">
 <div class="card-name">Gülbəyim Xanım</div>
 <div class="card-years">İsmayılova (Fərrux ilə)</div>
-<div class="card-desc">Tahir Fərrux oğlu İsmayılov (qızları: Ülviyyə, Zülfiyyə, Sevinc). Fail Fərrux oğlu İsmayılov (Həkim )(Sumqayıt şəhəri Rəşad, Afaq).</div>
+<div class="card-desc">Tahir Fərrux oğlu İsmayılov (qızları: Ülviyyə, Zülfiyyə, Sevinc). Fail Fərrux oğlu İsmayılov (Həkim)(Sumqayıt şəhəri Rəşad, Afaq).</div>
 </div>
 <div class="card">
 <div class="card-name">Ceyran Xanım</div>
@@ -827,7 +803,7 @@ Ayla Abaslı
 <div class="generation">
 <div class="gen-label">III Nəsil — Bəybala Bəy Qolu (Ən Geniş Şaxə) · Bikə xanım Mürşid qızı ilə</div>
 <span class="img-wm img-wm-full" style="max-width:320px;display:block;margin:20px auto;">
-  <img src="Beybala.png" alt="Bəybala Azay oğlu Abasov" style="width:100%;border-radius:8px;display:block;">
+  <img src="Beybala.png" alt="Bəybala Azay oğlu Abasov" style="width:100%;border-radius:8px;display:block;" loading="lazy">
 </span>
 <div class="gen-cards">
 <div class="card" style="flex:2;min-width:260px;">
@@ -859,14 +835,14 @@ Ayla Abaslı
 <div class="generation">
 <div class="gen-label">IV Nəsil — Məmmədəli Bəy & Lumu Xanımın Övladları</div>
 <span class="img-wm img-wm-full" style="max-width:320px;display:block;margin:20px auto;">
-  <img src="lm.png" alt="Məmmədəli və Lumu" style="width:100%;border-radius:8px;display:block;">
+  <img src="lm.png" alt="Məmmədəli və Lumu" style="width:100%;border-radius:8px;display:block;" loading="lazy">
 </span>
 <div class="cards-container">
 
 <div class="card">
 <a href="maarif.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="maarif.png" alt="Maarif Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;">
+    <img src="maarif.png" alt="Maarif Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
   </span>
 </a>
 <div class="card-name">Maarif (1957–2019)</div>
@@ -877,7 +853,7 @@ Ayla Abaslı
 <div class="card">
 <a href="xanim.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="xanim.png" alt="Xanım Abasova" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;">
+    <img src="xanim.png" alt="Xanım Abasova" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
   </span>
 </a>
 <div class="card-name">Xanım (1959)</div>
@@ -888,7 +864,7 @@ Ayla Abaslı
 <div class="card">
 <a href="Mahir.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="Mahir.png" alt="Mahir Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;">
+    <img src="Mahir.png" alt="Mahir Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
   </span>
 </a>
 <div class="card-name">Mahir (1961)</div>
@@ -899,7 +875,7 @@ Ayla Abaslı
 <div class="card">
 <a href="ilham.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="ilham.png" alt="İlham Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;">
+    <img src="ilham.png" alt="İlham Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
   </span>
 </a>
 <div class="card-name">İlham (1963)</div>
@@ -910,7 +886,7 @@ Ayla Abaslı
 <div class="card">
 <a href="Zerbike.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="Zerbike.png" alt="Zərbikə Abasova" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;">
+    <img src="Zerbike.png" alt="Zərbikə Abasova" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
   </span>
 </a>
 <div class="card-name">Zərbikə (1965)</div>
@@ -921,7 +897,7 @@ Ayla Abaslı
 <div class="card">
 <a href="Namiz.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="Namiz.png" alt="Səfərəli Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;">
+    <img src="Namiz.png" alt="Səfərəli Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
   </span>
 </a>
 <div class="card-name">Səfərəli (1967)</div>
@@ -932,7 +908,7 @@ Ayla Abaslı
 <div class="card">
 <a href="lachin.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="lachin.png" alt="Laçın Məmmədəli oğlu Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;">
+    <img src="lachin.png" alt="Laçın Məmmədəli oğlu Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
   </span>
 </a>
 <div class="card-name">Laçın (1969)</div>
@@ -944,7 +920,7 @@ Ayla Abaslı
 <div class="card">
 <a href="Aftandil.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="Aftandil.png" alt="Aftandil Məmmədəli oğlu Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;">
+    <img src="Aftandil.png" alt="Aftandil Məmmədəli oğlu Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
   </span>
 </a>
 <div class="card-name">Aftandil (1971-1972)</div>
@@ -954,7 +930,7 @@ Ayla Abaslı
 <div class="card">
 <a href="Azim.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="Azim.png" alt="Bəybala Məmmədəli oğlu Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;">
+    <img src="Azim.png" alt="Bəybala Məmmədəli oğlu Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
   </span>
 </a>
 <div class="card-name">Bəybala (1973)</div>
@@ -965,7 +941,7 @@ Ayla Abaslı
 <div class="card">
 <a href="samama.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="samama.png" alt="Şamama Abasova" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;">
+    <img src="samama.png" alt="Şamama Abasova" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
   </span>
 </a>
 <div class="card-name">Şamama xanım (1975)</div>
@@ -984,7 +960,7 @@ Ayla Abaslı
 <div class="card" style="background:linear-gradient(135deg,rgba(201,168,76,0.07),rgba(20,16,10,.95));">
 <a href="suad.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="suad.png" alt="Suad" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;">
+    <img src="suad.png" alt="Suad" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
   </span>
 </a>
 <div class="card-name">Suad — 2019</div>
@@ -994,7 +970,7 @@ Ayla Abaslı
 <div class="card" style="background:linear-gradient(135deg,rgba(201,168,76,0.07),rgba(20,16,10,.95));">
 <a href="maarif2.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="maarif2.png" alt="Maarif" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;">
+    <img src="maarif2.png" alt="Maarif" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
   </span>
 </a>
 <div class="card-name">Maarif — 2021</div>
@@ -1013,7 +989,7 @@ Ayla Abaslı
 <div class="corner"></div><div class="corner br"></div>
 <a href="ayla.png" target="_blank" style="display:inline-block;margin-bottom:16px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="ayla.png" alt="Ayla" style="width:110px;height:110px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;">
+    <img src="ayla.png" alt="Ayla" style="width:110px;height:110px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
   </span>
 </a>
 <div class="bio-name" style="font-size:18px;">Ayla</div>
@@ -1026,7 +1002,7 @@ Ayla Abaslı
 <!-- İSKƏNDƏR BƏY QOLU -->
 <div class="sec-title">İskəndər Bəy Qolu</div>
 <span class="img-wm img-wm-full" style="max-width:320px;display:block;margin:25px auto;">
-  <img src="Iskender.png" alt="İsgəndər Azay oğlu Abasov" style="width:100%;border-radius:8px;display:block;">
+  <img src="Iskender.png" alt="İsgəndər Azay oğlu Abasov" style="width:100%;border-radius:8px;display:block;" loading="lazy">
 </span>
 
 <div class="generation">
@@ -1036,7 +1012,7 @@ Ayla Abaslı
 <div class="card">
 <a href="abas.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="abas.png" alt="Abas Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;">
+    <img src="abas.png" alt="Abas Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
   </span>
 </a>
 <div class="card-name">Abas İskəndər oğlu Abasov (1908-1942)</div>
@@ -1046,7 +1022,7 @@ Ayla Abaslı
 <div style="text-align:center;">
   <a href="kerem.png" target="_blank">
     <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="kerem.png" alt="Kərəm" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;">
+      <img src="kerem.png" alt="Kərəm" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
     </span>
   </a>
   <div style="font-size:12px;font-weight:bold;margin-top:4px;color:#c5a880;">Kərəm (1959)</div>
@@ -1058,7 +1034,7 @@ Ayla Abaslı
 <div class="card">
 <a href="Qulam.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="Qulam.png" alt="Qulam Məmmədov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;">
+    <img src="Qulam.png" alt="Qulam Məmmədov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
   </span>
 </a>
 <div class="card-name">Qulam İsgəndər oğlu (1915-1986)</div>
@@ -1070,7 +1046,7 @@ Ayla Abaslı
 <div style="text-align:center;">
   <a href="gulzade.png" target="_blank">
     <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="gulzade.png" alt="Gülüzadə(1948 -2007)" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;">
+      <img src="gulzade.png" alt="Gülüzadə(1948-2007)" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
     </span>
   </a>
   <div class="card-name" style="font-size:12px;font-weight:bold;margin-top:4px;padding:0;color:#c5a880;">Gülüzadə</div>
@@ -1079,7 +1055,7 @@ Ayla Abaslı
 <div style="text-align:center;">
   <a href="mubariz.png" target="_blank">
     <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="mubariz.png" alt="Mübariz 1951-2009" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;">
+      <img src="mubariz.png" alt="Mübariz 1951-2009" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
     </span>
   </a>
   <div class="card-name" style="font-size:12px;font-weight:bold;margin-top:4px;padding:0;color:#c5a880;">Mübariz</div>
@@ -1089,7 +1065,7 @@ Ayla Abaslı
 <div style="text-align:center;border-top:1px solid rgba(197,168,128,0.1);padding-top:10px;width:100%;">
   <a href="Nəsir.png" target="_blank">
     <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="Nəsir.png" alt="Nəsir" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;">
+      <img src="Nəsir.png" alt="Nəsir" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
     </span>
   </a>
   <div class="card-name" style="font-size:12px;font-weight:bold;margin-top:4px;padding:0;color:#c5a880;">Nəsir</div>
@@ -1101,7 +1077,7 @@ Ayla Abaslı
 <div class="card">
 <a href="sirinbeyim.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="sirinbeyim.png" alt="Şirinbəyim İskəndər qızı" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid rgba(255,255,255,0.2);display:block;">
+    <img src="sirinbeyim.png" alt="Şirinbəyim İskəndər qızı" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
   </span>
 </a>
 <div class="card-name">Şirinbəyim İskəndər qızı (1928-2014)</div>
@@ -1111,16 +1087,16 @@ Ayla Abaslı
 <div style="text-align:center;">
   <a href="agaser.png" target="_blank">
     <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="agaser.png" alt="Ağasər" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;">
+      <img src="agaser.png" alt="Ağasər" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
     </span>
   </a>
-  <div style="font-size:12px;font-weight:bold;margin-top:4px;color:#c5a880;">Ağasər (1947-2003)oğlu Azər-1995</div>
+  <div style="font-size:12px;font-weight:bold;margin-top:4px;color:#c5a880;">Ağasər (1947-2003) oğlu Azər-1995</div>
   <div style="font-size:11px;color:#c5a880;font-style:italic;">Şirinbəyim</div>
 </div>
 <div style="text-align:center;">
   <a href="Teybikə.png" target="_blank">
     <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="Teybikə.png" alt="Teybikə" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;">
+      <img src="Teybikə.png" alt="Teybikə" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
     </span>
   </a>
   <div style="font-size:12px;font-weight:bold;margin-top:4px;color:#c5a880;">Teybikə (1951)</div>
@@ -1132,7 +1108,7 @@ Ayla Abaslı
 <div class="card">
 <div style="width:100px;height:100px;margin:0 auto 15px auto;border-radius:50%;overflow:hidden;border:2px solid rgba(197,168,128,0.4);">
   <span class="img-wm img-wm-circle" style="display:block;width:100%;height:100%;">
-    <img src="Kubra.png" alt="Kubra İsgəndər qızı" style="width:100%;height:100%;object-fit:cover;display:block;">
+    <img src="Kubra.png" alt="Kubra İsgəndər qızı" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy">
   </span>
 </div>
 <div class="card-name">Kubra (1932-2015)</div>
@@ -1142,7 +1118,7 @@ Ayla Abaslı
 <div style="text-align:center;">
   <a href="seliqe.png" target="_blank">
     <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="seliqe.png" alt="Səliqə" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;">
+      <img src="seliqe.png" alt="Səliqə" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
     </span>
   </a>
   <div style="font-size:12px;font-weight:bold;margin-top:4px;color:#c5a880;">Səliqə (1966)</div>
@@ -1154,7 +1130,7 @@ Ayla Abaslı
 <div class="card">
 <a href="mirze.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="mirze.png" alt="Mirzə İsgəndər oğlu" style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.2);display:block;">
+    <img src="mirze.png" alt="Mirzə İsgəndər oğlu" style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
   </span>
 </a>
 <div class="card-name">Mirzə İsgəndər oğlu (1931-2019)</div>
@@ -1164,7 +1140,7 @@ Ayla Abaslı
 <div style="text-align:center;">
   <a href="xursud.png" target="_blank">
     <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="xursud.png" alt="Xursud" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;">
+      <img src="xursud.png" alt="Xursud" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
     </span>
   </a>
   <div style="font-size:12px;font-weight:bold;margin-top:4px;color:#c5a880;">Xursud (1966)</div>
@@ -1173,7 +1149,7 @@ Ayla Abaslı
 <div style="text-align:center;">
   <a href="raziyye.png" target="_blank">
     <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="raziyye.png" alt="Raziyyə" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;">
+      <img src="raziyye.png" alt="Raziyyə" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
     </span>
   </a>
   <div style="font-size:12px;font-weight:bold;margin-top:4px;">Raziyyə (1968–2020)</div>
@@ -1182,7 +1158,7 @@ Ayla Abaslı
 <div style="text-align:center;">
   <a href="ziyafet.png" target="_blank">
     <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="ziyafet.png" alt="Ziyafət" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;">
+      <img src="ziyafet.png" alt="Ziyafət" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
     </span>
   </a>
   <div style="font-size:12px;font-weight:bold;margin-top:4px;">Ziyafət (1969)</div>
@@ -1194,7 +1170,7 @@ Ayla Abaslı
 <div class="card">
 <a href="hacıağa.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="hacıağa.png" alt="Hacıağa" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;">
+    <img src="hacıağa.png" alt="Hacıağa" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
   </span>
 </a>
 <div class="card-name">Hacıağa İskəndər oğlu Abasov (1937–2015)</div>
@@ -1204,7 +1180,7 @@ Ayla Abaslı
 <div style="text-align:center;flex:1;max-width:200px;background:rgba(255,255,255,0.03);padding:10px;border-radius:6px;border:1px solid rgba(197,168,128,0.2);">
   <a href="isgender2.png" target="_blank">
     <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="isgender2.png" alt="İskəndər Hacıağa oğlu Abasov" style="width:70px;height:70px;object-fit:cover;border-radius:50%;border:1px solid var(--gold);display:block;">
+      <img src="isgender2.png" alt="İskəndər Hacıağa oğlu Abasov" style="width:70px;height:70px;object-fit:cover;border-radius:50%;border:1px solid var(--gold);display:block;" loading="lazy">
     </span>
   </a>
   <div style="font-size:13px;font-weight:bold;margin-top:5px;color:#fff;">Abasov İskəndər (1975)</div>
@@ -1214,7 +1190,7 @@ Ayla Abaslı
 <div style="text-align:center;flex:1;max-width:200px;background:rgba(255,255,255,0.03);padding:10px;border-radius:6px;border:1px solid rgba(197,168,128,0.2);">
   <a href="Samira.png" target="_blank">
     <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="Samira.png" alt="Samirə Abasova" style="width:70px;height:70px;object-fit:cover;border-radius:50%;border:1px solid var(--gold);display:block;">
+      <img src="Samira.png" alt="Samirə Abasova" style="width:70px;height:70px;object-fit:cover;border-radius:50%;border:1px solid var(--gold);display:block;" loading="lazy">
     </span>
   </a>
   <div style="font-size:13px;font-weight:bold;margin-top:5px;color:#fff;">Samirə Abbasova (1973)</div>
@@ -1228,7 +1204,6 @@ Ayla Abaslı
 
 <div class="gold-div">— ✦ —</div>
 
-<!-- ALDOST QOLU -->
 <div class="sec-title">Aldost Bəy Qolu</div>
 <div class="generation">
 <div class="gen-label">Həyat yoldaşı Mənsumə xanım ilə</div>
@@ -1241,7 +1216,7 @@ Ayla Abaslı
 <div class="card" style="text-align:center;">
 <a href="Sura.png" target="_blank" style="display:inline-block;margin-bottom:8px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="Sura.png" alt="Əliyeva Sura Aldost Qızı" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;">
+    <img src="Sura.png" alt="Əliyeva Sura Aldost Qızı" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
   </span>
 </a>
 <div class="card-name">Sura Xətti</div>
@@ -1259,7 +1234,7 @@ Ayla Abaslı
 </div>
 </div>
 
-<!-- ═══ TAB: BİOQRAFİYALAR ═══ -->
+<!-- ═══ BİOQRAFİYALAR TAB ═══ -->
 <div id="tab-bio" class="tab-content">
 <div class="wrap">
 <div class="sec-title">Şəxsiyyət Portretləri</div>
@@ -1281,9 +1256,9 @@ Ayla Abaslı
 <div class="corner"></div><div class="corner br"></div>
 <div class="bio-tag">1910 — 1971 · Stilist · dərzi</div>
 <div class="bio-name">Bikə Mürşid qızı Abasova</div>
-<div class="bio-role">Öz dövründə ən yaxşı dərzi qadınlara paltar tikirmiş, Xalq təbabəti ilə xəstə insanları sağaldırmış şəfa verirmiş</div>
+<div class="bio-role">Öz dövründə ən yaxşı dərzi, xalq təbabəti mütəxəssisi</div>
 <div class="bio-text">
-<p>saatlı Rayonu Əlisultanlı kəndindən gəlin gəlibmiç 1971-ci ildə uzun sürən xəstəlikdən vəfat etmişdir Əhmədbəyli qəbrstanlığndadəfn edilib.</p>
+<p>Saatlı Rayonu Əlisultanlı kəndindən gəlin gəlibmiş. 1971-ci ildə uzun sürən xəstəlikdən vəfat etmişdir. Əhmədbəyli qəbristanlığında dəfn edilib.</p>
 </div>
 </div>
 
@@ -1305,7 +1280,7 @@ Ayla Abaslı
 <div class="bio-name">Qulam İskəndər oğlu Məmmədov</div>
 <div class="bio-role">«İzvestiya» Azərbaycan · 40-cı Aviabriqada</div>
 <div class="bio-text">
-<p>21 aprel 1915-ci ildə Əhmədbəyli kəndində anadan olmuşdur. 40-cı aviabriqudada pilot kimi xidmət etmişdir. Volxov cəbhəsində Leninqradın mühasirəsinin yarılmasında iştirak etmiş, «Leninqrad uğrunda döyüşün xatirəsinə» nişanı ilə təltif edilmişdir.</p>
+<p>21 aprel 1915-ci ildə Əhmədbəyli kəndində anadan olmuşdur. 40-cı aviabriqadada pilot kimi xidmət etmişdir. Volxov cəbhəsində Leninqradın mühasirəsinin yarılmasında iştirak etmiş, «Leninqrad uğrunda döyüşün xatirəsinə» nişanı ilə təltif edilmişdir.</p>
 <p>«I Dərəcəli Vətən Müharibəsi» Ordeni sahibidir (01.08.1986). Müharibədən sonra «İzvestiya» (Azərbaycan) qəzetinin Baş redaktoru vəzifəsini tutmuşdur. «Ölməz Alay» beynəlxalq arxivlərində əbədiləşdirilmişdir.</p>
 </div>
 </div>
@@ -1338,7 +1313,7 @@ Ayla Abaslı
 <div class="bio-name">Əliağa Saday oğlu Şıxəliyev</div>
 <div class="bio-role">Saatlı Rayonu Kolxozda Baş mühasib</div>
 <div class="bio-text">
-<p>1972–1977-ci illərdə Gəncə Kənd Təsərrüfatı İnstitutunun İktisadiyyat fakültəsini bitirmiş. Saatlı «MirBəşir» kolxozunda iqtisadçı kimi fəaliyyətə başlamışdır.</p>
+<p>1972–1977-ci illərdə Gəncə Kənd Təsərrüfatı İnstitutunun İqtisadiyyat fakültəsini bitirmiş. Saatlı «MirBəşir» kolxozunda iqtisadçı kimi fəaliyyətə başlamışdır.</p>
 <p>Saatlı Rayonu Aqrar sənayesi idarəsinin rəisi.</p>
 </div>
 </div>
@@ -1382,7 +1357,7 @@ Ayla Abaslı
 <div class="bio-name">Gündüz Hüseynəli oğlu Rüstəmov</div>
 <div class="bio-role">Saatlı rayonu fermer təsərrüfatı</div>
 <div class="bio-text">
-<p>1976–1981-ci illərdə Ukraynada Universtetdə oxuyub. Energetika, tikinti və sənaye sahələrində fəaliyyət göstərmişdir.</p>
+<p>1976–1981-ci illərdə Ukraynada Universitetdə oxuyub. Energetika, tikinti və sənaye sahələrində fəaliyyət göstərmişdir.</p>
 </div>
 </div>
 
@@ -1448,9 +1423,9 @@ Ayla Abaslı
 
 <div class="bio-card">
 <div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1975 · Stomotoloq</div>
+<div class="bio-tag">1975 · Stomatoloq</div>
 <div class="bio-name">Şamam Məmmədəli qızı Abasova</div>
-<div class="bio-role">Bakı Biznes fəaliyyəti ilə məşöuldu</div>
+<div class="bio-role">Bakı Biznes fəaliyyəti ilə məşğuldu</div>
 <div class="bio-text">
 <p>Tibb Texnikomunu bitirib.</p>
 </div>
@@ -1460,9 +1435,9 @@ Ayla Abaslı
 <div class="corner"></div><div class="corner br"></div>
 <div class="bio-tag">1989 · Biznesmen</div>
 <div class="bio-name">Səbinə Fəxrəddin qızı Abasova</div>
-<div class="bio-role">Bakı Biznes fəaliyyəti ilə məşöuldu</div>
+<div class="bio-role">Bakı Biznes fəaliyyəti ilə məşğuldu</div>
 <div class="bio-text">
-<p>Azərbaycan Dillər Universtetini bitirib.</p>
+<p>Azərbaycan Dillər Universitetini bitirib.</p>
 </div>
 </div>
 
@@ -1472,7 +1447,7 @@ Ayla Abaslı
 <div class="bio-name">Humay Abasova</div>
 <div class="bio-role">Azər Kosmos</div>
 <div class="bio-text">
-<p>Bakı Dövlət Universtetini bitirib.</p>
+<p>Bakı Dövlət Universitetini bitirib.</p>
 </div>
 </div>
 
@@ -1502,7 +1477,7 @@ Ayla Abaslı
 <div class="bio-name">Könül Əlisəftər qızı Abasova</div>
 <div class="bio-role">Azərbaycan Respublikası Ədliyyə Nazirliyi</div>
 <div class="bio-text">
-<p>1992–1997-ci illərdə Bakı Dövlət Universtetinin Hüquq fakultəsini bitirib.</p>
+<p>1992–1997-ci illərdə Bakı Dövlət Universitetinin Hüquq fakultəsini bitirib.</p>
 </div>
 </div>
 
@@ -1512,7 +1487,7 @@ Ayla Abaslı
 <div class="bio-name">İradə İlham qızı Abasova</div>
 <div class="bio-role">Vaşinqton şəhərində İT şirkətində PR Menecer</div>
 <div class="bio-text">
-<p>2003–2009-cu illərdə Azərbaycan Dillər Universtetində sonra isə təhsilini Voşinqton şəhərində davam etdirib.</p>
+<p>2003–2009-cu illərdə Azərbaycan Dillər Universitetində, sonra isə təhsilini Vaşinqton şəhərində davam etdirib.</p>
 </div>
 </div>
 
@@ -1572,7 +1547,7 @@ Ayla Abaslı
 <div class="bio-name">İskəndər Hacıağa oğlu Abasov</div>
 <div class="bio-role">Kiçik sahibkar</div>
 <div class="bio-text">
-<p>1993–1998-ci illərdə Biznes Universtetini bitirmişdi.</p>
+<p>1993–1998-ci illərdə Biznes Universitetini bitirmişdi.</p>
 </div>
 </div>
 
@@ -1643,7 +1618,7 @@ Ayla Abaslı
 <div class="eldost-header-block">
 <div class="eldost-img-box">
   <span class="img-wm" style="display:inline-block;">
-    <img src="eldost.png" alt="Eldost Səmidağa oğlu Azayev" style="width:220px;height:auto;border:3px solid #d4af37;border-radius:8px;display:block;">
+    <img src="eldost.png" alt="Eldost Səmidağa oğlu Azayev" style="width:220px;height:auto;border:3px solid #d4af37;border-radius:8px;display:block;" loading="lazy">
   </span>
 </div>
 <h2>Eldost Səmidağa oğlu Azayev</h2>
@@ -1674,7 +1649,7 @@ Heyf səndən, Eldost müəllim! Evindən yox, Elindən getdin. Xatirən şəcə
 </div>
 </div>
 
-<!-- ═══ TAB: TARİX ═══ -->
+<!-- ═══ TARİX TAB ═══ -->
 <div id="tab-tarix" class="tab-content">
 <div class="wrap">
 <div class="sec-title">Tarixi Salnamə</div>
@@ -1723,18 +1698,14 @@ Heyf səndən, Eldost müəllim! Evindən yox, Elindən getdin. Xatirən şəcə
 </div>
 </div>
 
-<!-- ═══ TAB: FOTO ARXİVİ ═══ -->
+<!-- ═══ FOTO ARXİVİ TAB ═══ -->
 <div id="tab-foto" class="tab-content">
 <div class="wrap">
 <div class="sec-title">Foto Arxivi</div>
-
-<!-- Admin deyil: mesaj göster -->
 <div id="photoAdminMsg" class="admin-only-msg">
   <p>📸 Foto arxivini yalnız sayt administratoru idarə edə bilər.</p>
   <button class="admin-login-btn" onclick="openAdminModal()">Admin Girişi</button>
 </div>
-
-<!-- Admin: upload zonası -->
 <div id="photoZone" class="upload-zone"
 ondragover="event.preventDefault();this.classList.add('drag-over')"
 ondragleave="this.classList.remove('drag-over')"
@@ -1745,11 +1716,8 @@ onclick="document.getElementById('photoInput').click()">
 <div class="upload-hint">Köhnə foto, şəxsiyyət vəsiqəsi, həyat anları — hamısını buraya əlavə edin</div>
 <button class="upload-btn" onclick="event.stopPropagation();document.getElementById('photoInput').click()">Foto Seç</button>
 <div class="type-row">
-<span class="type-badge">JPG</span>
-<span class="type-badge">PNG</span>
-<span class="type-badge">WEBP</span>
-<span class="type-badge">GIF</span>
-<span class="type-badge">HEIC</span>
+<span class="type-badge">JPG</span><span class="type-badge">PNG</span>
+<span class="type-badge">WEBP</span><span class="type-badge">GIF</span><span class="type-badge">HEIC</span>
 </div>
 </div>
 <input type="file" id="photoInput" accept="image/*" multiple onchange="addPhotos(this.files)">
@@ -1761,7 +1729,7 @@ onclick="document.getElementById('photoInput').click()">
 </div>
 </div>
 
-<!-- ═══ TAB: FAYLLAR ═══ -->
+<!-- ═══ FAYLLAR TAB ═══ -->
 <div id="tab-fayllar" class="tab-content">
 <div class="wrap">
 <div class="sec-title">Sənəd Arxivi</div>
@@ -1773,7 +1741,6 @@ onclick="document.getElementById('photoInput').click()">
 </div>
 
 <div id="subtab-docs" class="subtab-content active">
-<!-- Admin mesaj -->
 <div id="docAdminMsg" class="admin-only-msg">
   <p>📄 Sənədləri yalnız sayt administratoru yükləyə bilər.</p>
   <button class="admin-login-btn" onclick="openAdminModal()">Admin Girişi</button>
@@ -1869,41 +1836,38 @@ onclick="document.getElementById('otherInput').click()">
 </div>
 </div>
 
-<!-- LIGHTBOX -->
+<!-- LİGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
 <button class="lb-close" onclick="closeLightbox()">✕</button>
 <img id="lbImg" src="" alt="">
 <div class="lb-caption" id="lbCaption"></div>
 </div>
 
-<!-- FOOTER -->
 <footer>
 <p>Abasovlar Nəsil Kitabı · Kəlbəlayi Azay Bəy Məmmədəli oğlu Abasov · Saatlı Rayonu · 1861 — 2026</p>
 </footer>
 
 <script>
-// ══════════════════════════════════════════════
-// ADMİN SİSTEMİ
-// Şifrəni dəyişmək üçün aşağıdakı sətri redaktə edin:
+// ════════════════════════════════════════
+// KONFİQURASİYA
+// ════════════════════════════════════════
 const ADMIN_PASSWORD = 'Ayla2013';
-// ══════════════════════════════════════════════
-
 let isAdmin = false;
 
+// ════════════════════════════════════════
+// ADMİN SİSTEMİ
+// ════════════════════════════════════════
 function openAdminModal() {
   document.getElementById('adminModal').classList.add('open');
   document.getElementById('adminPass').value = '';
   document.getElementById('adminError').style.display = 'none';
   setTimeout(() => document.getElementById('adminPass').focus(), 100);
 }
-
 function closeAdminModal() {
   document.getElementById('adminModal').classList.remove('open');
 }
-
 function adminLogin() {
-  const pass = document.getElementById('adminPass').value;
-  if (pass === ADMIN_PASSWORD) {
+  if (document.getElementById('adminPass').value === ADMIN_PASSWORD) {
     isAdmin = true;
     closeAdminModal();
     updateAdminUI();
@@ -1913,65 +1877,40 @@ function adminLogin() {
     document.getElementById('adminPass').focus();
   }
 }
-
 function adminLogout() {
   isAdmin = false;
   updateAdminUI();
 }
-
 function updateAdminUI() {
-  const badge = document.getElementById('adminBadge');
-  // Admin badge
-  badge.classList.toggle('visible', isAdmin);
-
-  // Upload zonaları
-  const zones = ['photoZone','docUpload','videoUpload','audioUpload','digerUpload'];
-  zones.forEach(id => {
+  document.getElementById('adminBadge').classList.toggle('visible', isAdmin);
+  ['photoZone','docUpload','videoUpload','audioUpload','digerUpload'].forEach(id => {
     const el = document.getElementById(id);
     if (el) el.classList.toggle('admin-visible', isAdmin);
   });
-
-  // Admin mesajları (giriş etməyənlər üçün) — admin deyilsə görünsün
-  const msgs = ['photoAdminMsg','docAdminMsg','videoAdminMsg','audioAdminMsg','digerAdminMsg'];
-  msgs.forEach(id => {
+  ['photoAdminMsg','docAdminMsg','videoAdminMsg','audioAdminMsg','digerAdminMsg'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
-    if (isAdmin) {
-      el.classList.remove('visible');
-      el.classList.add('hidden');
-    } else {
-      el.classList.add('visible');
-      el.classList.remove('hidden');
-    }
+    el.classList.toggle('visible', !isAdmin);
+    el.classList.toggle('hidden', isAdmin);
   });
-
-  // Silmə düymələri
-  document.querySelectorAll('.file-remove').forEach(btn => {
-    btn.classList.toggle('admin-visible', isAdmin);
-  });
-  document.querySelectorAll('.gal-remove').forEach(btn => {
-    btn.style.display = isAdmin ? '' : 'none';
-  });
-
-  // Foto yükləmə inputu
+  document.querySelectorAll('.file-remove').forEach(btn => btn.classList.toggle('admin-visible', isAdmin));
+  document.querySelectorAll('.gal-remove').forEach(btn => btn.style.display = isAdmin ? '' : 'none');
   document.getElementById('photoInput').disabled = !isAdmin;
-
-  // Galleriya yenilənsin (silmə düymələri üçün)
   renderGallery();
   ['docs','video','audio','diger'].forEach(renderFileList);
 }
 
-// ══════════════════════════════════════════════
+// ════════════════════════════════════════
 // TAB SİSTEMİ
-// ══════════════════════════════════════════════
+// ════════════════════════════════════════
 function showTab(id, btn) {
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('nav.tabs button').forEach(el => el.classList.remove('active'));
   document.getElementById('tab-' + id).classList.add('active');
   btn.classList.add('active');
-  if (id === 'bio') setTimeout(initBioCards, 60);
+  // Bio kartları yalnız o tab açılanda init et
+  if (id === 'bio') requestAnimationFrame(initBioCards);
 }
-
 function showSubtab(id, btn) {
   document.querySelectorAll('.subtab-content').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.subtabs button').forEach(el => el.classList.remove('active'));
@@ -1979,39 +1918,29 @@ function showSubtab(id, btn) {
   btn.classList.add('active');
 }
 
-// ══════════════════════════════════════════════
+// ════════════════════════════════════════
 // FOTO ARXİVİ
-// ══════════════════════════════════════════════
+// ════════════════════════════════════════
 const photos = [];
-
 function addPhotos(files) {
   if (!isAdmin) return;
   Array.from(files).forEach(file => {
     if (!file.type.startsWith('image/')) return;
     const reader = new FileReader();
-    reader.onload = e => {
-      photos.push({ name: file.name, src: e.target.result });
-      renderGallery();
-    };
+    reader.onload = e => { photos.push({ name: file.name, src: e.target.result }); renderGallery(); };
     reader.readAsDataURL(file);
   });
 }
-
 function handlePhotoDrop(e) {
   if (!isAdmin) return;
   e.preventDefault();
   document.getElementById('photoZone').classList.remove('drag-over');
   addPhotos(e.dataTransfer.files);
 }
-
 function renderGallery() {
   const grid = document.getElementById('galleryGrid');
   const empty = document.getElementById('emptyGallery');
-  if (photos.length === 0) {
-    grid.innerHTML = '';
-    empty.style.display = 'block';
-    return;
-  }
+  if (!photos.length) { grid.innerHTML = ''; empty.style.display = 'block'; return; }
   empty.style.display = 'none';
   grid.innerHTML = photos.map((p, i) => `
     <div class="gal-item" onclick="openLightbox(${i})">
@@ -2022,90 +1951,61 @@ function renderGallery() {
       ${isAdmin ? `<button class="gal-remove" onclick="event.stopPropagation();removePhoto(${i})" title="Sil">✕</button>` : ''}
     </div>`).join('');
 }
-
-function removePhoto(i) {
-  if (!isAdmin) return;
-  photos.splice(i, 1);
-  renderGallery();
-}
-
+function removePhoto(i) { if (!isAdmin) return; photos.splice(i,1); renderGallery(); }
 function openLightbox(i) {
   document.getElementById('lbImg').src = photos[i].src;
   document.getElementById('lbCaption').textContent = photos[i].name;
   document.getElementById('lightbox').classList.add('open');
 }
-function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
-}
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
 
-// ══════════════════════════════════════════════
+// ════════════════════════════════════════
 // FAYL SİSTEMİ
-// ══════════════════════════════════════════════
-const fileStore = { docs: [], video: [], audio: [], diger: [] };
+// ════════════════════════════════════════
+const fileStore = { docs:[], video:[], audio:[], diger:[] };
 const fileIcons = {
-  'pdf':'📕','doc':'📝','docx':'📝','xls':'📊','xlsx':'📊','txt':'📃',
-  'mp4':'🎬','mov':'🎬','avi':'🎬','mkv':'🎬',
-  'mp3':'🎵','wav':'🎵','m4a':'🎵','ogg':'🎵',
-  'jpg':'🖼️','jpeg':'🖼️','png':'🖼️','gif':'🖼️',
-  'zip':'📦','rar':'📦','default':'📎'
+  pdf:'📕',doc:'📝',docx:'📝',xls:'📊',xlsx:'📊',txt:'📃',
+  mp4:'🎬',mov:'🎬',avi:'🎬',mkv:'🎬',
+  mp3:'🎵',wav:'🎵',m4a:'🎵',ogg:'🎵',
+  jpg:'🖼️',jpeg:'🖼️',png:'🖼️',gif:'🖼️',
+  zip:'📦',rar:'📦',default:'📎'
 };
-
-function getIcon(name) {
-  const ext = name.split('.').pop().toLowerCase();
-  return fileIcons[ext] || fileIcons['default'];
-}
-function formatSize(b) {
-  if(b<1024) return b+' B';
-  if(b<1048576) return (b/1024).toFixed(1)+' KB';
-  return (b/1048576).toFixed(1)+' MB';
-}
+const getIcon = name => fileIcons[name.split('.').pop().toLowerCase()] || fileIcons.default;
+const fmtSize = b => b < 1024 ? b+' B' : b < 1048576 ? (b/1024).toFixed(1)+' KB' : (b/1048576).toFixed(1)+' MB';
 
 function addFiles(files, cat) {
   if (!isAdmin) return;
-  Array.from(files).forEach(f => {
-    fileStore[cat].push({ name: f.name, size: f.size });
-    renderFileList(cat);
-  });
+  Array.from(files).forEach(f => { fileStore[cat].push({name:f.name, size:f.size}); });
+  renderFileList(cat);
 }
-
 function handleFileDrop(e, cat) {
   if (!isAdmin) return;
-  e.preventDefault();
-  e.currentTarget.classList.remove('drag-over');
+  e.preventDefault(); e.currentTarget.classList.remove('drag-over');
   addFiles(e.dataTransfer.files, cat);
 }
-
 function renderFileList(cat) {
-  const list = document.getElementById(cat + 'List');
-  const emptyId = 'empty' + cat.charAt(0).toUpperCase() + cat.slice(1);
+  const list = document.getElementById(cat+'List');
+  const emptyId = 'empty'+cat.charAt(0).toUpperCase()+cat.slice(1);
   const empty = document.getElementById(emptyId);
   const files = fileStore[cat];
-  if (files.length === 0) {
-    list.innerHTML = '';
-    if (empty) empty.style.display = 'block';
-    return;
-  }
-  if (empty) empty.style.display = 'none';
-  list.innerHTML = files.map((f, i) => `
+  if (!files.length) { list.innerHTML=''; if(empty) empty.style.display='block'; return; }
+  if (empty) empty.style.display='none';
+  list.innerHTML = files.map((f,i) => `
     <div class="file-item">
       <span class="file-icon">${getIcon(f.name)}</span>
       <div class="file-info">
         <div class="file-name" title="${f.name}">${f.name}</div>
-        <div class="file-meta">${formatSize(f.size)}</div>
+        <div class="file-meta">${fmtSize(f.size)}</div>
       </div>
       ${isAdmin ? `<button class="file-remove admin-visible" onclick="removeFile('${cat}',${i})" title="Sil">✕</button>` : ''}
     </div>`).join('');
 }
+function removeFile(cat,i) { if(!isAdmin) return; fileStore[cat].splice(i,1); renderFileList(cat); }
 
-function removeFile(cat, i) {
-  if (!isAdmin) return;
-  fileStore[cat].splice(i, 1);
-  renderFileList(cat);
-}
-
-// ══════════════════════════════════════════════
-// BİO KART "DAHA ÇOX" FUNKSİONALLIĞI
-// ══════════════════════════════════════════════
+// ════════════════════════════════════════
+// BİO KARTLARI — "DAHA ÇOX"
+// IntersectionObserver ilə yalnız görünən kartlar init edilir
+// ════════════════════════════════════════
 let bioCardsInited = false;
 function initBioCards() {
   if (bioCardsInited) return;
@@ -2113,32 +2013,27 @@ function initBioCards() {
   document.querySelectorAll('.bio-card').forEach(card => {
     const textDiv = card.querySelector('.bio-text');
     if (!textDiv) return;
-    const fullH = textDiv.scrollHeight;
+    // scrollHeight-i oxumaq reflow yaradır — bütün kartları batch-lə oxuyuruq
+    const h = textDiv.scrollHeight;
+    if (h <= 126) return;
     textDiv.classList.add('collapsed');
-    if (fullH <= 126) {
-      textDiv.classList.remove('collapsed');
-      return;
-    }
     const btn = document.createElement('button');
     btn.className = 'bio-read-more visible';
     btn.textContent = 'daha çox ▾';
-    card.appendChild(btn);
     let expanded = false;
-    btn.addEventListener('click', function(e) {
+    btn.addEventListener('click', e => {
       e.stopPropagation();
       expanded = !expanded;
-      if (expanded) {
-        textDiv.classList.remove('collapsed');
-        btn.textContent = 'daha az ▴';
-      } else {
-        textDiv.classList.add('collapsed');
-        btn.textContent = 'daha çox ▾';
-      }
+      textDiv.classList.toggle('collapsed', !expanded);
+      btn.textContent = expanded ? 'daha az ▴' : 'daha çox ▾';
     });
+    card.appendChild(btn);
   });
 }
 
-// Başlanğıc
+// ════════════════════════════════════════
+// İLKLƏNDİRMƏ
+// ════════════════════════════════════════
 renderGallery();
 ['docs','video','audio','diger'].forEach(renderFileList);
 updateAdminUI();
