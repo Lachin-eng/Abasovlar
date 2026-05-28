@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Abasovlar Nəsil Kitabı</title>
-<!-- ✅ DÜZƏLDİLDİ: Favicon artıq <style> xaricindədir -->
 <link rel="icon" type="image/png" href="favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
@@ -47,6 +46,206 @@ radial-gradient(ellipse 80% 50% at 15% 10%, rgba(201,168,76,0.06) 0%, transparen
 radial-gradient(ellipse 60% 40% at 85% 85%, rgba(139,32,32,0.05) 0%, transparent 55%),
 repeating-linear-gradient(45deg, transparent, transparent 70px, rgba(201,168,76,0.012) 70px, rgba(201,168,76,0.012) 71px);
 pointer-events:none; z-index:0;
+}
+
+/* ══════════════════════════════════════════
+   ADMİN GİRİŞ MODALİ
+   ══════════════════════════════════════════ */
+#adminModal {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.88);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+}
+#adminModal.open { display: flex; }
+.admin-box {
+  background: linear-gradient(135deg, rgba(28,24,18,0.98), rgba(14,12,8,0.98));
+  border: 1px solid var(--gold);
+  padding: 44px 50px;
+  max-width: 380px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+}
+.admin-box::after {
+  content: '';
+  position: absolute; inset: 4px;
+  border: 1px solid rgba(201,168,76,0.15);
+  pointer-events: none;
+}
+.admin-title {
+  font-family: 'Cinzel', serif;
+  font-size: 13px; letter-spacing: .28em;
+  color: var(--gold); text-transform: uppercase;
+  margin-bottom: 28px;
+}
+.admin-input {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(201,168,76,0.3);
+  color: var(--parchment);
+  font-family: 'EB Garamond', serif;
+  font-size: 16px;
+  padding: 11px 16px;
+  margin-bottom: 14px;
+  outline: none;
+  transition: border-color .3s;
+}
+.admin-input:focus { border-color: var(--gold); }
+.admin-btn {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(201,168,76,0.18), rgba(201,168,76,0.08));
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 11px; letter-spacing: .2em;
+  padding: 13px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all .3s;
+  margin-bottom: 12px;
+}
+.admin-btn:hover { background: rgba(201,168,76,0.28); }
+.admin-cancel {
+  background: none; border: none;
+  color: var(--muted); font-size: 12px;
+  cursor: pointer; font-family: 'Cinzel', serif;
+  letter-spacing: .1em;
+  transition: color .2s;
+}
+.admin-cancel:hover { color: var(--parchment); }
+.admin-error {
+  color: #E08080; font-size: 13px;
+  margin-bottom: 12px; display: none;
+  font-style: italic;
+}
+
+/* Admin badge - yuxarı sağda */
+#adminBadge {
+  position: fixed;
+  top: 14px; right: 18px;
+  z-index: 500;
+  display: none;
+}
+#adminBadge.visible { display: flex; align-items: center; gap: 10px; }
+.admin-badge-text {
+  font-family: 'Cinzel', serif;
+  font-size: 10px; letter-spacing: .16em;
+  color: var(--gold); text-transform: uppercase;
+  background: rgba(12,11,9,0.9);
+  border: 1px solid rgba(201,168,76,0.3);
+  padding: 5px 12px;
+}
+.admin-logout {
+  background: none; border: 1px solid rgba(201,168,76,0.25);
+  color: var(--muted); font-size: 10px;
+  font-family: 'Cinzel', serif; letter-spacing: .1em;
+  padding: 5px 10px; cursor: pointer;
+  transition: all .2s;
+}
+.admin-logout:hover { color: var(--gold); border-color: var(--gold); }
+
+/* Upload zona — yalnız admin görsün */
+.upload-zone {
+  border: 2px dashed rgba(201,168,76,.28);
+  border-radius: 3px; padding: 55px 30px;
+  text-align: center; cursor: pointer;
+  transition: all .3s;
+  background: rgba(201,168,76,.018);
+  display: none; /* Default: gizli */
+}
+.upload-zone.admin-visible { display: block; }
+.upload-zone.drag-over, .upload-zone:hover {
+  border-color: var(--gold);
+  background: rgba(201,168,76,.055);
+}
+
+/* Admin-only mesaj — giriş etməyənlər üçün */
+.admin-only-msg {
+  text-align: center;
+  padding: 40px 20px;
+  border: 1px dashed rgba(201,168,76,0.15);
+  margin-bottom: 24px;
+  display: block;
+}
+.admin-only-msg.hidden { display: none; }
+.admin-only-msg p {
+  color: var(--muted); font-style: italic; font-size: 15px;
+  margin-bottom: 16px;
+}
+.admin-login-btn {
+  background: none;
+  border: 1px solid rgba(201,168,76,0.3);
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 10px; letter-spacing: .18em;
+  padding: 9px 22px; cursor: pointer;
+  text-transform: uppercase;
+  transition: all .3s;
+}
+.admin-login-btn:hover { background: rgba(201,168,76,0.08); border-color: var(--gold); }
+
+/* ══════════════════════════════════════════
+   WATERMARK — KİÇİK VƏ ŞƏFFAF
+   ══════════════════════════════════════════ */
+.img-wm {
+  position: relative;
+  display: inline-block;
+}
+.img-wm::after {
+  content: 'ABASOVLAR';
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  font-family: 'Cinzel', serif;
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: rgba(201, 168, 76, 0.35);
+  background: rgba(12, 11, 9, 0.30);
+  padding: 2px 5px;
+  border: 1px solid rgba(201, 168, 76, 0.18);
+  border-radius: 1px;
+  pointer-events: none;
+  user-select: none;
+  backdrop-filter: blur(1px);
+  text-transform: uppercase;
+  white-space: nowrap;
+  z-index: 5;
+}
+/* Avatar şəkilləri üçün — demək olar ki görünməz */
+.img-wm.img-wm-circle::after {
+  font-size: 6px;
+  bottom: 3px;
+  right: 3px;
+  padding: 1px 4px;
+  letter-spacing: 0.1em;
+  color: rgba(201, 168, 76, 0.28);
+  background: rgba(12, 11, 9, 0.25);
+  border-color: rgba(201, 168, 76, 0.14);
+}
+/* Böyük şəkillər üçün */
+.img-wm.img-wm-full {
+  display: block;
+  width: 100%;
+}
+.img-wm.img-wm-full::after {
+  font-size: 8px;
+  bottom: 8px;
+  right: 10px;
+  padding: 3px 7px;
+  color: rgba(201, 168, 76, 0.38);
+  background: rgba(12, 11, 9, 0.38);
+}
+/* Galleriya şəkilləri — yalnız hover-da */
+.gal-item .img-wm::after {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.gal-item:hover .img-wm::after {
+  opacity: 1;
 }
 
 header {
@@ -342,17 +541,6 @@ color:var(--muted); font-style:normal;
 font-family:'Cinzel',serif; text-transform:uppercase;
 }
 
-.upload-zone {
-border:2px dashed rgba(201,168,76,.28);
-border-radius:3px; padding:55px 30px;
-text-align:center; cursor:pointer;
-transition:all .3s;
-background:rgba(201,168,76,.018);
-}
-.upload-zone.drag-over, .upload-zone:hover {
-border-color:var(--gold);
-background:rgba(201,168,76,.055);
-}
 .upload-icon { font-size:46px; margin-bottom:16px; opacity:.55; display:block; }
 .upload-title {
 font-family:'Cinzel',serif; font-size:15px;
@@ -425,7 +613,9 @@ background:none; border:none;
 color:var(--muted); cursor:pointer;
 font-size:17px; padding:3px 8px;
 transition:color .2s; flex-shrink:0;
+display: none;
 }
+.file-remove.admin-visible { display: inline-block; }
 .file-remove:hover { color:var(--accent); }
 
 .lightbox {
@@ -502,69 +692,32 @@ nav.tabs button { font-size:10px; padding:13px 5px; letter-spacing:.05em; }
 .stat-item { min-width:100px; padding:20px 10px; }
 .root-card { padding:26px 20px; }
 }
-
-/* ══════════════════════════════════════════════
-   WATERMARK — ŞƏFFAFİ LOQO STİLİ
-   Bütün .img-wm sarğı içindəki şəkillərə tətbiq
-   ══════════════════════════════════════════════ */
-.img-wm {
-  position: relative;
-  display: inline-block;
-}
-.img-wm::after {
-  content: 'ABASOVLAR';
-  position: absolute;
-  bottom: 8px;
-  right: 8px;
-  font-family: 'Cinzel', serif;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  color: rgba(201, 168, 76, 0.55);
-  background: rgba(12, 11, 9, 0.45);
-  padding: 3px 7px;
-  border: 1px solid rgba(201, 168, 76, 0.28);
-  border-radius: 1px;
-  pointer-events: none;
-  user-select: none;
-  backdrop-filter: blur(2px);
-  text-transform: uppercase;
-  white-space: nowrap;
-  z-index: 5;
-}
-/* Dairəvi avatar şəkilləri üçün kiçik watermark */
-.img-wm.img-wm-circle::after {
-  font-size: 7.5px;
-  bottom: 4px;
-  right: 4px;
-  padding: 2px 5px;
-  letter-spacing: 0.14em;
-}
-/* Böyük şəkillər (tam en) üçün mərkəzə qoy */
-.img-wm.img-wm-full {
-  display: block;
-  width: 100%;
-}
-.img-wm.img-wm-full::after {
-  font-size: 11px;
-  bottom: 12px;
-  right: 14px;
-  padding: 4px 10px;
-  color: rgba(201, 168, 76, 0.50);
-  background: rgba(12, 11, 9, 0.52);
-}
-/* Galleriya şəkilləri üçün (hover-da görünsün) */
-.gal-item .img-wm::after {
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.gal-item:hover .img-wm::after {
-  opacity: 1;
-}
 </style>
 </head>
 
 <body>
+
+<!-- ══════════════════════════════════════════
+     ADMİN GİRİŞ MODALİ
+     ══════════════════════════════════════════ -->
+<div id="adminModal">
+  <div class="admin-box">
+    <div class="admin-title">🔐 Admin Girişi</div>
+    <p style="color:var(--muted);font-size:14px;margin-bottom:20px;font-style:italic;">
+      Yalnız sayt administratoru fayl yükləyə bilər
+    </p>
+    <div id="adminError" class="admin-error">Şifrə yanlışdır. Yenidən cəhd edin.</div>
+    <input type="password" id="adminPass" class="admin-input" placeholder="Şifrəni daxil edin" onkeydown="if(event.key==='Enter')adminLogin()">
+    <button class="admin-btn" onclick="adminLogin()">Daxil ol</button>
+    <button class="admin-cancel" onclick="closeAdminModal()">İmtina</button>
+  </div>
+</div>
+
+<!-- Admin badge -->
+<div id="adminBadge">
+  <span class="admin-badge-text">👑 Admin: Ayla</span>
+  <button class="admin-logout" onclick="adminLogout()">Çıxış</button>
+</div>
 
 <!-- HEADER -->
 <header>
@@ -623,7 +776,6 @@ Ayla Abaslı
 </div>
 </div>
 
-<!-- Azay.png — böyük format, img-wm-full -->
 <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap; margin:25px auto;">
 <div style="position: relative; display: inline-block; border: 3px solid #d4af37; padding: 5px; background: #fff; max-width: 360px; width: 100%;">
   <span class="img-wm img-wm-full">
@@ -673,7 +825,6 @@ Ayla Abaslı
 
 <div class="generation">
 <div class="gen-label">III Nəsil — Bəybala Bəy Qolu (Ən Geniş Şaxə) · Bikə xanım Mürşid qızı ilə</div>
-<!-- Beybala.png — böyük, img-wm-full -->
 <span class="img-wm img-wm-full" style="max-width:320px;display:block;margin:20px auto;">
   <img src="Beybala.png" alt="Bəybala Azay oğlu Abasov" style="width:100%;border-radius:8px;display:block;">
 </span>
@@ -706,13 +857,11 @@ Ayla Abaslı
 
 <div class="generation">
 <div class="gen-label">IV Nəsil — Məmmədəli Bəy & Lumu Xanımın Övladları</div>
-<!-- lm.png — böyük, img-wm-full -->
 <span class="img-wm img-wm-full" style="max-width:320px;display:block;margin:20px auto;">
   <img src="lm.png" alt="Məmmədəli və Lumu" style="width:100%;border-radius:8px;display:block;">
 </span>
 <div class="cards-container">
 
-<!-- Maarif -->
 <div class="card">
 <a href="maarif.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
@@ -724,7 +873,6 @@ Ayla Abaslı
 <div class="card-children">Məmmədəli 1989 · Fuad 1990</div>
 </div>
 
-<!-- Xanım -->
 <div class="card">
 <a href="xanim.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
@@ -736,7 +884,6 @@ Ayla Abaslı
 <div class="card-children">Elza 1979 · Zöhrab · Zaur</div>
 </div>
 
-<!-- Mahir -->
 <div class="card">
 <a href="Mahir.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
@@ -748,7 +895,6 @@ Ayla Abaslı
 <div class="card-children">Taryel 1988 · Samir 1989 · Pünhan 1993</div>
 </div>
 
-<!-- İlham -->
 <div class="card">
 <a href="ilham.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
@@ -760,7 +906,6 @@ Ayla Abaslı
 <div class="card-children">İradə 1988 · Samirə 1989 · Sevinc 1992 · Əli 2015 · Nərgiiz 2016</div>
 </div>
 
-<!-- Zərbikə -->
 <div class="card">
 <a href="Zerbike.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
@@ -772,7 +917,6 @@ Ayla Abaslı
 <div class="card-children">Səadət 1986 · Sədaqət 1988 · Xuraman 1992 · Rza 1999</div>
 </div>
 
-<!-- Səfərəli -->
 <div class="card">
 <a href="Namiz.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
@@ -784,7 +928,6 @@ Ayla Abaslı
 <div class="card-children">qızı Abaslı Banu 2011</div>
 </div>
 
-<!-- Laçın -->
 <div class="card">
 <a href="lachin.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
@@ -797,7 +940,6 @@ Ayla Abaslı
 <div class="card-children">Ayla Laçın qızı Abaslı 2013 — bu saytın admini</div>
 </div>
 
-<!-- Aftandil -->
 <div class="card">
 <a href="Aftandil.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
@@ -808,7 +950,6 @@ Ayla Abaslı
 <div class="card-years"></div>
 </div>
 
-<!-- Bəybala -->
 <div class="card">
 <a href="Azim.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
@@ -820,7 +961,6 @@ Ayla Abaslı
 <div class="card-children">qızı Aydan Abaslı 2006 · oğlu Emil Abaslı 2014</div>
 </div>
 
-<!-- Şamama -->
 <div class="card">
 <a href="samama.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
@@ -884,7 +1024,6 @@ Ayla Abaslı
 
 <!-- İSKƏNDƏR BƏY QOLU -->
 <div class="sec-title">İskəndər Bəy Qolu</div>
-<!-- Iskender.png — böyük, img-wm-full -->
 <span class="img-wm img-wm-full" style="max-width:320px;display:block;margin:25px auto;">
   <img src="Iskender.png" alt="İsgəndər Azay oğlu Abasov" style="width:100%;border-radius:8px;display:block;">
 </span>
@@ -893,7 +1032,6 @@ Ayla Abaslı
 <div class="gen-label">IV Nəsil — İskəndər Bəy Xətti</div>
 <div class="gen-cards">
 
-<!-- Abas -->
 <div class="card">
 <a href="abas.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
@@ -916,7 +1054,6 @@ Ayla Abaslı
 </div>
 </div>
 
-<!-- Qulam -->
 <div class="card">
 <a href="Qulam.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
@@ -960,7 +1097,6 @@ Ayla Abaslı
 </div>
 </div>
 
-<!-- Şirinbəyim -->
 <div class="card">
 <a href="sirinbeyim.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
@@ -992,7 +1128,6 @@ Ayla Abaslı
 </div>
 </div>
 
-<!-- Kubra -->
 <div class="card">
 <div style="width:100px;height:100px;margin:0 auto 15px auto;border-radius:50%;overflow:hidden;border:2px solid rgba(197,168,128,0.4);">
   <span class="img-wm img-wm-circle" style="display:block;width:100%;height:100%;">
@@ -1015,7 +1150,6 @@ Ayla Abaslı
 </div>
 </div>
 
-<!-- Mirzə -->
 <div class="card">
 <a href="mirze.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
@@ -1056,7 +1190,6 @@ Ayla Abaslı
 </div>
 </div>
 
-<!-- Hacıağa -->
 <div class="card">
 <a href="hacıağa.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
   <span class="img-wm img-wm-circle" style="display:inline-block;">
@@ -1149,7 +1282,7 @@ Ayla Abaslı
 <div class="bio-name">Bikə Mürşid qızı Abasova</div>
 <div class="bio-role">Öz dövründə ən yaxşı dərzi qadınlara paltar tikirmiş, Xalq təbabəti ilə xəstə insanları sağaldırmış şəfa verirmiş</div>
 <div class="bio-text">
-<p>saatlı Rayonu Əlisultanlı kəndindən gəlin gəlibmiç 1971-ci ildə uzun sürən xəstəlikdən  vəfat etmişdir Əhmədbəyli qəbrstanlığndadəfn edilib.</p>
+<p>saatlı Rayonu Əlisultanlı kəndindən gəlin gəlibmiç 1971-ci ildə uzun sürən xəstəlikdən vəfat etmişdir Əhmədbəyli qəbrstanlığndadəfn edilib.</p>
 </div>
 </div>
 
@@ -1204,7 +1337,7 @@ Ayla Abaslı
 <div class="bio-name">Əliağa Saday oğlu Şıxəliyev</div>
 <div class="bio-role">Saatlı Rayonu Kolxozda Baş mühasib</div>
 <div class="bio-text">
-<p>1972–1977-cü illərdə Gəncə Kənd Təsərrüfatı İnstitutunun İktisadiyyat fakültəsini bitirmiş. Saatlı «MirBəşir» kolxozunda iqtisadçı kimi fəaliyyətə başlamışdır.</p>
+<p>1972–1977-ci illərdə Gəncə Kənd Təsərrüfatı İnstitutunun İktisadiyyat fakültəsini bitirmiş. Saatlı «MirBəşir» kolxozunda iqtisadçı kimi fəaliyyətə başlamışdır.</p>
 <p>Saatlı Rayonu Aqrar sənayesi idarəsinin rəisi.</p>
 </div>
 </div>
@@ -1248,7 +1381,7 @@ Ayla Abaslı
 <div class="bio-name">Gündüz Hüseynəli oğlu Rüstəmov</div>
 <div class="bio-role">Saatlı rayonu fermer təsərrüfatı</div>
 <div class="bio-text">
-<p>1976–1981-cı illərdə Ukraynada Universtetdə oxuyub. Energetika, tikinti və sənaye sahələrində fəaliyyət göstərmişdir.</p>
+<p>1976–1981-ci illərdə Ukraynada Universtetdə oxuyub. Energetika, tikinti və sənaye sahələrində fəaliyyət göstərmişdir.</p>
 </div>
 </div>
 
@@ -1593,10 +1726,19 @@ Heyf səndən, Eldost müəllim! Evindən yox, Elindən getdin. Xatirən şəcə
 <div id="tab-foto" class="tab-content">
 <div class="wrap">
 <div class="sec-title">Foto Arxivi</div>
-<div class="upload-zone" id="photoZone" onclick="document.getElementById('photoInput').click()"
+
+<!-- Admin deyil: mesaj göster -->
+<div id="photoAdminMsg" class="admin-only-msg">
+  <p>📸 Foto arxivini yalnız sayt administratoru idarə edə bilər.</p>
+  <button class="admin-login-btn" onclick="openAdminModal()">Admin Girişi</button>
+</div>
+
+<!-- Admin: upload zonası -->
+<div id="photoZone" class="upload-zone"
 ondragover="event.preventDefault();this.classList.add('drag-over')"
 ondragleave="this.classList.remove('drag-over')"
-ondrop="handlePhotoDrop(event)">
+ondrop="handlePhotoDrop(event)"
+onclick="document.getElementById('photoInput').click()">
 <span class="upload-icon">📸</span>
 <div class="upload-title">Foto Yüklə</div>
 <div class="upload-hint">Köhnə foto, şəxsiyyət vəsiqəsi, həyat anları — hamısını buraya əlavə edin</div>
@@ -1613,7 +1755,7 @@ ondrop="handlePhotoDrop(event)">
 <div id="galleryGrid" class="gallery-grid"></div>
 <div id="emptyGallery" class="empty">
 <div class="ei">🖼️</div>
-<p>Hələ foto əlavə edilməyib. Yuxarıdan foto seçin.</p>
+<p>Hələ foto əlavə edilməyib.</p>
 </div>
 </div>
 </div>
@@ -1630,10 +1772,16 @@ ondrop="handlePhotoDrop(event)">
 </div>
 
 <div id="subtab-docs" class="subtab-content active">
-<div class="upload-zone" onclick="document.getElementById('docInput').click()"
+<!-- Admin mesaj -->
+<div id="docAdminMsg" class="admin-only-msg">
+  <p>📄 Sənədləri yalnız sayt administratoru yükləyə bilər.</p>
+  <button class="admin-login-btn" onclick="openAdminModal()">Admin Girişi</button>
+</div>
+<div id="docUpload" class="upload-zone"
 ondragover="event.preventDefault();this.classList.add('drag-over')"
 ondragleave="this.classList.remove('drag-over')"
-ondrop="handleFileDrop(event,'docs')">
+ondrop="handleFileDrop(event,'docs')"
+onclick="document.getElementById('docInput').click()">
 <span class="upload-icon">📄</span>
 <div class="upload-title">Sənəd Yüklə</div>
 <div class="upload-hint">Doğum şəhadətnaməsi, hərbi bilet, diplom, vəsiqə, arxiv çıxarışı</div>
@@ -1650,10 +1798,15 @@ ondrop="handleFileDrop(event,'docs')">
 </div>
 
 <div id="subtab-video" class="subtab-content">
-<div class="upload-zone" onclick="document.getElementById('videoInput').click()"
+<div id="videoAdminMsg" class="admin-only-msg">
+  <p>🎬 Videoları yalnız sayt administratoru yükləyə bilər.</p>
+  <button class="admin-login-btn" onclick="openAdminModal()">Admin Girişi</button>
+</div>
+<div id="videoUpload" class="upload-zone"
 ondragover="event.preventDefault();this.classList.add('drag-over')"
 ondragleave="this.classList.remove('drag-over')"
-ondrop="handleFileDrop(event,'video')">
+ondrop="handleFileDrop(event,'video')"
+onclick="document.getElementById('videoInput').click()">
 <span class="upload-icon">🎬</span>
 <div class="upload-title">Video Yüklə</div>
 <div class="upload-hint">Ailə görüşləri, mərasim videolarını buraya əlavə edin</div>
@@ -1669,10 +1822,15 @@ ondrop="handleFileDrop(event,'video')">
 </div>
 
 <div id="subtab-audio" class="subtab-content">
-<div class="upload-zone" onclick="document.getElementById('audioInput').click()"
+<div id="audioAdminMsg" class="admin-only-msg">
+  <p>🎙️ Audioları yalnız sayt administratoru yükləyə bilər.</p>
+  <button class="admin-login-btn" onclick="openAdminModal()">Admin Girişi</button>
+</div>
+<div id="audioUpload" class="upload-zone"
 ondragover="event.preventDefault();this.classList.add('drag-over')"
 ondragleave="this.classList.remove('drag-over')"
-ondrop="handleFileDrop(event,'audio')">
+ondrop="handleFileDrop(event,'audio')"
+onclick="document.getElementById('audioInput').click()">
 <span class="upload-icon">🎙️</span>
 <div class="upload-title">Audio Yüklə</div>
 <div class="upload-hint">Söhbətlər, xatirə hekayələri, mahnılar</div>
@@ -1688,10 +1846,15 @@ ondrop="handleFileDrop(event,'audio')">
 </div>
 
 <div id="subtab-diger" class="subtab-content">
-<div class="upload-zone" onclick="document.getElementById('otherInput').click()"
+<div id="digerAdminMsg" class="admin-only-msg">
+  <p>📦 Faylları yalnız sayt administratoru yükləyə bilər.</p>
+  <button class="admin-login-btn" onclick="openAdminModal()">Admin Girişi</button>
+</div>
+<div id="digerUpload" class="upload-zone"
 ondragover="event.preventDefault();this.classList.add('drag-over')"
 ondragleave="this.classList.remove('drag-over')"
-ondrop="handleFileDrop(event,'diger')">
+ondrop="handleFileDrop(event,'diger')"
+onclick="document.getElementById('otherInput').click()">
 <span class="upload-icon">📦</span>
 <div class="upload-title">Digər Fayl Yüklə</div>
 <div class="upload-hint">Hər növ fayl əlavə edə bilərsiniz</div>
@@ -1718,107 +1881,240 @@ ondrop="handleFileDrop(event,'diger')">
 </footer>
 
 <script>
+// ══════════════════════════════════════════════
+// ADMİN SİSTEMİ
+// Şifrəni dəyişmək üçün aşağıdakı sətri redaktə edin:
+const ADMIN_PASSWORD = 'Ayla2013';
+// ══════════════════════════════════════════════
+
+let isAdmin = false;
+
+function openAdminModal() {
+  document.getElementById('adminModal').classList.add('open');
+  document.getElementById('adminPass').value = '';
+  document.getElementById('adminError').style.display = 'none';
+  setTimeout(() => document.getElementById('adminPass').focus(), 100);
+}
+
+function closeAdminModal() {
+  document.getElementById('adminModal').classList.remove('open');
+}
+
+function adminLogin() {
+  const pass = document.getElementById('adminPass').value;
+  if (pass === ADMIN_PASSWORD) {
+    isAdmin = true;
+    closeAdminModal();
+    updateAdminUI();
+  } else {
+    document.getElementById('adminError').style.display = 'block';
+    document.getElementById('adminPass').value = '';
+    document.getElementById('adminPass').focus();
+  }
+}
+
+function adminLogout() {
+  isAdmin = false;
+  updateAdminUI();
+}
+
+function updateAdminUI() {
+  const badge = document.getElementById('adminBadge');
+  // Admin badge
+  badge.classList.toggle('visible', isAdmin);
+
+  // Upload zonaları
+  const zones = ['photoZone','docUpload','videoUpload','audioUpload','digerUpload'];
+  zones.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('admin-visible', isAdmin);
+  });
+
+  // Admin mesajları (giriş etməyənlər üçün)
+  const msgs = ['photoAdminMsg','docAdminMsg','videoAdminMsg','audioAdminMsg','digerAdminMsg'];
+  msgs.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('hidden', isAdmin);
+  });
+
+  // Silmə düymələri
+  document.querySelectorAll('.file-remove').forEach(btn => {
+    btn.classList.toggle('admin-visible', isAdmin);
+  });
+  document.querySelectorAll('.gal-remove').forEach(btn => {
+    btn.style.display = isAdmin ? '' : 'none';
+  });
+
+  // Foto yükləmə inputu
+  document.getElementById('photoInput').disabled = !isAdmin;
+
+  // Galleriya yenilənsin (silmə düymələri üçün)
+  renderGallery();
+  ['docs','video','audio','diger'].forEach(renderFileList);
+}
+
+// ══════════════════════════════════════════════
+// TAB SİSTEMİ
+// ══════════════════════════════════════════════
 function showTab(id, btn) {
-document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-document.querySelectorAll('nav.tabs button').forEach(el => el.classList.remove('active'));
-document.getElementById('tab-' + id).classList.add('active');
-btn.classList.add('active');
-if (id === 'bio') setTimeout(initBioCards, 60);
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('nav.tabs button').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'bio') setTimeout(initBioCards, 60);
 }
 
 function showSubtab(id, btn) {
-document.querySelectorAll('.subtab-content').forEach(el => el.classList.remove('active'));
-document.querySelectorAll('.subtabs button').forEach(el => el.classList.remove('active'));
-document.getElementById('subtab-' + id).classList.add('active');
-btn.classList.add('active');
+  document.querySelectorAll('.subtab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.subtabs button').forEach(el => el.classList.remove('active'));
+  document.getElementById('subtab-' + id).classList.add('active');
+  btn.classList.add('active');
 }
 
+// ══════════════════════════════════════════════
+// FOTO ARXİVİ
+// ══════════════════════════════════════════════
 const photos = [];
+
 function addPhotos(files) {
-Array.from(files).forEach(file => {
-if (!file.type.startsWith('image/')) return;
-const reader = new FileReader();
-reader.onload = e => { photos.push({ name: file.name, src: e.target.result }); renderGallery(); };
-reader.readAsDataURL(file);
-});
+  if (!isAdmin) return;
+  Array.from(files).forEach(file => {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      photos.push({ name: file.name, src: e.target.result });
+      renderGallery();
+    };
+    reader.readAsDataURL(file);
+  });
 }
+
 function handlePhotoDrop(e) {
-e.preventDefault();
-document.getElementById('photoZone').classList.remove('drag-over');
-addPhotos(e.dataTransfer.files);
+  if (!isAdmin) return;
+  e.preventDefault();
+  document.getElementById('photoZone').classList.remove('drag-over');
+  addPhotos(e.dataTransfer.files);
 }
+
 function renderGallery() {
-const grid = document.getElementById('galleryGrid');
-const empty = document.getElementById('emptyGallery');
-if (photos.length === 0) { grid.innerHTML = ''; empty.style.display = 'block'; return; }
-empty.style.display = 'none';
-grid.innerHTML = photos.map((p, i) => `
-<div class="gal-item" onclick="openLightbox(${i})">
-<span class="img-wm" style="display:block;width:100%;height:100%;">
-  <img src="${p.src}" alt="${p.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">
-</span>
-<div class="gal-caption">${p.name}</div>
-<button class="gal-remove" onclick="event.stopPropagation();removePhoto(${i})" title="Sil">✕</button>
-</div>`).join('');
+  const grid = document.getElementById('galleryGrid');
+  const empty = document.getElementById('emptyGallery');
+  if (photos.length === 0) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+  grid.innerHTML = photos.map((p, i) => `
+    <div class="gal-item" onclick="openLightbox(${i})">
+      <span class="img-wm" style="display:block;width:100%;height:100%;">
+        <img src="${p.src}" alt="${p.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">
+      </span>
+      <div class="gal-caption">${p.name}</div>
+      ${isAdmin ? `<button class="gal-remove" onclick="event.stopPropagation();removePhoto(${i})" title="Sil">✕</button>` : ''}
+    </div>`).join('');
 }
-function removePhoto(i) { photos.splice(i, 1); renderGallery(); }
+
+function removePhoto(i) {
+  if (!isAdmin) return;
+  photos.splice(i, 1);
+  renderGallery();
+}
+
 function openLightbox(i) {
-document.getElementById('lbImg').src = photos[i].src;
-document.getElementById('lbCaption').textContent = photos[i].name;
-document.getElementById('lightbox').classList.add('open');
+  document.getElementById('lbImg').src = photos[i].src;
+  document.getElementById('lbCaption').textContent = photos[i].name;
+  document.getElementById('lightbox').classList.add('open');
 }
-function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
 
+// ══════════════════════════════════════════════
+// FAYL SİSTEMİ
+// ══════════════════════════════════════════════
 const fileStore = { docs: [], video: [], audio: [], diger: [] };
-const fileIcons = { 'pdf':'📕','doc':'📝','docx':'📝','xls':'📊','xlsx':'📊','txt':'📃','mp4':'🎬','mov':'🎬','avi':'🎬','mkv':'🎬','mp3':'🎵','wav':'🎵','m4a':'🎵','ogg':'🎵','jpg':'🖼️','jpeg':'🖼️','png':'🖼️','gif':'🖼️','zip':'📦','rar':'📦','default':'📎' };
-function getIcon(name) { const ext = name.split('.').pop().toLowerCase(); return fileIcons[ext] || fileIcons['default']; }
-function formatSize(b) { if(b<1024) return b+' B'; if(b<1048576) return (b/1024).toFixed(1)+' KB'; return (b/1048576).toFixed(1)+' MB'; }
-function addFiles(files, cat) { Array.from(files).forEach(f => { fileStore[cat].push({ name: f.name, size: f.size }); renderFileList(cat); }); }
-function handleFileDrop(e, cat) { e.preventDefault(); e.currentTarget.classList.remove('drag-over'); addFiles(e.dataTransfer.files, cat); }
-function renderFileList(cat) {
-const list = document.getElementById(cat + 'List');
-const empty = document.getElementById('empty' + cat.charAt(0).toUpperCase() + cat.slice(1));
-const files = fileStore[cat];
-if (files.length === 0) { list.innerHTML = ''; empty.style.display = 'block'; return; }
-empty.style.display = 'none';
-list.innerHTML = files.map((f, i) => `
-<div class="file-item">
-<span class="file-icon">${getIcon(f.name)}</span>
-<div class="file-info">
-<div class="file-name" title="${f.name}">${f.name}</div>
-<div class="file-meta">${formatSize(f.size)}</div>
-</div>
-<button class="file-remove" onclick="removeFile('${cat}',${i})" title="Sil">✕</button>
-</div>`).join('');
+const fileIcons = {
+  'pdf':'📕','doc':'📝','docx':'📝','xls':'📊','xlsx':'📊','txt':'📃',
+  'mp4':'🎬','mov':'🎬','avi':'🎬','mkv':'🎬',
+  'mp3':'🎵','wav':'🎵','m4a':'🎵','ogg':'🎵',
+  'jpg':'🖼️','jpeg':'🖼️','png':'🖼️','gif':'🖼️',
+  'zip':'📦','rar':'📦','default':'📎'
+};
+
+function getIcon(name) {
+  const ext = name.split('.').pop().toLowerCase();
+  return fileIcons[ext] || fileIcons['default'];
 }
-function removeFile(cat, i) { fileStore[cat].splice(i, 1); renderFileList(cat); }
+function formatSize(b) {
+  if(b<1024) return b+' B';
+  if(b<1048576) return (b/1024).toFixed(1)+' KB';
+  return (b/1048576).toFixed(1)+' MB';
+}
 
-renderGallery();
-['docs','video','audio','diger'].forEach(renderFileList);
+function addFiles(files, cat) {
+  if (!isAdmin) return;
+  Array.from(files).forEach(f => {
+    fileStore[cat].push({ name: f.name, size: f.size });
+    renderFileList(cat);
+  });
+}
 
-// ── BIO-CARD "DAHA ÇOX / DAHA AZ" FUNKSİONALLIĞI ──
+function handleFileDrop(e, cat) {
+  if (!isAdmin) return;
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  addFiles(e.dataTransfer.files, cat);
+}
+
+function renderFileList(cat) {
+  const list = document.getElementById(cat + 'List');
+  const emptyId = 'empty' + cat.charAt(0).toUpperCase() + cat.slice(1);
+  const empty = document.getElementById(emptyId);
+  const files = fileStore[cat];
+  if (files.length === 0) {
+    list.innerHTML = '';
+    if (empty) empty.style.display = 'block';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+  list.innerHTML = files.map((f, i) => `
+    <div class="file-item">
+      <span class="file-icon">${getIcon(f.name)}</span>
+      <div class="file-info">
+        <div class="file-name" title="${f.name}">${f.name}</div>
+        <div class="file-meta">${formatSize(f.size)}</div>
+      </div>
+      ${isAdmin ? `<button class="file-remove admin-visible" onclick="removeFile('${cat}',${i})" title="Sil">✕</button>` : ''}
+    </div>`).join('');
+}
+
+function removeFile(cat, i) {
+  if (!isAdmin) return;
+  fileStore[cat].splice(i, 1);
+  renderFileList(cat);
+}
+
+// ══════════════════════════════════════════════
+// BİO KART "DAHA ÇOX" FUNKSİONALLIĞI
+// ══════════════════════════════════════════════
 let bioCardsInited = false;
 function initBioCards() {
   if (bioCardsInited) return;
   bioCardsInited = true;
-
   document.querySelectorAll('.bio-card').forEach(card => {
     const textDiv = card.querySelector('.bio-text');
     if (!textDiv) return;
-
     const fullH = textDiv.scrollHeight;
     textDiv.classList.add('collapsed');
-
     if (fullH <= 126) {
       textDiv.classList.remove('collapsed');
       return;
     }
-
     const btn = document.createElement('button');
     btn.className = 'bio-read-more visible';
     btn.textContent = 'daha çox ▾';
     card.appendChild(btn);
-
     let expanded = false;
     btn.addEventListener('click', function(e) {
       e.stopPropagation();
@@ -1833,6 +2129,11 @@ function initBioCards() {
     });
   });
 }
+
+// Başlanğıc
+renderGallery();
+['docs','video','audio','diger'].forEach(renderFileList);
+updateAdminUI();
 </script>
 </body>
 </html>
