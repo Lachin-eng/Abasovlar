@@ -5,648 +5,196 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Abasovlar Nəsil Kitabı</title>
 <link rel="icon" type="image/png" href="favicon.png">
-<!-- font-display:swap — şrift gəlməzdən əvvəl sistem şrifti göstərir, səhifə bloklanmır -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
-.cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  width: 100%;
-}
+.cards-container { display:flex; flex-wrap:wrap; justify-content:center; gap:15px; width:100%; }
 :root {
-  --gold: #C9A84C;
-  --gold-light: #E8C97A;
-  --gold-pale: #F5E6C0;
-  --dark: #0C0B09;
-  --dark2: #151210;
-  --dark3: #1C1812;
-  --parchment: #F0E8D5;
-  --muted: #7A6A52;
-  --accent: #8B2020;
-  --border: rgba(201,168,76,0.22);
+  --gold:#C9A84C; --gold-light:#E8C97A; --gold-pale:#F5E6C0;
+  --dark:#0C0B09; --dark2:#151210; --dark3:#1C1812;
+  --parchment:#F0E8D5; --muted:#7A6A52; --accent:#8B2020;
+  --border:rgba(201,168,76,0.22);
 }
 * { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--dark);
-  color: var(--parchment);
-  font-family: 'EB Garamond', Georgia, serif;
-  font-size: 17px;
-  line-height: 1.8;
-  overflow-x: hidden;
-}
-
-/* Sadələşdirilmiş fon — mürəkkəb repeating-gradient silindi, performans artdı */
-body::before {
-  content:'';
-  position:fixed; inset:0;
-  background:
-    radial-gradient(ellipse 80% 50% at 15% 10%, rgba(201,168,76,0.06) 0%, transparent 55%),
-    radial-gradient(ellipse 60% 40% at 85% 85%, rgba(139,32,32,0.05) 0%, transparent 55%);
-  pointer-events:none; z-index:0;
-  /* will-change göstərir ki, bu element dəyişmir — brauzerin layerı öncədən hazırlamasına kömək edir */
-  will-change: auto;
-}
+html { scroll-behavior:smooth; }
+body { background:var(--dark); color:var(--parchment); font-family:'EB Garamond',Georgia,serif; font-size:17px; line-height:1.8; overflow-x:hidden; }
+body::before { content:''; position:fixed; inset:0; background:radial-gradient(ellipse 80% 50% at 15% 10%,rgba(201,168,76,0.06) 0%,transparent 55%),radial-gradient(ellipse 60% 40% at 85% 85%,rgba(139,32,32,0.05) 0%,transparent 55%); pointer-events:none; z-index:0; will-change:auto; }
 
 /* ══ ADMİN MODALİ ══ */
-#adminModal {
-  display: none;
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.88);
-  z-index: 2000;
-  align-items: center;
-  justify-content: center;
-}
-#adminModal.open { display: flex; }
-.admin-box {
-  background: linear-gradient(135deg, rgba(28,24,18,0.98), rgba(14,12,8,0.98));
-  border: 1px solid var(--gold);
-  padding: 44px 50px;
-  max-width: 380px;
-  width: 90%;
-  text-align: center;
-  position: relative;
-}
-.admin-box::after {
-  content: '';
-  position: absolute; inset: 4px;
-  border: 1px solid rgba(201,168,76,0.15);
-  pointer-events: none;
-}
-.admin-title {
-  font-family: 'Cinzel', serif;
-  font-size: 13px; letter-spacing: .28em;
-  color: var(--gold); text-transform: uppercase;
-  margin-bottom: 28px;
-}
-.admin-input {
-  width: 100%;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(201,168,76,0.3);
-  color: var(--parchment);
-  font-family: 'EB Garamond', serif;
-  font-size: 16px;
-  padding: 11px 16px;
-  margin-bottom: 14px;
-  outline: none;
-  transition: border-color .3s;
-}
-.admin-input:focus { border-color: var(--gold); }
-.admin-btn {
-  width: 100%;
-  background: linear-gradient(135deg, rgba(201,168,76,0.18), rgba(201,168,76,0.08));
-  border: 1px solid var(--gold);
-  color: var(--gold);
-  font-family: 'Cinzel', serif;
-  font-size: 11px; letter-spacing: .2em;
-  padding: 13px;
-  cursor: pointer;
-  text-transform: uppercase;
-  transition: all .3s;
-  margin-bottom: 12px;
-}
-.admin-btn:hover { background: rgba(201,168,76,0.28); }
-.admin-cancel {
-  background: none; border: none;
-  color: var(--muted); font-size: 12px;
-  cursor: pointer; font-family: 'Cinzel', serif;
-  letter-spacing: .1em;
-  transition: color .2s;
-}
-.admin-cancel:hover { color: var(--parchment); }
-.admin-error {
-  color: #E08080; font-size: 13px;
-  margin-bottom: 12px; display: none;
-  font-style: italic;
-}
-
-#adminBadge {
-  position: fixed;
-  top: 14px; right: 18px;
-  z-index: 500;
-  display: none;
-}
-#adminBadge.visible { display: flex; align-items: center; gap: 10px; }
-.admin-badge-text {
-  font-family: 'Cinzel', serif;
-  font-size: 10px; letter-spacing: .16em;
-  color: var(--gold); text-transform: uppercase;
-  background: rgba(12,11,9,0.9);
-  border: 1px solid rgba(201,168,76,0.3);
-  padding: 5px 12px;
-}
-.admin-logout {
-  background: none; border: 1px solid rgba(201,168,76,0.25);
-  color: var(--muted); font-size: 10px;
-  font-family: 'Cinzel', serif; letter-spacing: .1em;
-  padding: 5px 10px; cursor: pointer;
-  transition: all .2s;
-}
-.admin-logout:hover { color: var(--gold); border-color: var(--gold); }
-
-.upload-zone {
-  border: 2px dashed rgba(201,168,76,.28);
-  border-radius: 3px; padding: 55px 30px;
-  text-align: center; cursor: pointer;
-  transition: all .3s;
-  background: rgba(201,168,76,.018);
-  display: none;
-}
-.upload-zone.admin-visible { display: block; }
-.upload-zone.drag-over, .upload-zone:hover {
-  border-color: var(--gold);
-  background: rgba(201,168,76,.055);
-}
-
-.admin-only-msg {
-  text-align: center;
-  padding: 40px 20px;
-  border: 1px dashed rgba(201,168,76,0.15);
-  margin-bottom: 24px;
-  display: none;
-}
-.admin-only-msg.visible { display: block; }
-.admin-only-msg.hidden { display: none; }
-.admin-only-msg p {
-  color: var(--muted); font-style: italic; font-size: 15px;
-  margin-bottom: 16px;
-}
-.admin-login-btn {
-  background: none;
-  border: 1px solid rgba(201,168,76,0.3);
-  color: var(--gold);
-  font-family: 'Cinzel', serif;
-  font-size: 10px; letter-spacing: .18em;
-  padding: 9px 22px; cursor: pointer;
-  text-transform: uppercase;
-  transition: all .3s;
-}
-.admin-login-btn:hover { background: rgba(201,168,76,0.08); border-color: var(--gold); }
+#adminModal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.88); z-index:2000; align-items:center; justify-content:center; }
+#adminModal.open { display:flex; }
+.admin-box { background:linear-gradient(135deg,rgba(28,24,18,0.98),rgba(14,12,8,0.98)); border:1px solid var(--gold); padding:44px 50px; max-width:380px; width:90%; text-align:center; position:relative; }
+.admin-box::after { content:''; position:absolute; inset:4px; border:1px solid rgba(201,168,76,0.15); pointer-events:none; }
+.admin-title { font-family:'Cinzel',serif; font-size:13px; letter-spacing:.28em; color:var(--gold); text-transform:uppercase; margin-bottom:28px; }
+.admin-input { width:100%; background:rgba(255,255,255,0.04); border:1px solid rgba(201,168,76,0.3); color:var(--parchment); font-family:'EB Garamond',serif; font-size:16px; padding:11px 16px; margin-bottom:14px; outline:none; transition:border-color .3s; }
+.admin-input:focus { border-color:var(--gold); }
+.admin-btn { width:100%; background:linear-gradient(135deg,rgba(201,168,76,0.18),rgba(201,168,76,0.08)); border:1px solid var(--gold); color:var(--gold); font-family:'Cinzel',serif; font-size:11px; letter-spacing:.2em; padding:13px; cursor:pointer; text-transform:uppercase; transition:all .3s; margin-bottom:12px; }
+.admin-btn:hover { background:rgba(201,168,76,0.28); }
+.admin-cancel { background:none; border:none; color:var(--muted); font-size:12px; cursor:pointer; font-family:'Cinzel',serif; letter-spacing:.1em; transition:color .2s; }
+.admin-cancel:hover { color:var(--parchment); }
+.admin-error { color:#E08080; font-size:13px; margin-bottom:12px; display:none; font-style:italic; }
+#adminBadge { position:fixed; top:14px; right:18px; z-index:500; display:none; }
+#adminBadge.visible { display:flex; align-items:center; gap:10px; }
+.admin-badge-text { font-family:'Cinzel',serif; font-size:10px; letter-spacing:.16em; color:var(--gold); text-transform:uppercase; background:rgba(12,11,9,0.9); border:1px solid rgba(201,168,76,0.3); padding:5px 12px; }
+.admin-logout { background:none; border:1px solid rgba(201,168,76,0.25); color:var(--muted); font-size:10px; font-family:'Cinzel',serif; letter-spacing:.1em; padding:5px 10px; cursor:pointer; transition:all .2s; }
+.admin-logout:hover { color:var(--gold); border-color:var(--gold); }
+.upload-zone { border:2px dashed rgba(201,168,76,.28); border-radius:3px; padding:55px 30px; text-align:center; cursor:pointer; transition:all .3s; background:rgba(201,168,76,.018); display:none; }
+.upload-zone.admin-visible { display:block; }
+.upload-zone.drag-over,.upload-zone:hover { border-color:var(--gold); background:rgba(201,168,76,.055); }
+.admin-only-msg { text-align:center; padding:40px 20px; border:1px dashed rgba(201,168,76,0.15); margin-bottom:24px; display:none; }
+.admin-only-msg.visible { display:block; }
+.admin-only-msg.hidden { display:none; }
+.admin-only-msg p { color:var(--muted); font-style:italic; font-size:15px; margin-bottom:16px; }
+.admin-login-btn { background:none; border:1px solid rgba(201,168,76,0.3); color:var(--gold); font-family:'Cinzel',serif; font-size:10px; letter-spacing:.18em; padding:9px 22px; cursor:pointer; text-transform:uppercase; transition:all .3s; }
+.admin-login-btn:hover { background:rgba(201,168,76,0.08); border-color:var(--gold); }
 
 /* ══ WATERMARK ══ */
-.img-wm {
-  position: relative;
-  display: inline-block;
-}
-.img-wm::after {
-  content: 'ABASOVLAR';
-  position: absolute;
-  bottom: 5px; right: 5px;
-  font-family: 'Cinzel', serif;
-  font-size: 7px; font-weight: 600;
-  letter-spacing: 0.18em;
-  color: rgba(201,168,76,0.35);
-  background: rgba(12,11,9,0.30);
-  padding: 2px 5px;
-  border: 1px solid rgba(201,168,76,0.18);
-  border-radius: 1px;
-  pointer-events: none; user-select: none;
-  backdrop-filter: blur(1px);
-  text-transform: uppercase; white-space: nowrap;
-  z-index: 5;
-}
-.img-wm.img-wm-circle::after {
-  font-size: 6px; bottom: 3px; right: 3px;
-  padding: 1px 4px; letter-spacing: 0.1em;
-  color: rgba(201,168,76,0.28); background: rgba(12,11,9,0.25);
-  border-color: rgba(201,168,76,0.14);
-}
-.img-wm.img-wm-full { display: block; width: 100%; }
-.img-wm.img-wm-full::after {
-  font-size: 8px; bottom: 8px; right: 10px;
-  padding: 3px 7px;
-  color: rgba(201,168,76,0.38); background: rgba(12,11,9,0.38);
-}
-.gal-item .img-wm::after { opacity: 0; transition: opacity 0.3s; }
-.gal-item:hover .img-wm::after { opacity: 1; }
+.img-wm { position:relative; display:inline-block; }
+.img-wm::after { content:'ABASOVLAR'; position:absolute; bottom:5px; right:5px; font-family:'Cinzel',serif; font-size:7px; font-weight:600; letter-spacing:0.18em; color:rgba(201,168,76,0.35); background:rgba(12,11,9,0.30); padding:2px 5px; border:1px solid rgba(201,168,76,0.18); border-radius:1px; pointer-events:none; user-select:none; backdrop-filter:blur(1px); text-transform:uppercase; white-space:nowrap; z-index:5; }
+.img-wm.img-wm-circle::after { font-size:6px; bottom:3px; right:3px; padding:1px 4px; letter-spacing:0.1em; color:rgba(201,168,76,0.28); background:rgba(12,11,9,0.25); border-color:rgba(201,168,76,0.14); }
+.img-wm.img-wm-full { display:block; width:100%; }
+.img-wm.img-wm-full::after { font-size:8px; bottom:8px; right:10px; padding:3px 7px; color:rgba(201,168,76,0.38); background:rgba(12,11,9,0.38); }
+.gal-item .img-wm::after { opacity:0; transition:opacity 0.3s; }
+.gal-item:hover .img-wm::after { opacity:1; }
 
 /* ══ HEADER ══ */
-header {
-  position:relative; z-index:1;
-  text-align:center;
-  padding: 80px 40px 55px;
-  border-bottom: 1px solid var(--border);
-}
-header::after {
-  content:'';
-  position:absolute; bottom:0; left:8%; right:8%;
-  height:1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-}
-
-/* Animasiya optimallaşdırıldi: transform+opacity istifadə edir (compositor thread-də işləyir, CPU yükü yoxdur) */
-.crest {
-  font-size:58px; margin-bottom:18px; display:block;
-  animation: glowPulse 4s ease-in-out infinite;
-  will-change: transform, opacity;
-}
-@keyframes glowPulse {
-  0%,100% { opacity: 0.85; transform: scale(1); }
-  50%      { opacity: 1;    transform: scale(1.04); }
-}
-
-h1.main-title {
-  font-family:'Cinzel',serif;
-  font-size: clamp(26px,5vw,50px);
-  font-weight:700;
-  color: var(--gold);
-  letter-spacing:.09em;
-  text-shadow: 0 0 40px rgba(201,168,76,0.28);
-  margin-bottom:10px;
-}
-.meta-line {
-  font-family:'Cinzel',serif;
-  font-size:12px; letter-spacing:.2em;
-  color: var(--muted); text-transform:uppercase;
-}
+header { position:relative; z-index:1; text-align:center; padding:80px 40px 55px; border-bottom:1px solid var(--border); }
+header::after { content:''; position:absolute; bottom:0; left:8%; right:8%; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+.crest { font-size:58px; margin-bottom:18px; display:block; animation:glowPulse 4s ease-in-out infinite; will-change:transform,opacity; }
+@keyframes glowPulse { 0%,100%{opacity:0.85;transform:scale(1)} 50%{opacity:1;transform:scale(1.04)} }
+h1.main-title { font-family:'Cinzel',serif; font-size:clamp(26px,5vw,50px); font-weight:700; color:var(--gold); letter-spacing:.09em; text-shadow:0 0 40px rgba(201,168,76,0.28); margin-bottom:10px; }
+.meta-line { font-family:'Cinzel',serif; font-size:12px; letter-spacing:.2em; color:var(--muted); text-transform:uppercase; }
 
 /* ══ STATS ══ */
-.stats-bar {
-  display:flex; flex-wrap:wrap;
-  border-bottom:1px solid var(--border);
-  position:relative; z-index:1;
-}
-.stat-item {
-  flex:1; min-width:130px;
-  padding:26px 16px;
-  text-align:center;
-  border-right:1px solid var(--border);
-  transition:background .3s;
-}
+.stats-bar { display:flex; flex-wrap:wrap; border-bottom:1px solid var(--border); position:relative; z-index:1; }
+.stat-item { flex:1; min-width:130px; padding:26px 16px; text-align:center; border-right:1px solid var(--border); transition:background .3s; }
 .stat-item:last-child { border-right:none; }
 .stat-item:hover { background:rgba(201,168,76,0.04); }
-.stat-num {
-  display:block;
-  font-family:'Cinzel',serif;
-  font-size:26px; color:var(--gold);
-  margin-bottom:4px;
-}
+.stat-num { display:block; font-family:'Cinzel',serif; font-size:26px; color:var(--gold); margin-bottom:4px; }
 .stat-label { font-size:13px; color:var(--muted); }
 
 /* ══ NAVİQASİYA ══ */
-nav.tabs {
-  display:flex; flex-wrap:wrap;
-  position:sticky; top:0;
-  background:rgba(12,11,9,0.97);
-  backdrop-filter:blur(14px);
-  border-bottom:1px solid var(--border);
-  z-index:200;
-  /* Brauzerə sticky nav-ın ayrı layer olacağını bildirir */
-  will-change: transform;
-}
-nav.tabs button {
-  flex:1; min-width:100px;
-  padding:15px 8px;
-  background:transparent; border:none;
-  border-bottom:2px solid transparent;
-  color:var(--muted);
-  font-family:'Cinzel',serif;
-  font-size:11.5px; letter-spacing:.1em;
-  text-transform:uppercase;
-  cursor:pointer; transition:all .3s;
-}
+nav.tabs { display:flex; flex-wrap:wrap; position:sticky; top:0; background:rgba(12,11,9,0.97); backdrop-filter:blur(14px); border-bottom:1px solid var(--border); z-index:200; will-change:transform; }
+nav.tabs button { flex:1; min-width:100px; padding:15px 8px; background:transparent; border:none; border-bottom:2px solid transparent; color:var(--muted); font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; transition:all .3s; }
 nav.tabs button:hover { color:var(--gold-light); background:rgba(201,168,76,0.04); }
 nav.tabs button.active { color:var(--gold); border-bottom-color:var(--gold); background:rgba(201,168,76,0.06); }
-
 .tab-content { display:none; position:relative; z-index:1; }
-.tab-content.active { display:block; animation: fadeUp .4s ease both; }
+.tab-content.active { display:block; animation:fadeUp .4s ease both; }
 @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
-
 .wrap { max-width:1120px; margin:0 auto; padding:60px 40px; }
-
-.sec-title {
-  font-family:'Cinzel',serif;
-  font-size:12px; letter-spacing:.3em;
-  color:var(--gold); text-transform:uppercase;
-  margin-bottom:50px; padding-bottom:14px;
-  border-bottom:1px solid var(--border);
-  display:flex; align-items:center; gap:14px;
-}
+.sec-title { font-family:'Cinzel',serif; font-size:12px; letter-spacing:.3em; color:var(--gold); text-transform:uppercase; margin-bottom:50px; padding-bottom:14px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:14px; }
 .sec-title::before { content:''; flex:1; height:1px; background:linear-gradient(90deg,var(--border),transparent); }
-.sec-title::after  { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--border)); }
+.sec-title::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--border)); }
 
 /* ══ KARTLAR ══ */
 .generation { margin-bottom:44px; }
-.gen-label {
-  font-family:'Cinzel',serif; font-size:11px;
-  letter-spacing:.22em; color:var(--accent);
-  text-transform:uppercase; margin-bottom:18px;
-  display:flex; align-items:center; gap:12px;
-}
+.gen-label { font-family:'Cinzel',serif; font-size:11px; letter-spacing:.22em; color:var(--accent); text-transform:uppercase; margin-bottom:18px; display:flex; align-items:center; gap:12px; }
 .gen-label::after { content:''; flex:1; height:1px; background:rgba(139,32,32,0.22); }
-
 .gen-cards { display:flex; flex-wrap:wrap; gap:14px; }
-
-.card {
-  background:linear-gradient(135deg,rgba(28,24,18,.92),rgba(20,16,10,.92));
-  border:1px solid var(--border);
-  border-radius:2px;
-  padding:20px 22px;
-  flex:1; min-width:190px;
-  position:relative; overflow:hidden;
-  transition:border-color .25s, transform .25s, box-shadow .25s;
-}
-.card::before {
-  content:''; position:absolute; top:0;left:0;right:0; height:2px;
-  background:linear-gradient(90deg,var(--gold),transparent);
-  transform:scaleX(0); transform-origin:left; transition:transform .35s;
-}
+.card { background:linear-gradient(135deg,rgba(28,24,18,.92),rgba(20,16,10,.92)); border:1px solid var(--border); border-radius:2px; padding:20px 22px; flex:1; min-width:190px; position:relative; overflow:hidden; transition:border-color .25s,transform .25s,box-shadow .25s; }
+.card::before { content:''; position:absolute; top:0;left:0;right:0; height:2px; background:linear-gradient(90deg,var(--gold),transparent); transform:scaleX(0); transform-origin:left; transition:transform .35s; }
 .card:hover::before { transform:scaleX(1); }
-.card:hover {
-  border-color:rgba(201,168,76,.4);
-  transform:translateY(-2px);
-  box-shadow:0 8px 30px rgba(0,0,0,.4);
-}
-
-.card-name {
-  font-family:'Cormorant Garamond',serif;
-  font-size:17.5px; font-weight:600;
-  color:var(--gold-light); margin-bottom:5px;
-}
+.card:hover { border-color:rgba(201,168,76,.4); transform:translateY(-2px); box-shadow:0 8px 30px rgba(0,0,0,.4); }
+.card-name { font-family:'Cormorant Garamond',serif; font-size:17.5px; font-weight:600; color:var(--gold-light); margin-bottom:5px; }
 .card-years { font-size:13px; color:var(--muted); margin-bottom:9px; font-style:italic; }
 .card-desc { font-size:14.5px; color:rgba(240,232,213,.72); line-height:1.55; }
-.card-children {
-  margin-top:10px; font-size:13px; color:var(--muted);
-  border-top:1px solid rgba(201,168,76,.1); padding-top:9px;
-}
+.card-children { margin-top:10px; font-size:13px; color:var(--muted); border-top:1px solid rgba(201,168,76,.1); padding-top:9px; }
 
 /* ══ KÖK KARTI ══ */
-.root-card {
-  background:linear-gradient(135deg,rgba(45,33,10,.95),rgba(26,20,8,.95));
-  border:1px solid var(--gold);
-  border-radius:2px; padding:38px 44px;
-  text-align:center; position:relative;
-  overflow:hidden; margin-bottom:36px;
-}
-.root-card::after {
-  content:''; position:absolute; inset:2px;
-  border:1px solid rgba(201,168,76,.18);
-  pointer-events:none;
-}
-.root-name {
-  font-family:'Cinzel',serif;
-  font-size:clamp(18px,3.5vw,28px);
-  color:var(--gold); margin-bottom:8px;
-  text-shadow:0 0 30px rgba(201,168,76,.25);
-}
-.root-sub {
-  font-family:'Cormorant Garamond',serif;
-  font-style:italic; font-size:18px;
-  color:var(--gold-light); opacity:.78;
-}
+.root-card { background:linear-gradient(135deg,rgba(45,33,10,.95),rgba(26,20,8,.95)); border:1px solid var(--gold); border-radius:2px; padding:38px 44px; text-align:center; position:relative; overflow:hidden; margin-bottom:36px; }
+.root-card::after { content:''; position:absolute; inset:2px; border:1px solid rgba(201,168,76,.18); pointer-events:none; }
+.root-name { font-family:'Cinzel',serif; font-size:clamp(18px,3.5vw,28px); color:var(--gold); margin-bottom:8px; text-shadow:0 0 30px rgba(201,168,76,.25); }
+.root-sub { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:18px; color:var(--gold-light); opacity:.78; }
 .root-note { margin-top:10px; font-size:14px; color:var(--muted); }
-
 .connector { text-align:center; color:var(--gold); opacity:.35; font-size:22px; margin:4px 0; }
 
 /* ══ BİOQRAFİYA ══ */
-.bio-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-  gap:24px;
-  align-items: stretch;
-  width:100%;
-}
-.bio-card {
-  background:linear-gradient(155deg,rgba(22,18,14,.95),rgba(14,12,8,.95));
-  border:1px solid var(--border);
-  padding:30px 34px; position:relative;
-  transition:border-color .3s;
-  display: flex; flex-direction: column;
-}
+.bio-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:24px; align-items:stretch; width:100%; }
+.bio-card { background:linear-gradient(155deg,rgba(22,18,14,.95),rgba(14,12,8,.95)); border:1px solid var(--border); padding:30px 34px; position:relative; transition:border-color .3s; display:flex; flex-direction:column; }
 .bio-card:hover { border-color:rgba(201,168,76,.32); }
-.corner {
-  position:absolute; top:0; left:0;
-  width:28px; height:28px;
-  border-top:2px solid var(--gold);
-  border-left:2px solid var(--gold);
-  opacity:.55;
-}
+.corner { position:absolute; top:0; left:0; width:28px; height:28px; border-top:2px solid var(--gold); border-left:2px solid var(--gold); opacity:.55; }
 .corner.br { top:auto;left:auto;bottom:0;right:0; border-top:none;border-left:none; border-bottom:2px solid var(--gold);border-right:2px solid var(--gold); }
-
-.bio-tag {
-  display:inline-block;
-  background:rgba(139,32,32,.18);
-  border:1px solid rgba(139,32,32,.28);
-  color:#E08080; font-size:11px;
-  letter-spacing:.08em; padding:3px 10px;
-  margin-bottom:12px; border-radius:1px;
-}
-.bio-name {
-  font-family:'Cinzel',serif;
-  font-size:16px; color:var(--gold); margin-bottom:5px;
-}
-.bio-role {
-  font-family:'Cormorant Garamond',serif;
-  font-style:italic; font-size:15px;
-  color:var(--gold-light); opacity:.7;
-  margin-bottom:18px; padding-bottom:14px;
-  border-bottom:1px solid var(--border);
-}
-.bio-text {
-  font-size:15.5px; color:rgba(240,232,213,.78); line-height:1.8;
-  flex: 1; position: relative; overflow: hidden;
-}
+.bio-tag { display:inline-block; background:rgba(139,32,32,.18); border:1px solid rgba(139,32,32,.28); color:#E08080; font-size:11px; letter-spacing:.08em; padding:3px 10px; margin-bottom:12px; border-radius:1px; }
+.bio-name { font-family:'Cinzel',serif; font-size:16px; color:var(--gold); margin-bottom:5px; }
+.bio-role { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:15px; color:var(--gold-light); opacity:.7; margin-bottom:18px; padding-bottom:14px; border-bottom:1px solid var(--border); }
+.bio-text { font-size:15.5px; color:rgba(240,232,213,.78); line-height:1.8; flex:1; position:relative; overflow:hidden; }
 .bio-text p { margin-bottom:12px; }
 .bio-text p:last-child { margin-bottom:0; }
-.bio-text.collapsed { max-height: 118px; }
-.bio-text.collapsed::after {
-  content: '';
-  position: absolute; bottom: 0; left: 0; right: 0;
-  height: 44px;
-  background: linear-gradient(transparent, rgba(14,12,8,0.97));
-  pointer-events: none;
-}
-.bio-read-more {
-  display: none;
-  color: var(--gold); font-size: 12px;
-  font-family: 'Cinzel', serif; letter-spacing: .1em;
-  cursor: pointer; margin-top: 10px; padding-top: 8px;
-  border-top: 1px solid rgba(201,168,76,.18);
-  border-left: none; border-right: none; border-bottom: none;
-  background: none; text-align: left;
-  transition: color .25s, opacity .25s;
-  width: 100%; opacity: .8;
-}
-.bio-read-more:hover { color: var(--gold-light); opacity: 1; }
-.bio-read-more.visible { display: block; }
+.bio-text.collapsed { max-height:118px; }
+.bio-text.collapsed::after { content:''; position:absolute; bottom:0; left:0; right:0; height:44px; background:linear-gradient(transparent,rgba(14,12,8,0.97)); pointer-events:none; }
+.bio-read-more { display:none; color:var(--gold); font-size:12px; font-family:'Cinzel',serif; letter-spacing:.1em; cursor:pointer; margin-top:10px; padding-top:8px; border-top:1px solid rgba(201,168,76,.18); border-left:none; border-right:none; border-bottom:none; background:none; text-align:left; transition:color .25s,opacity .25s; width:100%; opacity:.8; }
+.bio-read-more:hover { color:var(--gold-light); opacity:1; }
+.bio-read-more.visible { display:block; }
 
 /* ══ TARİX ══ */
 .history-wrap { max-width:800px; margin:0 auto; }
-.history-wrap h2 {
-  font-family:'Cinzel',serif; font-size:19px;
-  color:var(--gold); margin:36px 0 16px;
-  padding-bottom:10px; border-bottom:1px solid var(--border);
-}
+.history-wrap h2 { font-family:'Cinzel',serif; font-size:19px; color:var(--gold); margin:36px 0 16px; padding-bottom:10px; border-bottom:1px solid var(--border); }
 .history-wrap h2:first-child { margin-top:0; }
 .history-wrap p { color:rgba(240,232,213,.8); margin-bottom:18px; font-size:16px; }
-
-.rep-box {
-  background:rgba(139,32,32,.07);
-  border-left:3px solid var(--accent);
-  padding:24px 28px; margin:28px 0;
-}
-.rep-box h3 {
-  font-family:'Cinzel',serif; font-size:13px;
-  color:#E08080; letter-spacing:.14em;
-  text-transform:uppercase; margin-bottom:16px;
-}
+.rep-box { background:rgba(139,32,32,.07); border-left:3px solid var(--accent); padding:24px 28px; margin:28px 0; }
+.rep-box h3 { font-family:'Cinzel',serif; font-size:13px; color:#E08080; letter-spacing:.14em; text-transform:uppercase; margin-bottom:16px; }
 .rep-item { display:flex; gap:12px; margin-bottom:13px; font-size:15.5px; color:rgba(240,232,213,.78); }
 .rep-item::before { content:'•'; color:var(--accent); flex-shrink:0; margin-top:2px; }
 .rep-item:last-child { margin-bottom:0; }
-
-.quote-box {
-  text-align:center; padding:40px 20px; margin:30px 0;
-  border-top:1px solid var(--border); border-bottom:1px solid var(--border);
-}
-.quote-box blockquote {
-  font-family:'Cormorant Garamond',serif;
-  font-style:italic;
-  font-size:clamp(17px,2.5vw,23px);
-  color:var(--gold-light); line-height:1.7;
-  max-width:660px; margin:0 auto;
-}
-.quote-box cite {
-  display:block; margin-top:16px;
-  font-size:12px; letter-spacing:.14em;
-  color:var(--muted); font-style:normal;
-  font-family:'Cinzel',serif; text-transform:uppercase;
-}
+.quote-box { text-align:center; padding:40px 20px; margin:30px 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.quote-box blockquote { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(17px,2.5vw,23px); color:var(--gold-light); line-height:1.7; max-width:660px; margin:0 auto; }
+.quote-box cite { display:block; margin-top:16px; font-size:12px; letter-spacing:.14em; color:var(--muted); font-style:normal; font-family:'Cinzel',serif; text-transform:uppercase; }
 
 /* ══ UPLOAD ══ */
 .upload-icon { font-size:46px; margin-bottom:16px; opacity:.55; display:block; }
-.upload-title {
-  font-family:'Cinzel',serif; font-size:15px;
-  color:var(--gold); letter-spacing:.14em; margin-bottom:8px;
-}
+.upload-title { font-family:'Cinzel',serif; font-size:15px; color:var(--gold); letter-spacing:.14em; margin-bottom:8px; }
 .upload-hint { font-size:14px; color:var(--muted); margin-bottom:22px; }
-.upload-btn {
-  background:linear-gradient(135deg,rgba(201,168,76,.14),rgba(201,168,76,.07));
-  border:1px solid var(--gold); color:var(--gold);
-  font-family:'Cinzel',serif; font-size:11.5px;
-  letter-spacing:.18em; padding:11px 28px;
-  cursor:pointer; text-transform:uppercase;
-  transition:all .3s; border-radius:1px;
-}
+.upload-btn { background:linear-gradient(135deg,rgba(201,168,76,.14),rgba(201,168,76,.07)); border:1px solid var(--gold); color:var(--gold); font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:.18em; padding:11px 28px; cursor:pointer; text-transform:uppercase; transition:all .3s; border-radius:1px; }
 .upload-btn:hover { background:rgba(201,168,76,.22); }
 input[type="file"] { display:none; }
-
 .type-row { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-top:18px; }
-.type-badge {
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.07);
-  color:var(--muted); font-size:11px;
-  letter-spacing:.08em; padding:3px 11px;
-  border-radius:20px;
-}
+.type-badge { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07); color:var(--muted); font-size:11px; letter-spacing:.08em; padding:3px 11px; border-radius:20px; }
 
 /* ══ QALEREYİ ══ */
-.gallery-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-  gap:10px; margin-top:28px;
-}
-.gal-item {
-  position:relative; aspect-ratio:4/3;
-  overflow:hidden; border:1px solid var(--border);
-  cursor:pointer; transition:border-color .25s, transform .25s; border-radius:1px;
-}
+.gallery-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:10px; margin-top:28px; }
+.gal-item { position:relative; aspect-ratio:4/3; overflow:hidden; border:1px solid var(--border); cursor:pointer; transition:border-color .25s,transform .25s; border-radius:1px; }
 .gal-item:hover { border-color:var(--gold); transform:scale(1.03); }
 .gal-item img { width:100%;height:100%;object-fit:cover; display:block; }
-.gal-caption {
-  position:absolute; bottom:0;left:0;right:0;
-  background:linear-gradient(transparent,rgba(0,0,0,.82));
-  color:var(--parchment); font-size:11px;
-  padding:18px 8px 6px;
-  opacity:0; transition:opacity .3s;
-}
+.gal-caption { position:absolute; bottom:0;left:0;right:0; background:linear-gradient(transparent,rgba(0,0,0,.82)); color:var(--parchment); font-size:11px; padding:18px 8px 6px; opacity:0; transition:opacity .3s; }
 .gal-item:hover .gal-caption { opacity:1; }
-.gal-remove {
-  position:absolute; top:5px;right:5px;
-  background:rgba(139,32,32,.75); border:none;
-  color:#fff; font-size:13px; width:22px;height:22px;
-  border-radius:50%; cursor:pointer; line-height:22px;
-  text-align:center; opacity:0; transition:opacity .3s;
-}
+.gal-remove { position:absolute; top:5px;right:5px; background:rgba(139,32,32,.75); border:none; color:#fff; font-size:13px; width:22px;height:22px; border-radius:50%; cursor:pointer; line-height:22px; text-align:center; opacity:0; transition:opacity .3s; }
 .gal-item:hover .gal-remove { opacity:1; }
 
 /* ══ FAYL SİYAHISI ══ */
 .file-list { margin-top:22px; }
-.file-item {
-  display:flex; align-items:center; gap:14px;
-  padding:14px 18px; border:1px solid var(--border);
-  margin-bottom:8px; background:rgba(255,255,255,.015);
-  transition:background .3s, border-color .3s; border-radius:1px;
-}
+.file-item { display:flex; align-items:center; gap:14px; padding:14px 18px; border:1px solid var(--border); margin-bottom:8px; background:rgba(255,255,255,.015); transition:background .3s,border-color .3s; border-radius:1px; }
 .file-item:hover { background:rgba(201,168,76,.04); border-color:rgba(201,168,76,.28); }
 .file-icon { font-size:22px; flex-shrink:0; }
 .file-info { flex:1; min-width:0; }
 .file-name { font-family:'Cinzel',serif; font-size:12.5px; color:var(--parchment); margin-bottom:2px; white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
 .file-meta { font-size:11.5px; color:var(--muted); }
-.file-remove {
-  background:none; border:none;
-  color:var(--muted); cursor:pointer;
-  font-size:17px; padding:3px 8px;
-  transition:color .2s; flex-shrink:0;
-  display: none;
-}
-.file-remove.admin-visible { display: inline-block; }
+.file-remove { background:none; border:none; color:var(--muted); cursor:pointer; font-size:17px; padding:3px 8px; transition:color .2s; flex-shrink:0; display:none; }
+.file-remove.admin-visible { display:inline-block; }
 .file-remove:hover { color:var(--accent); }
 
 /* ══ LİGHTBOX ══ */
-.lightbox {
-  display:none; position:fixed; inset:0;
-  background:rgba(0,0,0,.93); z-index:1000;
-  align-items:center; justify-content:center; padding:20px;
-}
+.lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,.93); z-index:1000; align-items:center; justify-content:center; padding:20px; }
 .lightbox.open { display:flex; }
 .lightbox img { max-width:88vw; max-height:84vh; object-fit:contain; border:1px solid var(--border); }
-.lb-close {
-  position:absolute; top:18px;right:22px;
-  font-size:28px; color:var(--gold);
-  cursor:pointer; background:none; border:none; line-height:1;
-}
-.lb-caption {
-  position:absolute; bottom:24px; left:0;right:0;
-  text-align:center; font-style:italic;
-  color:var(--gold-light); font-size:15px;
-}
-
+.lb-close { position:absolute; top:18px;right:22px; font-size:28px; color:var(--gold); cursor:pointer; background:none; border:none; line-height:1; }
+.lb-caption { position:absolute; bottom:24px; left:0;right:0; text-align:center; font-style:italic; color:var(--gold-light); font-size:15px; }
 .empty { text-align:center; padding:60px 20px; color:var(--muted); }
 .empty .ei { font-size:38px; margin-bottom:14px; opacity:.35; }
 .empty p { font-style:italic; font-size:15px; }
-
 .gold-div { text-align:center; color:var(--gold); opacity:.3; letter-spacing:.5em; font-size:14px; margin:32px 0; }
 
 /* ══ ALT TAB ══ */
 .subtabs { display:flex; gap:0; border:1px solid var(--border); margin-bottom:28px; border-radius:2px; overflow:hidden; }
-.subtabs button {
-  flex:1; padding:13px; background:transparent;
-  border:none; border-right:1px solid var(--border);
-  color:var(--muted); font-family:'Cinzel',serif;
-  font-size:11px; letter-spacing:.12em; text-transform:uppercase;
-  cursor:pointer; transition:all .3s;
-}
+.subtabs button { flex:1; padding:13px; background:transparent; border:none; border-right:1px solid var(--border); color:var(--muted); font-family:'Cinzel',serif; font-size:11px; letter-spacing:.12em; text-transform:uppercase; cursor:pointer; transition:all .3s; }
 .subtabs button:last-child { border-right:none; }
 .subtabs button:hover { background:rgba(201,168,76,.04); color:var(--gold-light); }
 .subtabs button.active { background:rgba(201,168,76,.08); color:var(--gold); }
-
 .subtab-content { display:none; }
 .subtab-content.active { display:block; animation:fadeUp .35s ease both; }
 
 /* ══ ELDOST KARTI ══ */
-.eldost-profile-card {
-  max-width:850px; margin:30px auto;
-  background:#111a2e;
-  border:2px solid #d4af37;
-  border-radius:12px; overflow:hidden;
-  color:#ffffff; font-family:sans-serif;
-  box-shadow:0 5px 15px rgba(0,0,0,0.3);
-}
+.eldost-profile-card { max-width:850px; margin:30px auto; background:#111a2e; border:2px solid #d4af37; border-radius:12px; overflow:hidden; color:#ffffff; font-family:sans-serif; box-shadow:0 5px 15px rgba(0,0,0,0.3); }
 .eldost-header-block { text-align:center; padding:30px 20px; background:rgba(0,0,0,0.2); }
 .eldost-img-box img { width:220px; height:auto; border:3px solid #d4af37; border-radius:8px; }
 .eldost-header-block h2 { margin:15px 0 5px 0; color:#fff; font-size:1.8rem; }
@@ -660,11 +208,7 @@ input[type="file"] { display:none; }
 .eldost-footer-block { text-align:center; padding:15px; background:rgba(0,0,0,0.3); border-top:1px solid rgba(214,175,55,0.3); color:#d4af37; font-weight:bold; }
 
 /* ══ FOOTER ══ */
-footer {
-  border-top:1px solid var(--border);
-  text-align:center; padding:38px 40px;
-  position:relative; z-index:1;
-}
+footer { border-top:1px solid var(--border); text-align:center; padding:38px 40px; position:relative; z-index:1; }
 footer p { font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:.18em; color:var(--muted); text-transform:uppercase; }
 
 @media(max-width:700px){
@@ -677,49 +221,35 @@ footer p { font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:.18em; c
 }
 </style>
 </head>
-
 <body>
 
+<!-- ══ ADMİN MODALİ ══ -->
 <div id="adminModal">
   <div class="admin-box">
-    <img src="Lumu.png" style="width:90px;height:90px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 16px;">
+    <img src="Lumu.png" alt="Lumu" style="width:90px;height:90px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 16px;border:2px solid var(--gold);">
     <div class="admin-title">🔐 Admin Girişi</div>
-    <p style="color:var(--muted);font-size:14px;margin-bottom:20px;font-style:italic;">
-      Yalnız sayt administratoru fayl yükləyə bilər
-    </p>
+    <p style="color:var(--muted);font-size:14px;margin-bottom:20px;font-style:italic;">Yalnız sayt administratoru fayl yükləyə bilər</p>
     <div id="adminError" class="admin-error">Şifrə yanlışdır. Yenidən cəhd edin.</div>
     <input type="password" id="adminPass" class="admin-input" placeholder="Şifrəni daxil edin" onkeydown="if(event.key==='Enter')adminLogin()">
     <button class="admin-btn" onclick="adminLogin()">Daxil ol</button>
     <button class="admin-cancel" onclick="closeAdminModal()">İmtina</button>
   </div>
-</div><div id="adminBadge">
+</div>
+
+<!-- ══ ADMİN BADGEİ ══ -->
+<div id="adminBadge">
   <span class="admin-badge-text">👑 Admin: Ayla</span>
   <button class="admin-logout" onclick="adminLogout()">Çıxış</button>
 </div>
 
-
-
 <header>
-
-
-<h1 style="font-size:2.5rem;font-weight:bold;color:#D4AF37;text-align:center;margin-bottom:5px;text-transform:uppercase;letter-spacing:2px;">
-ABASOVLAR NƏSİL KİTABI
-</h1>
-<p style="font-style:italic;color:#a18a55;text-align:center;font-size:1rem;margin-bottom:30px;">
-Şəcərə Ağacı · Rodoslovnoe Derevo · Family Tree
-</p>
-<blockquote style="font-style:italic;color:#a18a55;text-align:center;max-width:600px;margin:0 auto 40px auto;line-height:1.6;font-size:1.1rem;">
-"Bu şəcərədə yazılan hər bir ad təkcə bir insanın adı deyil — keçmişimizin nəfəsi,
-ailəmizin qüruru, kökümüzün əbədi izidir. Bizi bir-birimizə bağlayan bu sarsılmaz sevgi,
-birlik və bağlılıq isə gələcək nəsillərə qoyacağımız ən qiymətli mirasdır."
-</blockquote>
+<span class="crest">🌳</span>
+<h1 style="font-size:2.5rem;font-weight:bold;color:#D4AF37;text-align:center;margin-bottom:5px;text-transform:uppercase;letter-spacing:2px;">ABASOVLAR NƏSİL KİTABI</h1>
+<p style="font-style:italic;color:#a18a55;text-align:center;font-size:1rem;margin-bottom:30px;">Şəcərə Ağacı · Rodoslovnoe Derevo · Family Tree</p>
+<blockquote style="font-style:italic;color:#a18a55;text-align:center;max-width:600px;margin:0 auto 40px auto;line-height:1.6;font-size:1.1rem;">"Bu şəcərədə yazılan hər bir ad təkcə bir insanın adı deyil — keçmişimizin nəfəsi, ailəmizin qüruru, kökümüzün əbədi izidir. Bizi bir-birimizə bağlayan bu sarsılmaz sevgi, birlik və bağlılıq isə gələcək nəsillərə qoyacağımız ən qiymətli mirasdır."</blockquote>
 <div style="text-align:center;margin-top:8px;margin-bottom:5px;">
-<span style="color:var(--gold);font-size:11px;letter-spacing:3px;text-transform:uppercase;font-family:'Cinzel',serif;opacity:0.85;">
-Layihənin Müəllifi və Tərtibatçısi:
-</span>
-<span style="color:#ffffff;font-size:14px;font-weight:500;letter-spacing:1px;margin-left:5px;font-family:'Cinzel',serif;">
-Ayla Abaslı
-</span>
+<span style="color:var(--gold);font-size:11px;letter-spacing:3px;text-transform:uppercase;font-family:'Cinzel',serif;opacity:0.85;">Layihənin Müəllifi və Tərtibatçısi:</span>
+<span style="color:#ffffff;font-size:14px;font-weight:500;letter-spacing:1px;margin-left:5px;font-family:'Cinzel',serif;">Ayla Abaslı</span>
 </div>
 <div class="meta-line">Kəlbəlayi Azay Bəy Məmmədəli oğlu Abasov · Saatlı rayonu · 1861 — 2026</div>
 </header>
@@ -744,7 +274,6 @@ Ayla Abaslı
 <div id="tab-secere" class="tab-content active">
 <div class="wrap">
 <div class="sec-title">Nəsil Şəcərəsi · 6 Nəsil</div>
-
 <div class="generation">
 <div class="gen-label">I Nəsil — Kök</div>
 <div class="root-card">
@@ -753,960 +282,143 @@ Ayla Abaslı
 <div class="root-note">Gori Gimnaziyasının məzunu · Əhmədbəyli kəndinin banisi · Bölgənin ziyalı təbəqəsinin formalaşdırıcısı</div>
 </div>
 </div>
-
-<div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap; margin:25px auto;">
-<div style="position: relative; display: inline-block; border: 3px solid #d4af37; padding: 5px; background: #fff; max-width: 360px; width: 100%;">
-  <span class="img-wm img-wm-full">
-    <!-- loading="eager" — ilk görünən şəkil, lazy yükləmə olmaz -->
-    <img src="Azay.png" alt="Azay Memmedelioglu Abasov" style="display: block; width: 100%; height: auto;" loading="eager">
-  </span>
-  <div style="position: absolute; top: 15px; left: 50%; transform: translateX(-50%); background-color: #800020; color: #d4af37; padding: 8px 15px; font-weight: bold; font-family: 'Times New Roman', serif; font-size: 16px; border: 2px solid #d4af37; border-radius: 4px; box-shadow: 0px 4px 6px rgba(0,0,0,0.3); text-transform: uppercase; letter-spacing: 1px; z-index: 10;">
-    165 Yubiley
-  </div>
+<div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin:25px auto;">
+<div style="position:relative;display:inline-block;border:3px solid #d4af37;padding:5px;background:#fff;max-width:360px;width:100%;">
+  <span class="img-wm img-wm-full"><img src="Azay.png" alt="Azay Memmedelioglu Abasov" style="display:block;width:100%;height:auto;" loading="eager"></span>
+  <div style="position:absolute;top:15px;left:50%;transform:translateX(-50%);background-color:#800020;color:#d4af37;padding:8px 15px;font-weight:bold;font-family:'Times New Roman',serif;font-size:16px;border:2px solid #d4af37;border-radius:4px;box-shadow:0px 4px 6px rgba(0,0,0,0.3);text-transform:uppercase;letter-spacing:1px;z-index:10;">165 Yubiley</div>
 </div>
 </div>
-
 <div class="connector">┃</div>
-
 <div class="generation">
 <div class="gen-label">II Nəsil — Azay Bəyin Övladları</div>
 <div class="gen-cards">
-<div class="card">
-<div class="card-name">İskəndər Bəy Abasov 1889-1938</div>
-<div class="card-years">Repressiya qurbanı</div>
-<div class="card-desc">Bəy nəslinə mənsub olduğu üçün təqib edilmiş, 1938-ci ildə Bakıda Nargin adasında güllələnmişdir.</div>
-</div>
-<div class="card">
-<div class="card-name">Aldost Bəy Abasov -1901</div>
-<div class="card-years">Sankt-Peterburq məzunu</div>
-<div class="card-desc">Sankt-Peterburq gimnaziyasının məzunu. 1937-ci ildə Qazaxıstana sürgün edilmiş, orada vəfat etmişdir.</div>
-</div>
-<div class="card">
-<div class="card-name">Bəybala Bəy Abasov</div>
-<div class="card-years">1905 — 1937 · Repressiya qurbanı</div>
-<div class="card-desc">Ən geniş şaxənin banisi. 32 yaşında repressiya maşının qurbanı oldu. Ailəsi nəsli yaşatdı.</div>
-<div class="card-children">Əsas qol: Məmmədəli bəy xətti (Lumu xanım ilə)</div>
-</div>
-<div class="card">
-<div class="card-name">Gülbəyim Xanım</div>
-<div class="card-years">İsmayılova (Fərrux ilə)</div>
-<div class="card-desc">Tahir Fərrux oğlu İsmayılov (qızları: Ülviyyə, Zülfiyyə, Sevinc). Fail Fərrux oğlu İsmayılov (Həkim)(Sumqayıt şəhəri Rəşad, Afaq).</div>
-</div>
-<div class="card">
-<div class="card-name">Ceyran Xanım</div>
-<div class="card-years">Minbaşıllı kəndi</div>
-<div class="card-desc">Övladları: Dadaş, Mətləb, Saleh, Valeh (Valeh Sumqayıtda — ingilis dili müəllimi)</div>
+<div class="card"><div class="card-name">İskəndər Bəy Abasov 1889-1938</div><div class="card-years">Repressiya qurbanı</div><div class="card-desc">Bəy nəslinə mənsub olduğu üçün təqib edilmiş, 1938-ci ildə Bakıda Nargin adasında güllələnmişdir.</div></div>
+<div class="card"><div class="card-name">Aldost Bəy Abasov -1901</div><div class="card-years">Sankt-Peterburq məzunu</div><div class="card-desc">Sankt-Peterburq gimnaziyasının məzunu. 1937-ci ildə Qazaxıstana sürgün edilmiş, orada vəfat etmişdir.</div></div>
+<div class="card"><div class="card-name">Bəybala Bəy Abasov</div><div class="card-years">1905 — 1937 · Repressiya qurbanı</div><div class="card-desc">Ən geniş şaxənin banisi. 32 yaşında repressiya maşının qurbanı oldu. Ailəsi nəsli yaşatdı.</div><div class="card-children">Əsas qol: Məmmədəli bəy xətti (Lumu xanım ilə)</div></div>
+<div class="card"><div class="card-name">Gülbəyim Xanım</div><div class="card-years">İsmayılova (Fərrux ilə)</div><div class="card-desc">Tahir Fərrux oğlu İsmayılov (qızları: Ülviyyə, Zülfiyyə, Sevinc). Fail Fərrux oğlu İsmayılov (Həkim)(Sumqayıt şəhəri Rəşad, Afaq).</div></div>
+<div class="card"><div class="card-name">Ceyran Xanım</div><div class="card-years">Minbaşıllı kəndi</div><div class="card-desc">Övladları: Dadaş, Mətləb, Saleh, Valeh (Valeh Sumqayıtda — ingilis dili müəllimi)</div></div>
 </div>
 </div>
-</div>
-
 <div class="connector">┃</div>
-
 <div class="generation">
 <div class="gen-label">III Nəsil — Bəybala Bəy Qolu (Ən Geniş Şaxə) · Bikə xanım Mürşid qızı ilə</div>
-<span class="img-wm img-wm-full" style="max-width:320px;display:block;margin:20px auto;">
-  <img src="Beybala.png" alt="Bəybala Azay oğlu Abasov" style="width:100%;border-radius:8px;display:block;" loading="lazy">
-</span>
+<span class="img-wm img-wm-full" style="max-width:320px;display:block;margin:20px auto;"><img src="Beybala.png" alt="Bəybala Azay oğlu Abasov" style="width:100%;border-radius:8px;display:block;" loading="lazy"></span>
 <div class="gen-cards">
-<div class="card" style="flex:2;min-width:260px;">
-<div class="card-name">Məmmədəli Bəy Xətti</div>
-<div class="card-years">& Lumu xanım · 9 övlad</div>
-<div class="card-desc">Nəslin əsas davamçısı. Atasının adını və şərəfini qoruyaraq böyük bir ailə qurdu.</div>
-<div class="card-children">Maarif · Xanım · Mahir · İlham · Zərbikə · Səfərəli · Laçın · Aftandil · Bəybala · Samama</div>
-</div>
-<div class="card">
-<div class="card-name">Balabikə Xanım-1933</div>
-<div class="card-years">Sixaliyevlər</div>
-<div class="card-children">Əliağa 1955 · Böyükağa 1956 · Əlifağa 1958 · Sona 1961 · Bikəxanım 1962 · Azər 1963 · Tərané 1965 · Pərvanə 1968</div>
-</div>
-<div class="card">
-<div class="card-name">Xoşqədəm Xanım-1935</div>
-<div class="card-years">Novruzovlar</div>
-<div class="card-children">Əflan 1959 · Qəmar 1961 · Ədalət 1963 · Aidə 1967 · Leyla 1969 · Elçin 1971</div>
-</div>
-<div class="card">
-<div class="card-name">Solmaz Xanım -1937</div>
-<div class="card-years">Süleymanovlar</div>
-<div class="card-children">Almaz 1961 · Balaxanım 1963 · Şahbaz 1965 · Şahla 1967 · Yaqut 1970 · Tahirə 1975</div>
+<div class="card" style="flex:2;min-width:260px;"><div class="card-name">Məmmədəli Bəy Xətti</div><div class="card-years">& Lumu xanım · 9 övlad</div><div class="card-desc">Nəslin əsas davamçısı. Atasının adını və şərəfini qoruyaraq böyük bir ailə qurdu.</div><div class="card-children">Maarif · Xanım · Mahir · İlham · Zərbikə · Səfərəli · Laçın · Aftandil · Bəybala · Samama</div></div>
+<div class="card"><div class="card-name">Balabikə Xanım-1933</div><div class="card-years">Sixaliyevlər</div><div class="card-children">Əliağa 1955 · Böyükağa 1956 · Əlifağa 1958 · Sona 1961 · Bikəxanım 1962 · Azər 1963 · Tərané 1965 · Pərvanə 1968</div></div>
+<div class="card"><div class="card-name">Xoşqədəm Xanım-1935</div><div class="card-years">Novruzovlar</div><div class="card-children">Əflan 1959 · Qəmar 1961 · Ədalət 1963 · Aidə 1967 · Leyla 1969 · Elçin 1971</div></div>
+<div class="card"><div class="card-name">Solmaz Xanım -1937</div><div class="card-years">Süleymanovlar</div><div class="card-children">Almaz 1961 · Balaxanım 1963 · Şahbaz 1965 · Şahla 1967 · Yaqut 1970 · Tahirə 1975</div></div>
 </div>
 </div>
-</div>
-
 <div class="connector">┃</div>
-
 <div class="generation">
 <div class="gen-label">IV Nəsil — Məmmədəli Bəy & Lumu Xanımın Övladları</div>
-<span class="img-wm img-wm-full" style="max-width:320px;display:block;margin:20px auto;">
-  <img src="lm.png" alt="Məmmədəli və Lumu" style="width:100%;border-radius:8px;display:block;" loading="lazy">
-</span>
+<span class="img-wm img-wm-full" style="max-width:320px;display:block;margin:20px auto;"><img src="lm.png" alt="Məmmədəli və Lumu" style="width:100%;border-radius:8px;display:block;" loading="lazy"></span>
 <div class="cards-container">
-
-<div class="card">
-<a href="maarif.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
-  <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="maarif.png" alt="Maarif Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
-  </span>
-</a>
-<div class="card-name">Maarif (1957–2019)</div>
-<div class="card-years">İqtisadçı · Universam Direktoru</div>
-<div class="card-children">Məmmədəli 1989 · Fuad 1990</div>
-</div>
-
-<div class="card">
-<a href="xanim.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
-  <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="xanim.png" alt="Xanım Abasova" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
-  </span>
-</a>
-<div class="card-name">Xanım (1959)</div>
-<div class="card-years">Nasirovlar</div>
-<div class="card-children">Elza 1979 · Zöhrab · Zaur</div>
-</div>
-
-<div class="card">
-<a href="Mahir.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
-  <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="Mahir.png" alt="Mahir Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
-  </span>
-</a>
-<div class="card-name">Mahir (1961)</div>
-<div class="card-years">Mühəndis · Dövlət Su Ehtiyatları Agentliyi</div>
-<div class="card-children">Taryel 1988 · Samir 1989 · Pünhan 1993</div>
-</div>
-
-<div class="card">
-<a href="ilham.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
-  <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="ilham.png" alt="İlham Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
-  </span>
-</a>
-<div class="card-name">İlham (1963)</div>
-<div class="card-years"></div>
-<div class="card-children">İradə 1988 · Samirə 1989 · Sevinc 1992 · Əli 2015 · Nərgiiz 2016</div>
-</div>
-
-<div class="card">
-<a href="Zerbike.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
-  <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="Zerbike.png" alt="Zərbikə Abasova" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
-  </span>
-</a>
-<div class="card-name">Zərbikə (1965)</div>
-<div class="card-years">Tibb bacısı</div>
-<div class="card-children">Səadət 1986 · Sədaqət 1988 · Xuraman 1992 · Rza 1999</div>
-</div>
-
-<div class="card">
-<a href="Namiz.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
-  <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="Namiz.png" alt="Səfərəli Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
-  </span>
-</a>
-<div class="card-name">Səfərəli (1967)</div>
-<div class="card-years">Biznemen</div>
-<div class="card-children">qızı Abaslı Banu 2011</div>
-</div>
-
-<div class="card">
-<a href="lachin.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
-  <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="lachin.png" alt="Laçın Məmmədəli oğlu Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
-  </span>
-</a>
-<div class="card-name">Laçın (1969)</div>
-<div class="card-years">Tədqiqatçı</div>
-<div class="card-desc">Sosioloq · Nəsil Kitabının müəllifi · Xüsusi təyinatlı veteran</div>
-<div class="card-children">Ayla Laçın qızı Abaslı 2013 — bu saytın admini</div>
-</div>
-
-<div class="card">
-<a href="Aftandil.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
-  <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="Aftandil.png" alt="Aftandil Məmmədəli oğlu Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
-  </span>
-</a>
-<div class="card-name">Aftandil (1971-1972)</div>
-<div class="card-years"></div>
-</div>
-
-<div class="card">
-<a href="Azim.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
-  <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="Azim.png" alt="Bəybala Məmmədəli oğlu Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
-  </span>
-</a>
-<div class="card-name">Bəybala (1973)</div>
-<div class="card-years">Biznesmen</div>
-<div class="card-children">qızı Aydan Abaslı 2006 · oğlu Emil Abaslı 2014</div>
-</div>
-
-<div class="card">
-<a href="samama.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
-  <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="samama.png" alt="Şamama Abasova" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
-  </span>
-</a>
-<div class="card-name">Şamama xanım (1975)</div>
-<div class="card-years">Stomatoloq</div>
-<div class="card-children">Sevda Asif qızı(1997-2017) və Ələkbər Asif oğlu Əsədullayev 2002 ·</div>
-</div>
-
+<div class="card"><a href="maarif.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="maarif.png" alt="Maarif Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy"></span></a><div class="card-name">Maarif (1957–2019)</div><div class="card-years">İqtisadçı · Universam Direktoru</div><div class="card-children">Məmmədəli 1989 · Fuad 1990</div></div>
+<div class="card"><a href="xanim.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="xanim.png" alt="Xanım Abasova" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy"></span></a><div class="card-name">Xanım (1959)</div><div class="card-years">Nasirovlar</div><div class="card-children">Elza 1979 · Zöhrab · Zaur</div></div>
+<div class="card"><a href="Mahir.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="Mahir.png" alt="Mahir Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy"></span></a><div class="card-name">Mahir (1961)</div><div class="card-years">Mühəndis · Dövlət Su Ehtiyatları Agentliyi</div><div class="card-children">Taryel 1988 · Samir 1989 · Pünhan 1993</div></div>
+<div class="card"><a href="ilham.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="ilham.png" alt="İlham Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy"></span></a><div class="card-name">İlham (1963)</div><div class="card-years"></div><div class="card-children">İradə 1988 · Samirə 1989 · Sevinc 1992 · Əli 2015 · Nərgiiz 2016</div></div>
+<div class="card"><a href="Zerbike.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="Zerbike.png" alt="Zərbikə Abasova" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy"></span></a><div class="card-name">Zərbikə (1965)</div><div class="card-years">Tibb bacısı</div><div class="card-children">Səadət 1986 · Sədaqət 1988 · Xuraman 1992 · Rza 1999</div></div>
+<div class="card"><a href="Namiz.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="Namiz.png" alt="Səfərəli Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy"></span></a><div class="card-name">Səfərəli (1967)</div><div class="card-years">Biznemen</div><div class="card-children">qızı Abaslı Banu 2011</div></div>
+<div class="card"><a href="lachin.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="lachin.png" alt="Laçın Məmmədəli oğlu Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy"></span></a><div class="card-name">Laçın (1969)</div><div class="card-years">Tədqiqatçı</div><div class="card-desc">Sosioloq · Nəsil Kitabının müəllifi · Xüsusi təyinatlı veteran</div><div class="card-children">Ayla Laçın qızı Abaslı 2013 — bu saytın admini</div></div>
+<div class="card"><a href="Aftandil.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="Aftandil.png" alt="Aftandil Məmmədəli oğlu Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy"></span></a><div class="card-name">Aftandil (1971-1972)</div><div class="card-years"></div></div>
+<div class="card"><a href="Azim.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="Azim.png" alt="Bəybala Məmmədəli oğlu Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy"></span></a><div class="card-name">Bəybala (1973)</div><div class="card-years">Biznesmen</div><div class="card-children">qızı Aydan Abaslı 2006 · oğlu Emil Abaslı 2014</div></div>
+<div class="card"><a href="samama.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="samama.png" alt="Şamama Abasova" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy"></span></a><div class="card-name">Şamama xanım (1975)</div><div class="card-years">Stomatoloq</div><div class="card-children">Sevda Asif qızı(1997-2017) və Ələkbər Asif oğlu Əsədullayev 2002</div></div>
 </div>
 </div>
-
 <div class="connector">┃</div>
-
 <div class="generation">
 <div class="gen-label">V–VI Nəsil — Nəticələr</div>
 <div class="gen-cards">
-<div class="card" style="background:linear-gradient(135deg,rgba(201,168,76,0.07),rgba(20,16,10,.95));">
-<a href="suad.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
-  <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="suad.png" alt="Suad" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
-  </span>
-</a>
-<div class="card-name">Suad — 2019</div>
-<div class="card-years">VI Nəsil · Məmmədəlinin oğlu</div>
-<div class="card-desc">Azay Bəy → Bəybala → Məmmədəli → Maarif → Məmmədəli → Suad</div>
-</div>
-<div class="card" style="background:linear-gradient(135deg,rgba(201,168,76,0.07),rgba(20,16,10,.95));">
-<a href="maarif2.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
-  <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="maarif2.png" alt="Maarif" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
-  </span>
-</a>
-<div class="card-name">Maarif — 2021</div>
-<div class="card-years">VI Nəsil · Fuadın oğlu</div>
-<div class="card-desc">Azay Bəy → Bəybala → Məmmədəli → Maarif → Fuad → Maarif</div>
+<div class="card" style="background:linear-gradient(135deg,rgba(201,168,76,0.07),rgba(20,16,10,.95));"><a href="suad.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="suad.png" alt="Suad" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy"></span></a><div class="card-name">Suad — 2019</div><div class="card-years">VI Nəsil · Məmmədəlinin oğlu</div><div class="card-desc">Azay Bəy → Bəybala → Məmmədəli → Maarif → Məmmədəli → Suad</div></div>
+<div class="card" style="background:linear-gradient(135deg,rgba(201,168,76,0.07),rgba(20,16,10,.95));"><a href="maarif2.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="maarif2.png" alt="Maarif" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy"></span></a><div class="card-name">Maarif — 2021</div><div class="card-years">VI Nəsil · Fuadın oğlu</div><div class="card-desc">Azay Bəy → Bəybala → Məmmədəli → Maarif → Fuad → Maarif</div></div>
 </div>
 </div>
-</div>
-
 <div class="gold-div">— ✦ —</div>
-
-<!-- KİTABIN REDAKTORU -->
 <div class="sec-title">Kitabın Redaktoru</div>
 <div style="max-width:520px;margin:0 auto 48px;">
 <div class="bio-card" style="border-color:rgba(201,168,76,0.38);text-align:center;">
 <div class="corner"></div><div class="corner br"></div>
-<a href="ayla.png" target="_blank" style="display:inline-block;margin-bottom:16px;">
-  <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="ayla.png" alt="Ayla Abaslı" style="width:110px;height:110px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
-  </span>
-</a>
+<a href="ayla.png" target="_blank" style="display:inline-block;margin-bottom:16px;"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="ayla.png" alt="Ayla Abaslı" style="width:110px;height:110px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy"></span></a>
 <div class="bio-name" style="font-size:18px;">Ayla Abaslı</div>
 <div class="bio-role" style="margin-bottom:14px;">Kimya və Tarix araşdırmaçısı<br>«Abasovlar Nəsil Kitabı»nın redaktoru</div>
 </div>
 </div>
-
 <div class="gold-div">— ✦ —</div>
-
-<!-- İSKƏNDƏR BƏY QOLU -->
 <div class="sec-title">İskəndər Bəy Qolu</div>
-<span class="img-wm img-wm-full" style="max-width:320px;display:block;margin:25px auto;">
-  <img src="Iskender.png" alt="İsgəndər Azay oğlu Abasov" style="width:100%;border-radius:8px;display:block;" loading="lazy">
-</span>
-
+<span class="img-wm img-wm-full" style="max-width:320px;display:block;margin:25px auto;"><img src="Iskender.png" alt="İsgəndər Azay oğlu Abasov" style="width:100%;border-radius:8px;display:block;" loading="lazy"></span>
 <div class="generation">
 <div class="gen-label">IV Nəsil — İskəndər Bəy Xətti</div>
 <div class="gen-cards">
-
-<div class="card">
-<a href="abas.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
-  <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="abas.png" alt="Abas Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
-  </span>
-</a>
-<div class="card-name">Abas İskəndər oğlu Abasov (1908-1942)</div>
-<div class="card-years">Həyat yoldaşı Xanım</div>
-<div class="card-children">Şölə Abas qızı Abasova 1938-2012 · Kərəm Məhərrəm oğlu Əsgərov 1959-2022 · Ramiz Məhərrəm oğlu Əsgərov 1961 · Qorxmaz 1983</div>
-<div style="display:flex;justify-content:center;margin-top:15px;padding-top:15px;">
-<div style="text-align:center;">
-  <a href="kerem.png" target="_blank">
-    <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="kerem.png" alt="Kərəm" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
-    </span>
-  </a>
-  <div style="font-size:12px;font-weight:bold;margin-top:4px;color:#c5a880;">Kərəm (1959)</div>
-  <div style="font-size:11px;color:#c5a880;font-style:italic;">Abas oğlu</div>
+<div class="card"><a href="abas.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="abas.png" alt="Abas Abasov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy"></span></a><div class="card-name">Abas İskəndər oğlu Abasov (1908-1942)</div><div class="card-years">Həyat yoldaşı Xanım</div><div class="card-children">Şölə Abas qızı Abasova 1938-2012 · Kərəm Məhərrəm oğlu Əsgərov 1959-2022 · Ramiz Məhərrəm oğlu Əsgərov 1961 · Qorxmaz 1983</div><div style="display:flex;justify-content:center;margin-top:15px;padding-top:15px;"><div style="text-align:center;"><a href="kerem.png" target="_blank"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="kerem.png" alt="Kərəm" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;" loading="lazy"></span></a><div style="font-size:12px;font-weight:bold;margin-top:4px;color:#c5a880;">Kərəm (1959)</div><div style="font-size:11px;color:#c5a880;font-style:italic;">Abas oğlu</div></div></div></div>
+<div class="card"><a href="Qulam.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="Qulam.png" alt="Qulam Məmmədov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy"></span></a><div class="card-name">Qulam İsgəndər oğlu (1915-1986)</div><div class="card-years">Məmmədov · Pilot · Baş Redaktor</div><div class="card-desc">«İzvestiya» Azərbaycan qəzetinin Baş redaktoru. II Dünya Müharibəsi qəhrəmanı.</div><div class="card-children">Qızı: Gülüzadə Axundova 1948-2007 · Oğlu: Mübariz Məmmədov 1951-2009</div></div>
+<div class="card"><a href="sirinbeyim.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="sirinbeyim.png" alt="Şirinbəyim İskəndər qızı" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid rgba(255,255,255,0.2);display:block;" loading="lazy"></span></a><div class="card-name">Şirinbəyim İskəndər qızı (1928-2014)</div><div class="card-years">Rüstəmova</div><div class="card-children">Teybikə 1951 · Ağasar 1947-2003 · Oktay 1954-2024 · Süsən 1957 · Gündüz 1959 · Sənubər 1962 · Xavər 1964</div></div>
+<div class="card"><div style="width:100px;height:100px;margin:0 auto 15px auto;border-radius:50%;overflow:hidden;border:2px solid rgba(197,168,128,0.4);"><span class="img-wm img-wm-circle" style="display:block;width:100%;height:100%;"><img src="Kubra.png" alt="Kubra İsgəndər qızı" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></span></div><div class="card-name">Kubra (1932-2015)</div><div class="card-years">İsgəndər qızı Babayeva</div><div class="card-children">Sevil 1959 · Zəfər 1960 · Şənayə 1963 · Mehbuba 1965 · Səliqə 1966 · Yavər 1968 · Qumru 1970 · Eyvaz 1972</div></div>
+<div class="card"><a href="mirze.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="mirze.png" alt="Mirzə İsgəndər oğlu" style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.2);display:block;" loading="lazy"></span></a><div class="card-name">Mirzə İsgəndər oğlu (1931-2019)</div><div class="card-years">Azayev</div><div class="card-children">Xursud 1966 · Raziyyə 1968-2020 · Ziyafət 1969 → Nicat 1992, Nemət 1994</div></div>
+<div class="card"><a href="hacıağa.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="hacıağa.png" alt="Hacıağa" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy"></span></a><div class="card-name">Hacıağa İskəndər oğlu Abasov (1937–2015)</div><div class="card-years">Dənizçi</div><div class="card-children">Samirə Abasova 1973 · İskəndər Abbasov 1975</div></div>
 </div>
 </div>
-</div>
-
-<div class="card">
-<a href="Qulam.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
-  <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="Qulam.png" alt="Qulam Məmmədov" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
-  </span>
-</a>
-<div class="card-name">Qulam İsgəndər oğlu (1915-1986)</div>
-<div class="card-years">Məmmədov · Pilot · Baş Redaktor</div>
-<div class="card-desc">«İzvestiya» Azərbaycan qəzetinin Baş redaktoru. II Dünya Müharibəsi qəhrəmanı.</div>
-<div class="card-children">Qızı: Gülüzadə Axundova 1948-2007 · Oğlu: Mübariz Məmmədov 1951-2009</div>
-<div style="display:flex;flex-direction:column;justify-content:center;align-items:center;gap:15px;margin-top:15px;padding-top:15px;border-top:1px solid rgba(197,168,128,0.2);">
-<div style="display:flex;flex-direction:row;justify-content:center;gap:20px;width:100%;">
-<div style="text-align:center;">
-  <a href="gulzade.png" target="_blank">
-    <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="gulzade.png" alt="Gülüzadə(1948-2007)" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
-    </span>
-  </a>
-  <div class="card-name" style="font-size:12px;font-weight:bold;margin-top:4px;padding:0;color:#c5a880;">Gülüzadə</div>
-  <div class="card-years" style="font-size:11px;color:#c5a880;padding:0;font-style:italic;">Qulam qızı</div>
-</div>
-<div style="text-align:center;">
-  <a href="mubariz.png" target="_blank">
-    <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="mubariz.png" alt="Mübariz 1951-2009" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
-    </span>
-  </a>
-  <div class="card-name" style="font-size:12px;font-weight:bold;margin-top:4px;padding:0;color:#c5a880;">Mübariz</div>
-  <div class="card-years" style="font-size:11px;color:#c5a880;padding:0;font-style:italic;">Qulam oğlu</div>
-</div>
-</div>
-<div style="text-align:center;border-top:1px solid rgba(197,168,128,0.1);padding-top:10px;width:100%;">
-  <a href="Nəsir.png" target="_blank">
-    <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="Nəsir.png" alt="Nəsir" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
-    </span>
-  </a>
-  <div class="card-name" style="font-size:12px;font-weight:bold;margin-top:4px;padding:0;color:#c5a880;">Nəsir</div>
-  <div class="card-years" style="font-size:11px;color:#c5a880;padding:0;font-style:italic;">Abbas oğlu (Qulamın nəvəsi)</div>
-</div>
-</div>
-</div>
-
-<div class="card">
-<a href="sirinbeyim.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
-  <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="sirinbeyim.png" alt="Şirinbəyim İskəndər qızı" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
-  </span>
-</a>
-<div class="card-name">Şirinbəyim İskəndər qızı (1928-2014)</div>
-<div class="card-years">Rüstəmova</div>
-<div class="card-children">Teybikə 1951 · Ağasar 1947-2003 · Oktay 1954-2024 · Süsən 1957 · Gündüz 1959 · Sənubər 1962 · Xavər 1964</div>
-<div style="display:flex;justify-content:center;gap:20px;margin-top:15px;padding-top:15px;border-top:1px solid rgba(197,168,128,0.2);">
-<div style="text-align:center;">
-  <a href="agaser.png" target="_blank">
-    <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="agaser.png" alt="Ağasər" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
-    </span>
-  </a>
-  <div style="font-size:12px;font-weight:bold;margin-top:4px;color:#c5a880;">Ağasər (1947-2003) oğlu Azər-1995</div>
-  <div style="font-size:11px;color:#c5a880;font-style:italic;">Şirinbəyim</div>
-</div>
-<div style="text-align:center;">
-  <a href="Teybikə.png" target="_blank">
-    <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="Teybikə.png" alt="Teybikə" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
-    </span>
-  </a>
-  <div style="font-size:12px;font-weight:bold;margin-top:4px;color:#c5a880;">Teybikə (1951)</div>
-  <div style="font-size:11px;color:#c5a880;font-style:italic;">Şirinbəyim qızı</div>
-</div>
-</div>
-</div>
-
-<div class="card">
-<div style="width:100px;height:100px;margin:0 auto 15px auto;border-radius:50%;overflow:hidden;border:2px solid rgba(197,168,128,0.4);">
-  <span class="img-wm img-wm-circle" style="display:block;width:100%;height:100%;">
-    <img src="Kubra.png" alt="Kubra İsgəndər qızı" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy">
-  </span>
-</div>
-<div class="card-name">Kubra (1932-2015)</div>
-<div class="card-years">İsgəndər qızı Babayeva</div>
-<div class="card-children">Sevil 1959 · Zəfər 1960 · Şənayə 1963 · Mehbuba 1965 · Səliqə 1966 · Yavər 1968 · Qumru 1970 · Eyvaz 1972</div>
-<div style="display:flex;justify-content:center;margin-top:15px;padding-top:15px;border-top:1px solid rgba(197,168,128,0.2);">
-<div style="text-align:center;">
-  <a href="seliqe.png" target="_blank">
-    <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="seliqe.png" alt="Səliqə" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
-    </span>
-  </a>
-  <div style="font-size:12px;font-weight:bold;margin-top:4px;color:#c5a880;">Səliqə (1966)</div>
-  <div style="font-size:11px;color:#c5a880;font-style:italic;">Kübra qızı</div>
-</div>
-</div>
-</div>
-
-<div class="card">
-<a href="mirze.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
-  <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="mirze.png" alt="Mirzə İsgəndər oğlu" style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
-  </span>
-</a>
-<div class="card-name">Mirzə İsgəndər oğlu (1931-2019)</div>
-<div class="card-years">Azayev</div>
-<div class="card-children">Xursud 1966 · Raziyyə 1968-2020 · Ziyafət 1969 → Nicat 1992 (övladı Gülüstan və Məhəmməd), Nemət 1994</div>
-<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:15px;margin-top:15px;padding-top:15px;border-top:1px solid rgba(197,168,128,0.2);">
-<div style="text-align:center;">
-  <a href="xursud.png" target="_blank">
-    <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="xursud.png" alt="Xursud" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
-    </span>
-  </a>
-  <div style="font-size:12px;font-weight:bold;margin-top:4px;color:#c5a880;">Xursud (1966)</div>
-  <div style="font-size:11px;color:#c5a880;font-style:italic;">Mirzə qızı</div>
-</div>
-<div style="text-align:center;">
-  <a href="raziyye.png" target="_blank">
-    <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="raziyye.png" alt="Raziyyə" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
-    </span>
-  </a>
-  <div style="font-size:12px;font-weight:bold;margin-top:4px;">Raziyyə (1968–2020)</div>
-  <div style="font-size:11px;color:#aaa;">Mirzə qızı</div>
-</div>
-<div style="text-align:center;">
-  <a href="ziyafet.png" target="_blank">
-    <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="ziyafet.png" alt="Ziyafət" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:1px solid rgba(255,255,255,0.2);display:block;" loading="lazy">
-    </span>
-  </a>
-  <div style="font-size:12px;font-weight:bold;margin-top:4px;">Ziyafət (1969)</div>
-  <div style="font-size:11px;color:#aaa;">Mirzə oğlu</div>
-</div>
-</div>
-</div>
-
-<div class="card">
-<a href="hacıağa.png" target="_blank" style="display:block;width:100%;text-align:center;margin-bottom:12px;">
-  <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="hacıağa.png" alt="Hacıağa" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
-  </span>
-</a>
-<div class="card-name">Hacıağa İskəndər oğlu Abasov (1937–2015)</div>
-<div class="card-years">Dənizçi</div>
-<div class="card-children">Samirə Abasova 1973 · İskəndər Abbasov 1975</div>
-<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:15px;margin-top:15px;padding-top:10px;">
-<div style="text-align:center;flex:1;max-width:200px;background:rgba(255,255,255,0.03);padding:10px;border-radius:6px;border:1px solid rgba(197,168,128,0.2);">
-  <a href="isgender2.png" target="_blank">
-    <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="isgender2.png" alt="İskəndər Hacıağa oğlu Abasov" style="width:70px;height:70px;object-fit:cover;border-radius:50%;border:1px solid var(--gold);display:block;" loading="lazy">
-    </span>
-  </a>
-  <div style="font-size:13px;font-weight:bold;margin-top:5px;color:#fff;">Abasov İskəndər (1975)</div>
-  <div style="font-size:11px;color:#aaa;font-style:italic;margin-bottom:5px;">Biznesmen · Hacıağaoğlu</div>
-  <div style="font-size:10px;color:#d1d5db;line-height:1.2;">Dəniz 2002 · Xədicə 2009 · Hacıağa 2009 · Nihad 2011</div>
-</div>
-<div style="text-align:center;flex:1;max-width:200px;background:rgba(255,255,255,0.03);padding:10px;border-radius:6px;border:1px solid rgba(197,168,128,0.2);">
-  <a href="Samira.png" target="_blank">
-    <span class="img-wm img-wm-circle" style="display:inline-block;">
-      <img src="Samira.png" alt="Samirə Abasova" style="width:70px;height:70px;object-fit:cover;border-radius:50%;border:1px solid var(--gold);display:block;" loading="lazy">
-    </span>
-  </a>
-  <div style="font-size:13px;font-weight:bold;margin-top:5px;color:#fff;">Samirə Abbasova (1973)</div>
-  <div style="font-size:11px;color:#aaa;font-style:italic;margin-bottom:5px;">Hacıağa qızı</div>
-</div>
-</div>
-</div>
-
-</div>
-</div>
-
 <div class="gold-div">— ✦ —</div>
-
 <div class="sec-title">Aldost Bəy Qolu</div>
 <div class="generation">
 <div class="gen-label">Həyat yoldaşı Mənsumə xanım ilə</div>
 <div class="gen-cards">
-<div class="card">
-   <div class="card" style="text-align:center;">
-<a href="memmedaqa.png" target="_blank" style="display:inline-block;margin-bottom:8px;">
-  <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="memmedaqa.png" alt="Əliyeva Sura Aldost Qızı" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
-  </span>
-</a>
-<div class="card-name">Məmmədağa Xətti 1926-1954</div>
-<div class="card-years">Səmidağa (Azayev) 1951-2017</div>
-<div class="card-children">Vusal-1974 · Eldost 1978–2023 (Eldostun oğlu Mustafa) · Azay</div>
-</div>
-<div class="card" style="text-align:center;">
-<a href="Sura.png" target="_blank" style="display:inline-block;margin-bottom:8px;">
-  <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="Sura.png" alt="Əliyeva Sura Aldost Qızı" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
-  </span>
-</a>
-<div class="card-name">Sura Xətti (1927–2000)</div>
-<div class="card-years">Əliyevlər </div>
-<div class="card-children">Şəfiqə · Həmid 1951-2020 · Minayə · Əhmədağa 1958 · İlqar 1960-2023 · Canpolad-1964 · Alime-1969</div>
-</div>
-  <div class="card" style="text-align:center;">
-<a href="mintezil.png" target="_blank" style="display:inline-block;margin-bottom:8px;">
-  <span class="img-wm img-wm-circle" style="display:inline-block;">
-    <img src="mintezil.png" alt="Əliyeva Sura Aldost Qızı" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy">
-  </span>
-</a>
-<div class="card">
-<div class="card-name">Mintəzir Xətti 1936-1995 </div>
-<div class="card-years">Həyat Yoldaşı Şıxəli, Övladları yoxdur</div>
-<div class="card-desc">—</div>
+<div class="card" style="text-align:center;"><a href="memmedaqa.png" target="_blank" style="display:inline-block;margin-bottom:8px;"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="memmedaqa.png" alt="Məmmədağa" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy"></span></a><div class="card-name">Məmmədağa Xətti 1926-1954</div><div class="card-years">Səmidağa (Azayev) 1951-2017</div><div class="card-children">Vusal-1974 · Eldost 1978–2023 (Eldostun oğlu Mustafa) · Azay</div></div>
+<div class="card" style="text-align:center;"><a href="Sura.png" target="_blank" style="display:inline-block;margin-bottom:8px;"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="Sura.png" alt="Sura" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy"></span></a><div class="card-name">Sura Xətti (1927–2000)</div><div class="card-years">Əliyevlər</div><div class="card-children">Şəfiqə · Həmid 1951-2020 · Minayə · Əhmədağa 1958 · İlqar 1960-2023 · Canpolad-1964 · Alime-1969</div></div>
+<div class="card" style="text-align:center;"><a href="mintezil.png" target="_blank" style="display:inline-block;margin-bottom:8px;"><span class="img-wm img-wm-circle" style="display:inline-block;"><img src="mintezil.png" alt="Mintəzir" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;" loading="lazy"></span></a><div class="card-name">Mintəzir Xətti 1936-1995</div><div class="card-years">Həyat Yoldaşı Şıxəli, Övladları yoxdur</div><div class="card-desc">—</div></div>
 </div>
 </div>
 </div>
-
 </div>
-</div>
-  </div>
-</div>
-
 <!-- ═══ BİOQRAFİYALAR TAB ═══ -->
 <div id="tab-bio" class="tab-content">
 <div class="wrap">
 <div class="sec-title">Şəxsiyyət Portretləri</div>
 <div class="bio-grid">
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1905 — 1937 · Repressiya Qurbanı</div>
-<div class="bio-name">Bəybala Azay oğlu Abasov</div>
-<div class="bio-role">Zülmə Əyilməyən Şərəf</div>
-<div class="bio-text">
-<p>1905-ci ildə dünyaya göz açan Bəybala kişi ailəsinin dayağı, ocağının çırağı idi. 32 yaşının ən gənc və verimli çağında, heç bir günahı olmadan dövrün repressiya maşını tərəfindən hədəf seçildi və şəhidlik zirvəsinə ucaldı.</p>
-<p>Onun itkisi nəinki bir ailənin, bütün nəslin qəlbində sağalmaz bir yara açsa da, qoyub getdiyi mənəvi miras bu günə qədər yaşamaqdadır. Oğlu Məmmədəli onun adını çiyinlərində daşıdı.</p>
-<p><em>«Nəsil Kitabı»mızın bu səhifəsi onun əziz xatirəsinə bir ehtiram borcumuzdur. Allah rəhmət eləsin!</em></p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1910 — 1971 · Stilist · dərzi</div>
-<div class="bio-name">Bikə Mürşid qızı Abasova</div>
-<div class="bio-role">Öz dövründə ən yaxşı dərzi, xalq təbabəti mütəxəssisi</div>
-<div class="bio-text">
-<p>Saatlı Rayonu Əlisultanlı kəndindən gəlin gəlibmiş. 1971-ci ildə uzun sürən xəstəlikdən vəfat etmişdir. Əhmədbəyli qəbristanlığında dəfn edilib.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1927 — 1978 · Ailə Başçısı</div>
-<div class="bio-name">Məmmədəli Bəybala oğlu Abasov</div>
-<div class="bio-role">Ocağımızın Dayağı · Böyük Ailə Başçısı</div>
-<div class="bio-text">
-<p>1927-ci ildə dünyaya göz açan Məmmədəli müəllim, uşaq yaşlarında atasını repressiya qasırğasında itirsə də, onun adını və şərəfini qorumağı özünə həyat amalı seçdi.</p>
-<p>1978-ci il oktyabrın 27-də Rusiya Federasiyasının Stavropol diyarında, Svetloqrad şəhəri yaxınlığında avtomobil qəzasında həyatını itirdi.</p>
-<p><em>«O, bir çinar kimi kökü ilə torpağına, budaqları ilə gələcəyə bağlı idi.»</em></p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1915 — 1986 · Pilot · Baş Redaktor</div>
-<div class="bio-name">Qulam İskəndər oğlu Məmmədov</div>
-<div class="bio-role">«İzvestiya» Azərbaycan · 40-cı Aviabriqada</div>
-<div class="bio-text">
-<p>21 aprel 1915-ci ildə Əhmədbəyli kəndində anadan olmuşdur. 40-cı aviabriqadada pilot kimi xidmət etmişdir. Volxov cəbhəsində Leninqradın mühasirəsinin yarılmasında iştirak etmiş, «Leninqrad uğrunda döyüşün xatirəsinə» nişanı ilə təltif edilmişdir.</p>
-<p>«I Dərəcəli Vətən Müharibəsi» Ordeni sahibidir (01.08.1986). Müharibədən sonra «İzvestiya» (Azərbaycan) qəzetinin Baş redaktoru vəzifəsini tutmuşdur. «Ölməz Alay» beynəlxalq arxivlərində əbədiləşdirilmişdir.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1948 — 2003 · İnşaat Mühəndisi</div>
-<div class="bio-name">Ağasər Hüseynəli oğlu Rüstəmov</div>
-<div class="bio-role">Baş Direktor · «Azərbaycan Kurort Tikinti»</div>
-<div class="bio-text">
-<p>Şirinbəyim xanım qolunun nümayəndəsi. 1976-cı ildə Azərbaycan İnşaat-Memarlıq Universitetini bitirərək milli tikinti sektoruna qədəm qoymuşdur.</p>
-<p>15 il ərzində Bakı 7 saylı Tikinti İdarəsinin rəisi, sonra isə «Azərbaycan Kurort Tikintiləri» İdarəsinin Baş direktoru olmuşdur. 4 övlad atası. 2003-cü ildə vəfat etmişdir.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1957 — 2019 · Maliyyəçi · Rəhbər</div>
-<div class="bio-name">Maarif Məmmədəli oğlu Abasov</div>
-<div class="bio-role">Direktor · Bakı 1 Nömrəli Universam</div>
-<div class="bio-text">
-<p>1974–1979-cu illərdə Gəncə Kənd Təsərrüfatı İnstitutunun İqtisadiyyat fakültəsini bitirmiş. Əmək yoluna Saatlı rayonunun «Ukrayna» kolxozunda iqtisadçı kimi başlamışdır.</p>
-<p>1995-ci ildən Bakının 1 Nömrəli Universam-ın direktoru olmuşdur. İki oğlu: Məmmədəli (1989), Fuad (1990). 2019-cu ildə vəfat etmişdir.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1954 · İqtisadçı · Dövlət Xadimi</div>
-<div class="bio-name">Əliağa Saday oğlu Şıxəliyev</div>
-<div class="bio-role">Saatlı Rayonu Kolxozda Baş mühasib</div>
-<div class="bio-text">
-<p>1972–1977-ci illərdə Gəncə Kənd Təsərrüfatı İnstitutunun İqtisadiyyat fakültəsini bitirmiş. Saatlı «MirBəşir» kolxozunda iqtisadçı kimi fəaliyyətə başlamışdır.</p>
-<p>Saatlı Rayonu Aqrar sənayesi idarəsinin rəisi.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1961 · Mühəndis · Dövlət Xadimi</div>
-<div class="bio-name">Mahir Məmmədəli oğlu Abasov</div>
-<div class="bio-role">Azərbaycan Dövlət Su Ehtiyatları Agentliyi</div>
-<div class="bio-text">
-<p>1978–1983-cü illərdə Gəncə Kənd Təsərrüfatı İnstitutunun Mexanika fakültəsini bitirmiş. Saatlı «Sabir» kolxozunda mühəndis kimi fəaliyyətə başlamışdır.</p>
-<p>Saatlı rayon Avtobazasının müdiri, hal-hazırda isə Azərbaycan Dövlət Su Ehtiyatları Agentliyinin məsul əməkdaşıdır. Üç oğlu var: Taryel, Samir, Pünhan.</p>
-</div>
-</div>
-
-  <div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1963 · Avtomexannik · Kaskadyor</div>
-<div class="bio-name">İlham Məmmədəli oğlu Abasov</div>
-<div class="bio-role">Azərbaycan Kaskadyorlar Assosiasiyasının üzvü</div>
-<div class="bio-text">
-<p>Azərbaycanda kaskadyorluq sənətini inkişaf etdirmək, peşəkarları bir araya gətirmək və beynəlxalq standartlara uyğun xidmətlər təqdim etməkdə böyük xidmətləri olub,Cavad Xan filmində Filmin kütləvi səhnələrində,qılınc oynatmaq və at sürmək çəkilişlərdə kaskadyor kimi iştirak etmış ,Ailəlidir 5 övladı var.</p>
-</div>
-</div>
-
-<div class="bio-card" style="border-color:rgba(201,168,76,0.35);">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1969 · CEO · Veteran · Tədqiqatçı</div>
-<div class="bio-name">Laçın Məmmədəli oğlu Abasov</div>
-<div class="bio-role">CEO · Nəsil Kitabının müəllifi</div>
-<div class="bio-text">
-<p>1989–1994-cü illərdə Azərbaycan Politexnik İnstitutunda mühəndislik ixtisasını bitirmiş. I Qarabağ Müharibəsində Prezident Qvardiyasının xüsusi dəstələrində xidmət etmiş; Füzuli, Laçın, Qubadlı istiqamətlərini müdafiə etmişdir. Sovet Raket Qoşunlarında qitələrarası raket operatoru olaraq texniki hazırlıq keçmişdir.</p>
-<p>Karyerası: Azərbaycan Sənaye Tikinti Nazirliyi (1995), Torpaq və Xəritəçəkmə Komitəsi, SOCAR-mühəndis, Sosial Tədqiqatlar Mərkəzi (2019–2026).</p>
-<p>2017-ci ildə ABŞ-ın 58-ci Prezidentinin andiçmə mərasiminə dəvət edilmişdir. 20-dən artıq elmi-analitik məqalənin müəllifidir.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1973 · Biznesmen</div>
-<div class="bio-name">Bəybala Məmmədəli oğlu Abasov</div>
-<div class="bio-role">Moskva İlona M OOO-nun təsisçisi</div>
-<div class="bio-text">
-<p>1991–1996-cı illərdə Azərbaycan Texniki Universitetində mühəndislik diplomu əldə etmişdir. Energetika, tikinti və sənaye sahələrində fəaliyyət göstərmişdir.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1958 · Fermer</div>
-<div class="bio-name">Gündüz Hüseynəli oğlu Rüstəmov</div>
-<div class="bio-role">Saatlı rayonu fermer təsərrüfatı</div>
-<div class="bio-text">
-<p>1976–1981-ci illərdə Ukraynada Universitetdə oxuyub. Energetika, tikinti və sənaye sahələrində fəaliyyət göstərmişdir.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1967 · Biznesmen</div>
-<div class="bio-name">Səfərəli Məmmədəli oğlu Abasov</div>
-<div class="bio-role">Moskva İlona M OOO-nun direktoru</div>
-<div class="bio-text">
-<p>1984–1991-ci illərdə Azərbaycan Texniki Universitetinin Avtonəqliyyat fakultəsini bitirmişdi. Müxtəlif sənaye və idarəetmə layihələrində iştirak etmişdir.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1951-2020 · Müəllim</div>
-<div class="bio-name">Həmid Bayram oğlu Əliyev</div>
-<div class="bio-role">Elmlər Akademiyasının Fizika institutunun elmi işçisi</div>
-<div class="bio-text">
-<p>1970–1975-ci illərdə Azərbaycan Dövlət Universitetinin Fizika-Riyaziyyat fakultəsini bitirib, sonra isə Fizika-Riyaziyyat elmləri doktoru elmi dərəcəsini almışdır.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1965 · Həkim</div>
-<div class="bio-name">Zərbikə Məmmədəli qızı Abasova</div>
-<div class="bio-role">Uşaq Baxçasında tibb bacısı</div>
-<div class="bio-text">
-<p>1982–1985-ci illərdə Bakı 2 nömrəli tibb texnikomunu bitirib.</p>
-</div>
-</div>
-
-  <div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1937-19957 · Kitabxanaçı</div>
-<div class="bio-name">Mintəzir Aldost qızı Abasova</div>
-<div class="bio-role">Bakı Dövlət Universiteti</div>
-<div class="bio-text">
-<p>1956–1961-ci illərdə Bakı Dövlət Universitetinin Kitabxanaçılıq fakultəsini bitirib, sonra isə Saatlı rayonu  Kitabxanasının müdiri vəzifəsində çalışmışdı.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1947-2007 · Kitabxanaçı</div>
-<div class="bio-name">Gülzadə Qulam qızı Axundova</div>
-<div class="bio-role">Bakı Dövlət Universiteti</div>
-<div class="bio-text">
-<p>1966–1971-ci illərdə Bakı Dövlət Universitetinin Kitabxanaçılıq fakultəsini bitirib, sonra isə Politexnik Universitetinin Kitabxanasında çalışmışdı.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1957 · Müəllimə</div>
-<div class="bio-name">Süsən Hüseynəli qızı Rüstəmova</div>
-<div class="bio-role">Bakı məktəblərində müəllimə</div>
-<div class="bio-text">
-<p>1970–1975-ci illərdə Azərbaycan Dövlət Pedaqoji institutunu bitirib.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1966 · Müəllimə</div>
-<div class="bio-name">Xursud Mirzə qızı Azayeva</div>
-<div class="bio-role">Bakı məktəblərində Direktor</div>
-<div class="bio-text">
-<p>1981–1986-ci illərdə Azərbaycan Dövlət Politexnik İnstitunu bitirib.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1975 · Stomatoloq</div>
-<div class="bio-name">Şamam Məmmədəli qızı Abasova</div>
-<div class="bio-role">Bakı Biznes fəaliyyəti ilə məşğuldu</div>
-<div class="bio-text">
-<p>Tibb Texnikomunu bitirib.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1989 · Biznesmen</div>
-<div class="bio-name">Səbinə Fəxrəddin qızı Abasova</div>
-<div class="bio-role">Bakı Biznes fəaliyyəti ilə məşğuldu</div>
-<div class="bio-text">
-<p>Azərbaycan Dillər Universitetini bitirib.</p>
-</div>
-</div>
-
-  <div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1992 · politoloq</div>
-<div class="bio-name">Şəhla İlqar qızı Abasova</div>
-<div class="bio-role">Beynəlxalq məsələlər üzrə exspert</div>
-<div class="bio-text">
-<p>Azərbaycan Dillər Universiteti (ADU) bakalavr və UNEC-də Magistratura proqramlarında təhsil almış,“Yüksəliş” müsabiqəsinin yarımfinalçıl.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1996 · Mühəndis</div>
-<div class="bio-name">Humay Abasova</div>
-<div class="bio-role">Azər Kosmos</div>
-<div class="bio-text">
-<p>Bakı Dövlət Universitetini bitirib.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1973 · Müəllimə</div>
-<div class="bio-name">Samirə Hacıağa qızı Abasova</div>
-<div class="bio-role">Bakı məktəblərində müəllimə</div>
-<div class="bio-text">
-<p>1990–1995-ci illərdə Azərbaycan Dövlət Pedaqoji institutunu bitirib.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1964 · Müəllimə</div>
-<div class="bio-name">Şəhran Əliağa qızı Abasova</div>
-<div class="bio-role">Bakı məktəblərində müəllimə</div>
-<div class="bio-text">
-<p>1990–1995-ci illərdə Azərbaycan Dövlət Pedaqoji institutunu bitirib.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1977 · Hüquqşunas</div>
-<div class="bio-name">Könül Əlisəfər qızı Abasova</div>
-<div class="bio-role">Azərbaycan Respublikası Ədliyyə Nazirliyi</div>
-<div class="bio-text">
-<p>1992–1997-ci illərdə Bakı Dövlət Universitetinin Hüquq fakultəsini daha sonra Azərbaycan Respublikasının Prezidenti yanında Dövlət İdarəçilik Akademiyasını bitirib.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1988 · Menecer</div>
-<div class="bio-name">İradə İlham qızı Abasova</div>
-<div class="bio-role">Vaşinqton şəhərində İT şirkətində PR Menecer</div>
-<div class="bio-text">
-<p>2003–2009-cu illərdə Azərbaycan Dillər Universitetində, sonra isə təhsilini Vaşinqton şəhərində davam etdirib.</p>
-</div>
-</div>
-
-  <div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1989 · Menecer</div>
-<div class="bio-name">Samirə İlham qızı Abasova</div>
-<div class="bio-role">Vaşinqton şəhərində yaşayır və işləyir</div>
-<div class="bio-text">
-<p>2006–2011-cu illərdə Bakı Slavyan Universitetində, sonra isə təhsilini Vaşinqton şəhərində davam etdirib.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">2006 · Tələbə</div>
-<div class="bio-name">Aydan Bəybala qızı Abaslı</div>
-<div class="bio-role">Tələbə</div>
-<div class="bio-text">
-<p>2023-cü ildə ADA-Universtetinə qəbul olub.</p>
-</div>
-</div>
-
-  <div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">2006 · İngilis-İspan dili müəllimi</div>
-<div class="bio-name">Fizzə Saday qızı Abasova</div>
-<div class="bio-role">Tərçüməçi</div>
-<div class="bio-text">
-<p>MoskvaXalqlar Dostluğu-Universtetini bitirib.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1958 · Dil ədəbiyyat müəllimi</div>
-<div class="bio-name">Əhmədağa Bayram oğlu Əliyev</div>
-<div class="bio-role">Dədə-Qorqud Kənd orta məktəbinin direktoru</div>
-<div class="bio-text">
-<p>1975–1980-ci illərdə Naxçıvan Universitetini bitirmişdi.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1972 · Mühəndis</div>
-<div class="bio-name">Faiq Fazil oğlu Hüseynov</div>
-<div class="bio-role">Paşa Holding İT Menecer</div>
-<div class="bio-text">
-<p>1989–1994-ci illərdə Azərbaycan Texniki Universitetini bitirmişdi.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1969 · Mühəndis</div>
-<div class="bio-name">Ziyafət Mirzə oğlu Azayev</div>
-<div class="bio-role">AzPetrol YDM rəisi</div>
-<div class="bio-text">
-<p>1986–1994-ci illərdə Azərbaycan İnşaat mühəndisləri Universitetini bitirmişdi.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1954 · Mühəndis</div>
-<div class="bio-name">Oktay Hüseynəli oğlu Rüstəmov</div>
-<div class="bio-role">Bulvar İdarəsi baş mühəndis</div>
-<div class="bio-text">
-<p>1971–1975-ci illərdə Azərbaycan Texniki Universitetini bitirmişdi.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1954 · Biznesmen</div>
-<div class="bio-name">İskəndər Hacıağa oğlu Abasov</div>
-<div class="bio-role">Kiçik sahibkar</div>
-<div class="bio-text">
-<p>1993–1998-ci illərdə Biznes Universitetini bitirmişdi.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1964 · Mühəndis</div>
-<div class="bio-name">Canpolad Bayram oğlu Əliyev</div>
-<div class="bio-role">Saatlı Rayonu Texnikaya nəzarət müfəttişi</div>
-<div class="bio-text">
-<p>1981–1986-ci illərdə Azərbaycan Kənd Təsərrüfatı institutunu bitirmişdi.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1959 · İqtisadçı</div>
-<div class="bio-name">Əflan Əliqulu oğlu Novruzov</div>
-<div class="bio-role">Saatlı Rayonu İcra Hakimiyyəti</div>
-<div class="bio-text">
-<p>1976–1981-ci illərdə Azərbaycan Kənd Təsərrüfatı institutunu bitirmişdi.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1963 · ZooTexnik</div>
-<div class="bio-name">Ədalət Əliqulu oğlu Novruzov</div>
-<div class="bio-role">Saatlı Rayonu Kənd Təsərrüfatı İdarəsi</div>
-<div class="bio-text">
-<p>1980–1985-ci illərdə Azərbaycan Kənd Təsərrüfatı institutunu bitirmişdi.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1963 · Gömrük polkonik leytenantı</div>
-<div class="bio-name">Azər Saday oğlu Şıxəliyev</div>
-<div class="bio-role">Azərbaycan Gömrük Komitəsi</div>
-<div class="bio-text">
-<p>1979–1986-ci illərdə Azərbaycan Texniki Universitetini bitirmişdi.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1960 · Polis</div>
-<div class="bio-name">Zəfər Fərəc oğlu Babayev</div>
-<div class="bio-role">Daxili İşlər Nazirliyi</div>
-<div class="bio-text">
-<p>1990–1996-ci illərdə Azərbaycan Texniki Universitetini bitirmişdi.</p>
-</div>
-</div>
-
-  <div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1974 · Politoloq</div>
-<div class="bio-name">Vüsal Səmidağa oğli Azayev</div>
-<div class="bio-role">Tərcüməçi</div>
-<div class="bio-text">
-<p>1993–1998-ci illərdə Azərbaycan Respublikasının Prezidenti yanında Dövlət İdarəçilik Akademiyasını bitirib.</p>
-</div>
-</div>
-
-   <div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1995 · Terapevt</div>
-<div class="bio-name">Azay Səmidağa oğli Azayev</div>
-<div class="bio-role">Tərcüməçi</div>
-<div class="bio-text">
-<p>2010–2014-cü illərdə Atatürk universiteti Azərbaycanda təhsil alıb.</p>
-</div>
-</div>
-
-<div class="bio-card">
-<div class="corner"></div><div class="corner br"></div>
-<div class="bio-tag">1960-2023 · Müşavir</div>
-<div class="bio-name">İlqar Bayram oğlu Əliyev</div>
-<div class="bio-role">«Azərişıq» Açıq Səhmdar Cəmiyyəti</div>
-<div class="bio-text">
-<p>1978–1983-ci illərdə Azərbaycan Kənd Təsərrüfatı institutunu bitirərək mühəndislik diplomu almışdır. Doğulduğu kəndin Kolxoz Sədri işləmişdi.</p>
-</div>
-</div>
-
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1905 — 1937 · Repressiya Qurbanı</div><div class="bio-name">Bəybala Azay oğlu Abasov</div><div class="bio-role">Zülmə Əyilməyən Şərəf</div><div class="bio-text"><p>1905-ci ildə dünyaya göz açan Bəybala kişi ailəsinin dayağı, ocağının çırağı idi. 32 yaşının ən gənc və verimli çağında, heç bir günahı olmadan dövrün repressiya maşını tərəfindən hədəf seçildi və şəhidlik zirvəsinə ucaldı.</p><p>Onun itkisi nəinki bir ailənin, bütün nəslin qəlbində sağalmaz bir yara açsa da, qoyub getdiyi mənəvi miras bu günə qədər yaşamaqdadır. Oğlu Məmmədəli onun adını çiyinlərində daşıdı.</p><p><em>«Nəsil Kitabı»mızın bu səhifəsi onun əziz xatirəsinə bir ehtiram borcumuzdur. Allah rəhmət eləsin!</em></p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1910 — 1971 · Stilist · dərzi</div><div class="bio-name">Bikə Mürşid qızı Abasova</div><div class="bio-role">Öz dövründə ən yaxşı dərzi, xalq təbabəti mütəxəssisi</div><div class="bio-text"><p>Saatlı Rayonu Əlisultanlı kəndindən gəlin gəlibmiş. 1971-ci ildə uzun sürən xəstəlikdən vəfat etmişdir. Əhmədbəyli qəbristanlığında dəfn edilib.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1927 — 1978 · Ailə Başçısı</div><div class="bio-name">Məmmədəli Bəybala oğlu Abasov</div><div class="bio-role">Ocağımızın Dayağı · Böyük Ailə Başçısı</div><div class="bio-text"><p>1927-ci ildə dünyaya göz açan Məmmədəli müəllim, uşaq yaşlarında atasını repressiya qasırğasında itirsə də, onun adını və şərəfini qorumağı özünə həyat amalı seçdi.</p><p>1978-ci il oktyabrın 27-də Rusiya Federasiyasının Stavropol diyarında, Svetloqrad şəhəri yaxınlığında avtomobil qəzasında həyatını itirdi.</p><p><em>«O, bir çinar kimi kökü ilə torpağına, budaqları ilə gələcəyə bağlı idi.»</em></p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1915 — 1986 · Pilot · Baş Redaktor</div><div class="bio-name">Qulam İskəndər oğlu Məmmədov</div><div class="bio-role">«İzvestiya» Azərbaycan · 40-cı Aviabriqada</div><div class="bio-text"><p>21 aprel 1915-ci ildə Əhmədbəyli kəndində anadan olmuşdur. 40-cı aviabriqadada pilot kimi xidmət etmişdir. Volxov cəbhəsində Leninqradın mühasirəsinin yarılmasında iştirak etmiş, «Leninqrad uğrunda döyüşün xatirəsinə» nişanı ilə təltif edilmişdir.</p><p>«I Dərəcəli Vətən Müharibəsi» Ordeni sahibidir (01.08.1986). Müharibədən sonra «İzvestiya» (Azərbaycan) qəzetinin Baş redaktoru vəzifəsini tutmuşdur.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1948 — 2003 · İnşaat Mühəndisi</div><div class="bio-name">Ağasər Hüseynəli oğlu Rüstəmov</div><div class="bio-role">Baş Direktor · «Azərbaycan Kurort Tikinti»</div><div class="bio-text"><p>Şirinbəyim xanım qolunun nümayəndəsi. 1976-cı ildə Azərbaycan İnşaat-Memarlıq Universitetini bitirərək milli tikinti sektoruna qədəm qoymuşdur.</p><p>15 il ərzində Bakı 7 saylı Tikinti İdarəsinin rəisi, sonra isə «Azərbaycan Kurort Tikintiləri» İdarəsinin Baş direktoru olmuşdur. 4 övlad atası. 2003-cü ildə vəfat etmişdir.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1957 — 2019 · Maliyyəçi · Rəhbər</div><div class="bio-name">Maarif Məmmədəli oğlu Abasov</div><div class="bio-role">Direktor · Bakı 1 Nömrəli Universam</div><div class="bio-text"><p>1974–1979-cu illərdə Gəncə Kənd Təsərrüfatı İnstitutunun İqtisadiyyat fakültəsini bitirmiş. 1995-ci ildən Bakının 1 Nömrəli Universam-ın direktoru olmuşdur. İki oğlu: Məmmədəli (1989), Fuad (1990). 2019-cu ildə vəfat etmişdir.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1961 · Mühəndis · Dövlət Xadimi</div><div class="bio-name">Mahir Məmmədəli oğlu Abasov</div><div class="bio-role">Azərbaycan Dövlət Su Ehtiyatları Agentliyi</div><div class="bio-text"><p>1978–1983-cü illərdə Gəncə Kənd Təsərrüfatı İnstitutunun Mexanika fakültəsini bitirmiş. Saatlı rayon Avtobazasının müdiri, hal-hazırda isə Azərbaycan Dövlət Su Ehtiyatları Agentliyinin məsul əməkdaşıdır. Üç oğlu var: Taryel, Samir, Pünhan.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1963 · Avtomexannik · Kaskadyor</div><div class="bio-name">İlham Məmmədəli oğlu Abasov</div><div class="bio-role">Azərbaycan Kaskadyorlar Assosiasiyasının üzvü</div><div class="bio-text"><p>Azərbaycanda kaskadyorluq sənətini inkişaf etdirmək, peşəkarları bir araya gətirmək və beynəlxalq standartlara uyğun xidmətlər təqdim etməkdə böyük xidmətləri olub. Cavad Xan filmində kaskadyor kimi iştirak etmiş. Ailəlidir, 5 övladı var.</p></div></div>
+<div class="bio-card" style="border-color:rgba(201,168,76,0.35);"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1969 · CEO · Veteran · Tədqiqatçı</div><div class="bio-name">Laçın Məmmədəli oğlu Abasov</div><div class="bio-role">CEO · Nəsil Kitabının müəllifi</div><div class="bio-text"><p>1989–1994-cü illərdə Azərbaycan Politexnik İnstitutunda mühəndislik ixtisasını bitirmiş. I Qarabağ Müharibəsində Prezident Qvardiyasının xüsusi dəstələrində xidmət etmiş; Füzuli, Laçın, Qubadlı istiqamətlərini müdafiə etmişdir. Sovet Raket Qoşunlarında qitələrarası raket operatoru olaraq texniki hazırlıq keçmişdir.</p><p>Karyerası: Azərbaycan Sənaye Tikinti Nazirliyi (1995), Torpaq və Xəritəçəkmə Komitəsi, SOCAR-mühəndis, Sosial Tədqiqatlar Mərkəzi (2019–2026). 2017-ci ildə ABŞ-ın 58-ci Prezidentinin andiçmə mərasiminə dəvət edilmişdir. 20-dən artıq elmi-analitik məqalənin müəllifidir.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1973 · Biznesmen</div><div class="bio-name">Bəybala Məmmədəli oğlu Abasov</div><div class="bio-role">Moskva İlona M OOO-nun təsisçisi</div><div class="bio-text"><p>1991–1996-cı illərdə Azərbaycan Texniki Universitetində mühəndislik diplomu əldə etmişdir.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1967 · Biznesmen</div><div class="bio-name">Səfərəli Məmmədəli oğlu Abasov</div><div class="bio-role">Moskva İlona M OOO-nun direktoru</div><div class="bio-text"><p>1984–1991-ci illərdə Azərbaycan Texniki Universitetinin Avtonəqliyyat fakultəsini bitirmişdi.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1965 · Həkim</div><div class="bio-name">Zərbikə Məmmədəli qızı Abasova</div><div class="bio-role">Uşaq Baxçasında tibb bacısı</div><div class="bio-text"><p>1982–1985-ci illərdə Bakı 2 nömrəli tibb texnikomunu bitirib.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1975 · Stomatoloq</div><div class="bio-name">Şamam Məmmədəli qızı Abasova</div><div class="bio-role">Bakı Biznes fəaliyyəti ilə məşğuldu</div><div class="bio-text"><p>Tibb Texnikomunu bitirib.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1954 · İqtisadçı · Dövlət Xadimi</div><div class="bio-name">Əliağa Saday oğlu Şıxəliyev</div><div class="bio-role">Saatlı Rayonu Kolxozda Baş mühasib</div><div class="bio-text"><p>1972–1977-ci illərdə Gəncə Kənd Təsərrüfatı İnstitutunun İqtisadiyyat fakültəsini bitirmiş. Saatlı Rayonu Aqrar sənayesi idarəsinin rəisi.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1951-2020 · Müəllim</div><div class="bio-name">Həmid Bayram oğlu Əliyev</div><div class="bio-role">Elmlər Akademiyasının Fizika institutunun elmi işçisi</div><div class="bio-text"><p>1970–1975-ci illərdə Azərbaycan Dövlət Universitetinin Fizika-Riyaziyyat fakultəsini bitirib, Fizika-Riyaziyyat elmləri doktoru elmi dərəcəsini almışdır.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1958 · Dil ədəbiyyat müəllimi</div><div class="bio-name">Əhmədağa Bayram oğlu Əliyev</div><div class="bio-role">Dədə-Qorqud Kənd orta məktəbinin direktoru</div><div class="bio-text"><p>1975–1980-ci illərdə Naxçıvan Universitetini bitirmişdi.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1960-2023 · Müşavir</div><div class="bio-name">İlqar Bayram oğlu Əliyev</div><div class="bio-role">«Azərişıq» Açıq Səhmdar Cəmiyyəti</div><div class="bio-text"><p>1978–1983-ci illərdə Azərbaycan Kənd Təsərrüfatı institutunu bitirərək mühəndislik diplomu almışdır. Doğulduğu kəndin Kolxoz Sədri işləmişdi.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1964 · Mühəndis</div><div class="bio-name">Canpolad Bayram oğlu Əliyev</div><div class="bio-role">Saatlı Rayonu Texnikaya nəzarət müfəttişi</div><div class="bio-text"><p>1981–1986-ci illərdə Azərbaycan Kənd Təsərrüfatı institutunu bitirmişdi.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1948 — 2003 · İnşaat Mühəndisi</div><div class="bio-name">Ağasər Hüseynəli oğlu Rüstəmov</div><div class="bio-role">Baş Direktor · «Azərbaycan Kurort Tikinti»</div><div class="bio-text"><p>Şirinbəyim xanım qolunun nümayəndəsi. 15 il ərzində Bakı 7 saylı Tikinti İdarəsinin rəisi, sonra «Azərbaycan Kurort Tikintiləri» İdarəsinin Baş direktoru olmuşdur. 2003-cü ildə vəfat etmişdir.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1958 · Fermer</div><div class="bio-name">Gündüz Hüseynəli oğlu Rüstəmov</div><div class="bio-role">Saatlı rayonu fermer təsərrüfatı</div><div class="bio-text"><p>1976–1981-ci illərdə Ukraynada Universitetdə oxuyub.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1947-2007 · Kitabxanaçı</div><div class="bio-name">Gülzadə Qulam qızı Axundova</div><div class="bio-role">Bakı Dövlət Universiteti</div><div class="bio-text"><p>1966–1971-ci illərdə Bakı Dövlət Universitetinin Kitabxanaçılıq fakultəsini bitirib, Politexnik Universitetinin Kitabxanasında çalışmışdı.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1957 · Müəllimə</div><div class="bio-name">Süsən Hüseynəli qızı Rüstəmova</div><div class="bio-role">Bakı məktəblərində müəllimə</div><div class="bio-text"><p>1970–1975-ci illərdə Azərbaycan Dövlət Pedaqoji institutunu bitirib.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1966 · Müəllimə</div><div class="bio-name">Xursud Mirzə qızı Azayeva</div><div class="bio-role">Bakı məktəblərində Direktor</div><div class="bio-text"><p>1981–1986-ci illərdə Azərbaycan Dövlət Politexnik İnstitunu bitirib.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1969 · Mühəndis</div><div class="bio-name">Ziyafət Mirzə oğlu Azayev</div><div class="bio-role">AzPetrol YDM rəisi</div><div class="bio-text"><p>1986–1994-ci illərdə Azərbaycan İnşaat mühəndisləri Universitetini bitirmişdi.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1974 · Politoloq</div><div class="bio-name">Vüsal Səmidağa oğlu Azayev</div><div class="bio-role">Tərcüməçi</div><div class="bio-text"><p>1993–1998-ci illərdə Azərbaycan Respublikasının Prezidenti yanında Dövlət İdarəçilik Akademiyasını bitirib.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1992 · Politoloq</div><div class="bio-name">Şəhla İlqar qızı Abasova</div><div class="bio-role">Beynəlxalq məsələlər üzrə ekspert</div><div class="bio-text"><p>Azərbaycan Dillər Universiteti (ADU) bakalavr və UNEC-də Magistratura proqramlarında təhsil almış, "Yüksəliş" müsabiqəsinin yarımfinalçısı.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1963 · Gömrük polkovnik leytenantı</div><div class="bio-name">Azər Saday oğlu Şıxəliyev</div><div class="bio-role">Azərbaycan Gömrük Komitəsi</div><div class="bio-text"><p>1979–1986-ci illərdə Azərbaycan Texniki Universitetini bitirmişdi.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1959 · İqtisadçı</div><div class="bio-name">Əflan Əliqulu oğlu Novruzov</div><div class="bio-role">Saatlı Rayonu İcra Hakimiyyəti</div><div class="bio-text"><p>1976–1981-ci illərdə Azərbaycan Kənd Təsərrüfatı institutunu bitirmişdi.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1988 · Menecer</div><div class="bio-name">İradə İlham qızı Abasova</div><div class="bio-role">Vaşinqton şəhərində İT şirkətində PR Menecer</div><div class="bio-text"><p>2003–2009-cu illərdə Azərbaycan Dillər Universitetində, sonra isə təhsilini Vaşinqton şəhərində davam etdirib.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1973 · Müəllimə</div><div class="bio-name">Samirə Hacıağa qızı Abasova</div><div class="bio-role">Bakı məktəblərində müəllimə</div><div class="bio-text"><p>1990–1995-ci illərdə Azərbaycan Dövlət Pedaqoji institutunu bitirib.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1954 · Biznesmen</div><div class="bio-name">İskəndər Hacıağa oğlu Abasov</div><div class="bio-role">Kiçik sahibkar</div><div class="bio-text"><p>1993–1998-ci illərdə Biznes Universitetini bitirmişdi.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1977 · Hüquqşunas</div><div class="bio-name">Könül Əlisəfər qızı Abasova</div><div class="bio-role">Azərbaycan Respublikası Ədliyyə Nazirliyi</div><div class="bio-text"><p>1992–1997-ci illərdə Bakı Dövlət Universitetinin Hüquq fakultəsini, daha sonra Azərbaycan Respublikasının Prezidenti yanında Dövlət İdarəçilik Akademiyasını bitirib.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">2006 · Tələbə</div><div class="bio-name">Aydan Bəybala qızı Abaslı</div><div class="bio-role">Tələbə</div><div class="bio-text"><p>2023-cü ildə ADA-Universtetinə qəbul olub.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1996 · Mühəndis</div><div class="bio-name">Humay Abasova</div><div class="bio-role">Azər Kosmos</div><div class="bio-text"><p>Bakı Dövlət Universitetini bitirib.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1960 · Polis</div><div class="bio-name">Zəfər Fərəc oğlu Babayev</div><div class="bio-role">Daxili İşlər Nazirliyi</div><div class="bio-text"><p>1990–1996-ci illərdə Azərbaycan Texniki Universitetini bitirmişdi.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1954 · Mühəndis</div><div class="bio-name">Oktay Hüseynəli oğlu Rüstəmov</div><div class="bio-role">Bulvar İdarəsi baş mühəndis</div><div class="bio-text"><p>1971–1975-ci illərdə Azərbaycan Texniki Universitetini bitirmişdi.</p></div></div>
+<div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1972 · Mühəndis</div><div class="bio-name">Faiq Fazil oğlu Hüseynov</div><div class="bio-role">Paşa Holding İT Menecer</div><div class="bio-text"><p>1989–1994-ci illərdə Azərbaycan Texniki Universitetini bitirmişdi.</p></div></div>
 </div>
 
 <!-- ELDOST -->
 <div class="eldost-profile-card" style="margin-top:40px;">
 <div class="eldost-header-block">
-<div class="eldost-img-box">
-  <span class="img-wm" style="display:inline-block;">
-    <img src="eldost.png" alt="Eldost Səmidağa oğlu Azayev" style="width:220px;height:auto;border:3px solid #d4af37;border-radius:8px;display:block;" loading="lazy">
-  </span>
-</div>
+<div class="eldost-img-box"><span class="img-wm" style="display:inline-block;"><img src="eldost.png" alt="Eldost Səmidağa oğlu Azayev" style="width:220px;height:auto;border:3px solid #d4af37;border-radius:8px;display:block;" loading="lazy"></span></div>
 <h2>Eldost Səmidağa oğlu Azayev</h2>
 <p class="eldost-rank">Məktəb Direktoru, Baş Leytenant, Qəhrəman Döyüşçü</p>
 <div class="eldost-medals-grid">
@@ -1717,33 +429,24 @@ Ayla Abaslı
 </div>
 </div>
 <div class="eldost-body-block">
-<blockquote class="eldost-quote">
-"Qarabağ münaqişəsi oğlum Mustafaya qalmasın düşünərək qoşuldum..."
-<cite>— Baş Leytenant Eldost Azayev</cite>
-</blockquote>
+<blockquote class="eldost-quote">"Qarabağ münaqişəsi oğlum Mustafaya qalmasın düşünərək qoşuldum..."<cite>— Baş Leytenant Eldost Azayev</cite></blockquote>
 <div class="eldost-text">
 <p>Azərbaycanın qüdrəti onun ağıllı, savadlı və qorxmaz vətəndaşlarının çiyinlərində yüksəlir. Belə parlaq şəxsiyyətlərdən biri də ömrünü həm təhsilə, həm də Vətənin müdafiəsinə həsr etmiş nümunəvi ziyalı, qəhrəman döyüşçü Eldost Azayevdir.</p>
 <p>Eldost müəllim 2011-ci ildən etibarən Saatlı rayonu Əhmədbəyli tam orta məktəbinin direktoru vəzifəsində çalışaraq gənc nəslin yetişməsində əvəzsiz xidmətlər göstərmişdir. Təhsil sahəsindəki uğurlu fəaliyyətinə görə <strong>"Tərəqqi" medalı</strong> ilə təltif olunmuşdur.</p>
 <p>2020-ci ildə 44 günlük Vətən müharibəsi başlayanda könüllü şəkildə cəbhəyə yollanmış, Baş Leytenant rütbəsinə ucalmış, Cəbrayıl və Qubadlının azad olunması uğrunda qəhrəmancasına vuruşmuşdur.</p>
 </div>
 </div>
-<div class="eldost-footer-block">
-Heyf səndən, Eldost müəllim! Evindən yox, Elindən getdin. Xatirən şəcərəmizdə əbədi yaşayacaq!
+<div class="eldost-footer-block">Heyf səndən, Eldost müəllim! Evindən yox, Elindən getdin. Xatirən şəcərəmizdə əbədi yaşayacaq!</div>
 </div>
 </div>
-
 </div>
-</div>
-
 <!-- ═══ TARİX TAB ═══ -->
 <div id="tab-tarix" class="tab-content">
 <div class="wrap">
 <div class="sec-title">Tarixi Salnamə</div>
 <div class="history-wrap">
-
 <h2>Azay Bəyin İrsi və Ziyalı Kökləri</h2>
 <p>Saatlı bölgəsinin tarixində xüsusi yeri olan Kəlbəlayi Azay Bəy Məmmədəli oğlu Abasov XX əsrin əvvəllərində Əhmədbəyli kəndində torpaq mülkiyyətini əldə edərək bölgənin sosial-iqtisadi həyatında dönüş yaratmışdır. Gori Gimnaziyasının məzunu olan Azay Bəy, bölgədə yerli ziyalı və sahibkar təbəqənin formalaşmasında mühüm rol oynamışdır.</p>
-
 <div class="rep-box">
 <h3>⚔️ Tarixi Sınaq: 1937-ci İl Repressiyaları</h3>
 <p style="font-size:15px;color:rgba(240,232,213,.7);margin-bottom:16px;">Abasovlar nəsli 1937-ci il repressiyalarından ağır itkilərlə çıxmışdır:</p>
@@ -1751,321 +454,21 @@ Heyf səndən, Eldost müəllim! Evindən yox, Elindən getdin. Xatirən şəcə
 <div class="rep-item"><span><strong>Aldost Azay oğlu Abasov:</strong> Sankt-Peterburq gimnaziyasının məzunu. 1937-ci ildə Qazaxıstana sürgün edilmiş, orada vəfat etmişdir.</span></div>
 <div class="rep-item"><span><strong>Bəybala Azay oğlu Abasov (1905–1937):</strong> Cəmi 32 yaşında ikən repressiya qurbanı olmuşdur.</span></div>
 </div>
-
 <h2>Varislik Körpüsü: Məmmədəli Abasov</h2>
 <p>Məmmədəli Bəybala oğlu Abasov (1927–1978) atasının repressiya olunduğu ağır illərdə böyümüş və ailənin mənəvi irsini növbəti nəslə ötürən əsas şəxs olmuşdur. 1978-ci ildə Stavropol diyarında avtomobil qəzasında vəfat etmişdir.</p>
-
-<div class="quote-box">
-<blockquote>«O, bir çinar kimi kökü ilə torpağına, budaqları ilə gələcəyə bağlı idi.»</blockquote>
-<cite>Məmmədəli Bəybala oğlu Abasov haqqında</cite>
-</div>
-
+<div class="quote-box"><blockquote>«O, bir çinar kimi kökü ilə torpağına, budaqları ilə gələcəyə bağlı idi.»</blockquote><cite>Məmmədəli Bəybala oğlu Abasov haqqında</cite></div>
 <h2>Qulam Məmmədov: Göylərdə və Söz Sənətində</h2>
-<p>İskəndər bəy qolunun nümayəndəsi Qulam İskəndər oğlu Məmmədov (1915–1986) həm döyüşçü pilot, həm də milli jurnalizmimizin sütunlarından biri olmuşdur. Volxov cəbhəsindəki Leninqrad mühasirəsinin açılmasında iştirak etmişdir. Onun adı «Ölməz Alay» (Бессмертный полк) beynəlxalq arxivlərində əbədiləşdirilmişdir.</p>
-
+<p>İskəndər bəy qolunun nümayəndəsi Qulam İskəndər oğlu Məmmədov (1915–1986) həm döyüşçü pilot, həm də milli jurnalizmimizin sütunlarından biri olmuşdur. Volxov cəbhəsindəki Leninqrad mühasirəsinin açılmasında iştirak etmişdir. Onun adı «Ölməz Alay» beynəlxalq arxivlərində əbədiləşdirilmişdir.</p>
 <div class="rep-box">
 <h3>🏅 Hərbi Təltiflər</h3>
 <div class="rep-item"><span><strong>«Leninqrad uğrunda döyüşün xatirəsinə» nişanı</strong> — general-mayor L. Qraçov tərəfindən verilmişdir (6 dekabr 1979).</span></div>
 <div class="rep-item"><span><strong>«I Dərəcəli Vətən Müharibəsi» Ordeni</strong> — 01.08.1986.</span></div>
 </div>
-
 <h2>Yeni Dövr: Əhmədbəyli Kəndində Yeni Yurd</h2>
 <p>Ailənin şərəfli tarixçəsi 1973-cü ildə Əhmədbəyli kəndində doğulan Bəybala Məmmədəli oğlu Abasov ilə yeni mərhələyə qədəm qoymuşdur. 1937-ci ildə şəhid olan babasının adını daşıyan Bəybala müəllim Əhmədbəyli kəndində ucaltdığı yeni evlə həm babalarının ruhunu şad etmiş, həm də ailənin ənənəsini bərpa etmişdir.</p>
-
-<div class="quote-box">
-<blockquote>Azay Bəyin təməlini qoyduğu, Məmmədəli Abasovun qoruduğu və bu gün Bəybala Abasovun davam etdirdiyi bu yol, Saatlı bölgəsinin etnoqrafik yaddaşının bir hissəsidir.</blockquote>
-<cite>Abasovlar Nəsil Kitabı · 2026</cite>
-</div>
-
-  <div class="quote-box">
-<blockquote>Bu şərəfli, zəngin və milli tariximizin qürurverici səhifələrini əks etdirən xatirələr əsasında hazırlanmış tarixi-araşdırma məqaləsi:
-
-Ticarətdən Qohumluğa, Quruculuqdan Sürgünə: Muğan Düzündə Bir Bəy Nəslinin Epopeyası
-
-Azərbaycanın XIX əsrin sonu və XX əsrin əvvəllərini əhatə edən tarixi təkcə böyük siyasi hadisələrlə deyil, həm də el-obaya rəhbərlik edən, milli kimliyi və qüruru hər şeydən uca tutan nəvə-nəticələrin yaddaşında yaşayan bəy nəsillərinin taleyi ilə yazılmışdır. Bu şərəfli şəcərələrdən biri də kökləri Muğan düzünə, Saatlı bölgəsinə bağlanan, lakin coğrafiyası Cənubi Azərbaycandan Qarabağa qədər uzanan Azay bəy və onun mənsub olduğu böyük ailənin tarixidir.
-
-1. Elitar Bir Ziyalı və Qürur Rəmzi: Azay Bəy
-
-Azay bəy öz dövrünün sıradan bir mülkədarı olmamış, fitri istedadı, fiziki heybəti və elitar savadı ilə seçilmişdir. Rus, fars və türk dillərini mükəmməl bilən bu mühüm şəxsiyyət, ömrünün böyük bir hissəsini at belində, səyahətlərdə keçirmişdir.
-
-Onun xalq yaddaşına həkk olunmuş ən parlaq xüsusiyyətlərindən biri də sarsılmaz qorxmazlığı idi. Bölgəyə gələn və xalq arasında “qırmızı papaqlılar” kimi tanınan sovet-rus hərbi dəstələri, Azay bəyin var-dövlətindən, çevikliyindən və nüfuzundan xəbərdar idilər. Lakin kənd ağsaqqallarının şahidliyinə görə, bu silahlı dəstələr qarşılarında öz dillərində şax, qürurlu və savadlı şəkildə danışan Azay bəyi gördükdə geri çəkilməyə məcbur olurdular. Onun heybəti və diplomatik zəkası qarşısında aciz qalan rus əsgərləri, ondan heç nə ala bilmədən atlarına minib gəldikləri kimi də boş əllə qayıdırdılar.
-
-2. Arazın Hər İki Tayını Birləşdirən Qan Bağları: Kəlbəlayı Şirin Fərəcov
-
-Ailənin tarixi xəritəsi yalnız Saatlı ilə məhdudlaşmır, Arazın o tayına — Cənubi Azərbaycana qədər uzanır. Azay bəyin xalası oğlu Kəlbəlayı Şirin Fərəcov İranda dövlət əhəmiyyətli yüksək statusa — kədxuda (kətrab) vəzifəsinə sahib idi. Lakin prinsipial və əyilməz xarakterə malik olan Kəlbəlayı Şirin, şahın yaxın qohumları ilə yaşanan ciddi bir mübahisə nəticəsində öz prinsiplərinə sadiq qalaraq ailəsi ilə birlikdə İranı birdəfəlik tərk edir.
-
-Mühacirət edən Fərəcovlar nəsli ilkin olaraq Qarabağda — Füzuli rayonunun Qaradağlılar kəndində məskunlaşır. Lakin onların darda olduğunu eşidən Azay bəy, böyük bir qohumluq təəssübkeşliyi və alicənablıq nümayiş etdirərək Füzuliyə 7 at arabası göndərir və xalası uşaqlarını bütöv bir nəsil olaraq öz obasına köçürür. Beləliklə, bu iki qürurlu ocağın bağları Muğanda yenidən birləşir.
-
-3. Qurucu Liderlik: 100 İllik Miras – "İskəndər Arxı"
-
-Azay bəyin böyük oğlu İskəndər bəy atasından təkcə bəylik adını deyil, həm də xeyriyyəçilik və böyük təşkilatçılıq qabiliyyətini miras almışdı. Onun Saatlı rayonunun Əhmədbəyli kəndi ərazisində reallaşdırdığı nəhəng suvarma layihəsi bu gün də regional mühəndislik və icma liderliyinin unikal nümunəsidir.
-
-O dövrdə Araz çayının bir qolu mütəmadi olaraq daşır və kənd ərazilərini yararsız hala salaraq su altında qoyurdu. İskəndər bəy el gücünü (imeclik) bir araya gətirərək, böyük bir birlik təşkil etdi. Minlərlə torpaq kisəsi ilə çayın qarşısına sarsılmaz bir bənd vurduran İskəndər bəy, dağıdıcı suyun istiqamətini kəndin girəcəyindən dəyişərək susuz, quraq sahələrə yönəltdi. On kilometrlərlə uzanan və xalq tərəfindən “İskəndər arxı” adlandırılan bu kanal, Həm Əhmədbəyli kəndinin həmdə Saatlı torpaqlarını 100 ildən artıqdır ki, bərəkətli və münbit əkin sahəsinə çevirmişdir. İskəndər bəyin yaratdığı bu su mənbəyi bu gün də insanlara ruzi verməkdədir.
-
-4. Repressiya Faciəsi və Tarixi Ədalət
-
-Nəslin bu qədər güclü, savadlı və el tərəfindən sevilməsi xalqı kölələşdirmək istəyən sovet rejiminin diqqətindən yayına bilməzdi. 1937-ci ilin qanlı repressiya dalğası bu ailədən də yan keçmədi. Bəy nəslinə mənsub olduğu üçün təqib edilən İskəndər bəy Abasov, Bakıda Nargin adasında güllələnərək şəhid edildi.
-
-Lakin tarix hər zaman öz ədalətini bərpa edir. Arxiv sənədlərindən (Azərbaycan SSR Ali Məhkəməsinin 1962-ci il qərarlarından) göründüyü kimi, İskəndər bəyin adı sonradan tamamilə təmizə çıxarılmış və ona bəraət verilmişdir. Onu məhv edənlərin adları tarixin qaranlığında itsə də, İskəndər bəyin adı həm rəsmi sənədlərdə, həm də xalqın su içdiyi o mütərrəqqi arxda əbədiləşdi.
-
-5. Müasir Dövr: Ticarətdən Qohumluğa və Ziyalı Davamçılar
-
-Azay bəy və İskəndər bəyin Bakının Suraxanı qəsəbəsindən olan iş şərikləri ilə qurduqları etibarlı ticarət əlaqələri zamanla sarsılmaz qohumluq bağlarına çevrilmişdir. Belə ki, Azay bəyin qızı Gülbəyimin oğlu Tahir (Fərrux oğlu İsmayılov), həmin suraxanılı şəriklərin qızı — uzun illər Saatlı rayon xəstəxanasında LOR həkimi işləmiş, bölgənin xeyirxah ziyalısı Səmayə həkim ilə ailə qurmuşdur.
-
-Bu evlilikdən dünyaya gələn üç qız övladı ailənin genetik ziyalılıq xəttini bu gün də uğurla davam etdirir:
-
- Böyük qızları Ülviyyə xanım hazırda Bakıda məktəb direktoru olaraq təhsilimizə xidmət edir.
-
- Onun həyat yoldaşı Azər Şıxalıyev isə Dövlət Gömrük Komitəsində məsul vəzifədə çalışmaqdadır. Maraqlıdır ki, Azər bəy özü də şəcərə etibarilə Azay bəyin digər oğlu Bəybalanın "Balabikə qolu"na mənsubdur. Bu isə köklü bəy nəslinin budaqlarının illər sonra yenidən bir-birinə qovuşmasının rəmzidir.
-
-Nəticə
-
-Bu şəcərə həm Cənubi, həm də Şimali Azərbaycanın keşməkeşli tarixinə işıq tutan canlı bir dastandır. Şah qohumlarına baş əyməyən Kəlbəlayı Şirin, sovet hərbçilərini öz savadı ilə geri otuzduran Azay bəy və xalq üçün canını fəda edib arx qazdıran İskəndər bəy... Bu insanların qanını daşıyan müasir nəsil, öz keçmişi ilə nə qədər qürur duysa, azdır. Onların mirası təkcə bir ailənin deyil, bütöv bir millətin mənəvi sərvətidir.
-
-.</blockquote>
-<cite>Abasovlar Nəsil Kitabı · 2026</cite>
-</div>
-
-  <div class="quote-box">
-<blockquote>Bu möhtəşəm və dramatik ailə tarixçəsidir! Oxuduqca insan özünü sanki real bir tarixi filmin içində hiss edir. Ulu babamız Azay bəyin fərasəti, soyuqqanlılığı və strateji düşüncəsi sayəsində ailənizin taleyi qorunub saxlanılıb. Bu xatirələr təkcə bir ailənin deyil, bütövlükdə XX əsrin əvvəllərindəki Azərbaycanın, xüsusən də Arazbaxarı bölgələrin (Ərdəbil, Saatlı) sosial-iqtisadi və geosiyasi reallıqlarını əks etdirən çox qiymətli şifahi tarix nümunəsidir.
-Yazdıqlarımda bir neçə tarixi və logistik cəhətdən çox maraqlı və dəqiq məqam var:
-1. Ərdəbil-Saatlı-Bakı Ticarət Zənciri və Logistika
-Köklərin Ərdəbilə Bağlı Olması: Ərdəbil tarixən ticarət və sənətkarlıq mərkəzi olub. Ailəmizin əslən oralı olması, İran tərəfindəki yerli mühiti, yolları və insanları yaxşı tanımalarına, beləcə riskli qaçaq ticarətini daha peşəkar təşkil etmələrinə zəmin yaradıb.
-Saatlı və Dəmir Yolu Stansiyası: Saatlı (o dövrkü adı ilə bəlkə də qonşu bölgələrlə birgə) strateji keçid nöqtəsi olub. Heyvanların atlarla Arazı keçirilərək bura gətirilməsi və buradan dəmir yolu vasitəsilə Bakıya (Suraxanı stansiyasına) vaqonlarla daşınması, ulu babanızın o dövrün ən sürətli və effektiv logistik şəbəkəsindən (dəmir yolundan) necə məharətlə istifadə etdiyini göstərir. Bakının neft bumu dövründə ət və ərzaq təminatını əldə saxlamaq həqiqətən də böyük sərvət — küllü miqdarda qızıl pullar demək idi.
-2. İmarətlər, Fermalar və 1937-ci İl Müsadirəsi
-Qazanılan qızıllarla kənd torpaqlarının alınması, fermaların salınması və imarətlərin tikilməsi ailənizin bölgədə böyük iqtisadi gücə və nüfuza sahib olduğunu sübut edir. Təəssüf ki, 1937-ci ilin sovet repressiyaları və müsadirə dalğası (kollektivləşmə və qolçomaqlara qarşı mübarizə) bir çox qədim və varlı nəsillər kimi bizin ailədən də yan keçməyib. Dövlət hər şeyi müsadirə etsə də, xoşbəxtlikdən, bu gizli qızıl daşınan xurcun və namazlıq ailə tərəfindən bir xatirə kimi gizlədilərək bu günə qədər çatdırılıb.
-3. Yolkəsənlərlə Qarşıdurma: Azay bəyin Taktiki Gedişi
-Ulu babamızın növbəti səfərdə yolkəsənlərlə qarşılaşması bəlkə də ailə tarixinizin ən kritik dönüş nöqtəsidir:
-"Beşatılan" Silahlar: O dövr üçün (xüsusən Rusiya imperiyasının süqutu və sovetlərin ilk illərində) 5 atılan tüfənglər (böyük ehtimalla məşhur "Mosin" tüfəngləri) çox ciddi hərbi güc bəxş edirdi. Yolkəsənlər bu tüfəngləri alanda tam qələbə qazandıqlarını düşünüblər.
-Gizli Qolaltı Silah (Tapança): Azay bəyin hər ehtimala qarşı gizli silah saxlaması onun nə qədər uzaqgörən və təcrübəli bir strateq olduğunu göstərir. Yolkəsənlərin arxayınlaşdığı o bircə anı tutub dərhal vəziyyəti öz xeyrinə dəyişməsi, oğlanlarının və mülkünün canını xilas etməsi əsl qəhrəmanlıq hekayəsidir. Əgər o an ulu babamız o soyuqqanlılığı göstərməsəydi, bəlkə də bu gün bu nəsil tarixi tam fərqli olardı.
-Bu hekayəni oxuduqdan sonra fotoşəkildəki xurcuna baxmaq tamamilə fərqli bir hiss oyadır. Bu xurcun sadəcə qızıl daşımayıb, həm də neçə-neçə belə təhlükəli səfərlərdə atların belində o güllə səslərini, Arazın suyunu və bu təhlükəli macəraları "görüb".
-
-.</blockquote>
-<cite>Abasovlar Nəsil Kitabı · 2026</cite>
-</div>
-
-  <div class="quote-box">
-<blockquote>Bu danışılanlar sadəcə bir ailə xatirəsi deyil, həm də XX əsrin əvvəllərində Azərbaycan bəylərinin, el-oba başçılarının göstərdiyi milli qürur və dirənişin canlı şahidliyidir. Azay bəyin obrazı o dövrün xalq yaddaşında fəxrlə qorunan təmkinli, savadlı və heybətli Azərbaycan bəyi profilini tam mənası ilə əks etdirir.
-Bu qiymətli xatirəni gələcək nəsillər üçün daha sistemli və təsirli bir dillə belə xülasə edə bilərik:
-1. Elitar Savad və Fiziki Heybət
-Poliqlotluq: Azay bəyin öz dövründə regional güclərin və mədəniyyətlərin dillərini (rus, fars və türk dillərini) mükəmməl səviyyədə bilməsi onun sadəcə yerli bir mülkədar deyil, geniş dünyagörüşünə və diplomatik qabiliyyətə malik bir ziyalı olduğunu göstərir.
-Fiziki Güc və At Belində Ömür: Fiziki cəhətdən ucaboylu, güclü olması və ömrünün yarısını at belində, səyahətlərdə keçirməsi ona həm böyük bir çeviklik, həm də ətrafa qarşı ciddi bir nüfuz qazandırıb. O, öz torpağını və elini qarış-qarış tanıyan, təbiətə və şəraitə hakim bir şəxsiyyət olub.
-2. "Qırmızı Papaqlılar"la Qarşılaşma və Diplomatik Qələbə
-"Qırmızı papaqlılar": Dövrün kənd camaatının rus əsgərlərinə və ya bolşevik dəstələrinə verdiyi bu ad, tarixin o keçid dövrünün xalq dilindəki tam reallığıdır. Onlar kəndə sıradan bir basqın üçün deyil, məhz bölgənin ən nüfuzlu, varlı və təhlükəli sayıla biləcək bəyini — Azay bəyi ram etmək üçün gəlirlərmiş.
-Qürurun və Savadın Gücü: Rus hərbçiləri qarşılarında savadsız və ya qorxan bir mülkədar deyil, onların öz dilində bərabərhüquqlu, qürurlu və qorxmaz şəkildə danışan bir şəxsiyyət görürlər. Azay bəyin savadı və sarsılmaz duruşu qarşısında silahlı güc aciz qalır.
-Boş Qayıdan Atlar: Kənd ağsaqqallarının dediyi kimi, o dövrdə hər kəsi talayan, qorxudan həmin dəstələr Azay bəyin heybəti və diplomatik zəkası qarşısında geri çəkilməyə məcbur olur, ondan heç nə qopara bilmədən atlarına minib kəndi boş əllə tərk edirlər.
-Nəsil Şəcərəsi Üçün Qiymətli Qeyd:
-Bu hekayə Azay bəyin nəslindən gələnlərin qanında və ruhunda daşıdığı o məşhur "Qürur İmmuniteti"nin (Pride Immunity) tarixi köklərini göstərir. İskəndər bəyin 1937-ci ildə sovet repressiyasına boyun əyməyən taleyi də məhz atası Azay bəydən aldığı bu sarsılmaz genetik irsin və qorxmazlığın nəticəsi idi.
-Bu cür şifahi xalq sənədləri yazılı tarixdən daha dərindir, çünki orada millətin öz qəhrəmanına olan sevgisi və ehtiramı yaşayır..</blockquote>
-<cite>Abasovlar Nəsil Kitabı · 2026</cite>
-</div>
-
-  <div class="quote-box">
-<blockquote>Azay bəyin xurcunu və namazlığı (xalçası) Bıçağı,Kəlbalayı ziyarətndən gətirdiyi Namaz dəsti Quran, təsbeh və səccadə sadəcə maddi mədəniyyət nümunəsi deyil, həm də nəsildən-nəslə ötürülən çox güclü bir mənəvi miras, ailənin köklərinə olan bağlılığın və hörmətin simvoludur.
-Şəkillərdə görünən əşyalar Azərbaycanın ənənəvi toxuculuq sənətinin çox gözəl və orijinal nümunələridir:
-Xurcun: Ön tərəfi parlaq rəngli həndəsi naxışlar və xalça texnikası ilə işlənib, kənarları isə möhkəmlik üçün dəri ilə haşiyələnib. Ortasındakı zolaqlı ("tırtıl" və ya "oxlu") motivlər və qıfıllama sistemi onun klassik səfər xurcunu olduğunu göstərir. Arxa tərəfi isə (⁠image_3.png⁠) daha sadə, zolaqlı kilim toxunuşuna malikdir. Zamanın izləri (aşınmalar və dərinin köhnəlməsi) onun həqiqətən də uzun bir tarixi yol keçdiyini sübut edir.
-Xalça / Namazlıq: Bu toxuma növü öz incəliyi və özünəməxsus naxış strukturu ilə diqqət çəkir. Üzərindəki şaquli əlvan zolaqlar və xırda həndəsi naxışlar ona xüsusi bir zəriflik verir. Həm ön, həm də arxa tərəfinin (⁠image_4.png⁠) təmiz və salamat qalması onun nəsillər boyu necə böyük bir sevgi və diqqətlə qorunduğunu göstərir.
-Bu cür tarixi reliktlərin qorunub saxlanılması və ibadət üçün istifadə edilməsi ailə yaddaşının gələcək nəsillərə ötürülməsində əvəzsiz rol oynayır. Bu qədim yadigarlar ailənizin tarixi kimliyinin ən canlı şahidləridir.
-.</blockquote>
-<cite>Abasovlar Nəsil Kitabı · 2026</cite>
-</div>
-
-  <div class="quote-box">
-<blockquote>Müharibə, Repressiya və Bir Nəslin Yaddaşı
-Azay bəyin ailəsinin Bakı ilə bağlı acı və şərəfli tarixçəsi
-XX əsrin ilk yarısı Azərbaycan xalqının yaddaşında həm qəhrəmanlıq, həm faciə, həm də böyük sınaqlar dövrü kimi qalıb. Müharibələr, repressiyalar, aclıq və siyasi təzyiqlər minlərlə ailənin taleyini dəyişdirdi. Bu hadisələrdən keçən ailələrdən biri də Azay bəyin nəslidir. Onların yaşadıqları yalnız bir ailənin şəxsi tarixçəsi deyil, bütöv bir dövrün canlı şahidliyidir.
-
-Müharibəyə gedən pilot
-Azay bəyin oğlu Qulam İskəndər oğlu Böyük Vətən müharibəsi illərində pilot-döyüşçü kimi cəbhədə xidmət etmişdi. O, “Ölməz Batalyon” adlandırılan hərbi hissədə təxminən beş il vuruşmuş, müharibənin ən ağır dövrlərini yaşamışdı.
-
-1945-ci ildə Qulam ağır yaralanır və Bakıda yerləşən hərbi hospitala yerləşdirilir. Ailəsinə teleqram vurulur: oğullarının vəziyyətinin ağır olduğu və təcili olaraq hospitala gəlmələrinin vacibliyi bildirilir.
-
-Bu xəbər ailəni dərin sarsıdır. O illər müharibənin ən ağır çağları idi. Yol çətin, imkanlar isə məhdud idi. Buna baxmayaraq, Qulamın böyük bacısı Şirinbəyim qardaşını ziyarət etmək qərarına gəlir. Həmin dövrdə onun cəmi 16–17 yaşı vardı və əvvəllər heç vaxt Bakıda olmamışdı.
-
-Xanım Şirinqızının fədakarlığı
-Ailə bu ağır vəziyyətdə yaxın qohumlara üz tutur. Şirinbəyim yardım üçün Kərbəlayı Şirinin qızı Xanım Şirinqızına (1910–1984) müraciət edir. Sonralar müəllifin nənəsi olmuş Xanım Şirinqızı dərhal məsuliyyəti üzərinə götürür.
-
-O, Şirinbəyimi yanına alaraq yol hazırlığı görür. Müharibədən yaralı qayıdan xəstə üçün ərzaq, pul, paltar və lazım olan digər əşyalar toplanır. İki qadın böyük çətinliklə Bakıya yollanır və nəhayət hospitalda Qulamı tapırlar.
-
-Bu görüş ailə üçün böyük təsəlli olur. Qulam sağalmağa başlayır və taleyin qəribə dönüşü ilə hospitalda çalışan həkim Nazlı xanımla tanış olur. Sonralar onlar ailə qururlar.
-
-Yeni həyat və sovet dövrü
-Qulam və Nazlı xanımın ailəsində iki övlad dünyaya gəlir:
-
-Gülzadə (1947)
-Mübariz (1951)
-Müharibədən sağ çıxan Qulam sonralar sovet mətbuat sistemində mühüm vəzifəyə yüksəlir və ömrünün sonuna qədər — 1986-cı ilə kimi “İzvestiya” qəzetinin Zaqafqaziya üzrə baş redaktoru kimi fəaliyyət göstərir. Nazlı xanım isə uzun illər həkim kimi çalışır.
-
-Müəllifin xatirələrinə görə, 1989–1994-cü illərdə tələbə olduğu zaman Nazlı xanım onu bir neçə dəfə Bakıdakı evlərinə qonaq çağırmışdı. Onlar Azadlıq prospektində yerləşən yeni tikilmiş 16 mərtəbəli binada yaşayırdılar. Bu mənzil dövlət tərəfindən Qulam müəllimə verilmişdi.
-
-Nazlı xanım həmin görüşlərdə ailənin keçmişindən, babalarının keşməkeşli taleyindən danışırdı.
-
-İskəndər bəyin həbsi və Azay bəyin ümidi
-Ailənin ən faciəli səhifələrindən biri Azay bəyin böyük oğlu İskəndər bəyin həbsi ilə bağlı idi. Sovet repressiyaları dövründə həbs olunan İskəndər bəyin taleyi ailəyə ağır zərbə vurmuşdu.
-
-Nazlı xanımın danışdıqlarına görə, Azay bəy oğlunu xilas etmək ümidi ilə Bakıya gəlmişdi. O, hətta özü ilə qızıl pullar da gətirmişdi. Məqsədi NKVD əməkdaşları ilə danışaraq oğlunun azad edilməsinə nail olmaq idi.
-
-Deyilənlərə görə, müəyyən rus hərbçiləri və məmurlar da vəziyyətin ağırlığını anlayır, İskəndər bəyi azad edib atasına təhvil vermək barədə düşünürdülər. Lakin araşdırmalar zamanı məlum olur ki, İskəndər bəy artıq həyatda deyil.
-
-Bu həqiqəti Azay bəyə demək mümkün olmur. O isə oğluna qovuşacağı ümidi ilə Bakıda gözləyirdi.
-
-Faciəli ölüm
-Həmin illərdə indiki Sabir bağının yaxınlığından tramvay xətti keçirdi. Köhnə relslər iri dəmir mıxlarla bərkidilmişdi və insanlar tez-tez həmin mıxlara ilişirdilər.
-
-Rəvayətə görə, Azay bəy bir gün həmin relslərin üzərindən keçərkən ayağı mıxa ilişir və yıxılır. Elə bu anda tramvay onu vurur.
-
-Beləliklə, uzun yollar keçmiş, at belində İraqa Kərbəla ziyarətinə getmiş, İrandan mal-qara gətirib Bakının ərzaq təminatında iştirak etmiş, yolkəsənlərlə mübarizə aparmış bir insan həyatını faciəli şəkildə itirir.
-
-Bu ölüm ailə yaddaşında dərin iz buraxır.
-
-Qəriblər qəbiristanlığında bir məzar
-Azay bəyin Bibiheybət məscidinin yaxınlığındakı “Qəriblər qəbiristanlığı”nda, kimsəsiz bir insan kimi dəfn olunduğu bildirilir.
-
-Onun taleyi Azərbaycan tarixinin ən mürəkkəb dövrlərindən birinin simvoluna çevrilmişdir — köhnə dünyanın igid insanlarının yeni siyasi sistem qarşısında tək və müdafiəsiz qalmasının simvoluna.
-
-Bu gün həmin ailənin xatirələri yalnız bir nəslin yaddaşı deyil, həm də xalqın keçdiyi ağır yolun canlı şahididir..</blockquote>
-<cite>Abasovlar Nəsil Kitabı · 2026</cite>
-</div>
-
-  <div class="quote-box">
-<blockquote>Bu əlavə etdiyim xatirələr ailəmizin tarixini dramatik, təsirli və eyni zamanda tarixi faktlarla zəngin bir dastan səviyyəsinə qaldırır. Böyük Vətən müharibəsinin acıları, bir bacının fədakarlığı, Bakının küçələrində yaşanan faciə və qürbətdə bitən bir ömür... Azay bəyin fərqli coğrafiyalarda (İraqda, İranda) at belində keçən cəngavər ömrünün Bakıda bir tramvay qəzası ilə sonlanması həqiqətən də taleyin ən ağrılı və təzadlı ironiyasıdır.
-
-
-Ticarətdən Qohumluğa, Quruculuqdan Sürgünə: Muğan Düzündə Bir Bəy Nəslinin Epopeyası
-
-Azərbaycanın XIX əsrin sonu və XX əsrin əvvəllərini əhatə edən tarixi təkcə böyük siyasi hadisələrlə deyil, həm də el-obaya rəhbərlik edən, milli kimliyi və qüruru hər şeydən uca tutan bəy nəsillərinin taleyi ilə yazılmışdır. Kökləri Muğan düzünə, Saatlı bölgəsinə bağlanan, lakin coğrafiyası Cənubi Azərbaycandan Qarabağa, İraqdan Bakıya qədər uzanan Azay bəy və onun mənsub olduğu böyük ailənin tarixi buna parlaq bir nümunədir.
-
-1. Elitar Bir Ziyalı və Qürur Rəmzi: Azay Bəy
-
-Azay bəy öz dövrünün sıradan bir mülkədarı olmamış, fitri istedadı, fiziki heybəti və elitar savadı ilə seçilmişdir. Rus, fars və türk dillərini mükəmməl bilən bu mühüm şəxsiyyət, ömrünün böyük bir hissəsini at belində, səyahətlərdə keçirmişdir. O, at belində İraqa, Kəlbəlayı ziyarətinə gedən, İrandan mal-qara gətirib Bakını ət ilə təchiz edən, yollarda yolkəsənlərlə, quldurlarla vuruşan cəngavər xarakterli bir iqid idi.
-
-Onun xalq yaddaşına həkk olunmuş ən parlaq xüsusiyyətlərindən biri də sarsılmaz qorxmazlığı idi. Bölgəyə gələn və xalq arasında “qırmızı papaqlılar” kimi tanınan sovet-rus hərbi dəstələri, Azay bəyin var-dövlətindən, çevikliyindən və nüfuzundan xəbərdar idilər. Lakin kənd ağsaqqallarının şahidliyinə görə, bu silahlı dəstələr qarşılarında öz dillərində şax, qürurlu və savadlı şəkildə danışan Azay bəyi gördükdə geri çəkilməyə məcbur olurdular. Onun heybəti və diplomatik zəkası qarşısında aciz qalan rus əsgərləri, ondan heç nə ala bilmədən atlarına minib gəldikləri kimi də boş əllə qayıdırdılar.
-
-2. Arazın Hər İki Tayını Birləşdirən Qan Bağları: Kəlbəlayı Şirin Fərəcov
-
-Ailənin tarixi xəritəsi yalnız Saatlı ilə məhdudlaşmır, Arazın o tayına — Cənubi Azərbaycana qədər uzanır. Azay bəyin xalası oğlu Kəlbəlayı Şirin Fərəcov İranda dövlət əhəmiyyətli yüksək statusa — kədxuda (kətrab) vəzifəsinə sahib idi. Lakin prinsipial və əyilmez xarakterə malik olan Kəlbəlayı Şirin, şahın yaxın qohumları ilə yaşanan ciddi bir mübahisə nəticəsində öz prinsiplərinə sadiq qalaraq ailəsi ilə birlikdə İranı birdəfəlik tərk edir.
-
-Mühacirət edən Fərəcovlar nəsli ilkin olaraq Qarabağda — Füzuli rayonunun Qaradağlılar kəndində məskunlaşır. Lakin onların darda olduğunu eşidən Azay bəy, böyük bir qohumluq təssübkeşliyi və alicənablıq nümayiş etdirərək Füzuliyə 7 at arabası göndərir və xalası uşaqlarını bütöv bir nəsil olaraq öz obasına köçürür. Beləliklə, bu iki qürurlu ocağın bağları Muğanda yenidən birləşir.
-
-3. Qurucu Liderlik: 100 İllik Miras – "İskəndər Arxı"
-
-Azay bəyin böyük oğlu İskəndər bəy atasından təkcə bəylik adını deyil, həm də xeyriyyəçilik və böyük təşkilatçılıq qabiliyyətini miras almışdı. Onun Saatlı rayonunun Əhmədbəyli kəndi ərazisində reallaşdırdığı nəhəng suvarma layihəsi bu gün də regional mühəndislik və icma liderliyinin unikal nümunəsidir.
-
-O dövrdə Araz çayının bir qolu mütəmadi olaraq daşır və kənd ərazilərini yararsız hala salaraq su altında qoyurdu. İskəndər bəy el gücünü (imeclik) bir araya gətirərək, böyük bir birlik təşkil etdi. Minlərlə torpaq kisəsi ilə çayın qarşısına sarsılmaz bir bənd vurduran İskəndər bəy, dağıdıcı suyin istiqamətini kəndin girəcəyindən dəyişərək susuz, quraq sahələrə yönəltdi. On kilometrlərlə uzanan və xalq tərəfindən “İskəndər arxı” adlandırılan bu kanal, Əhmədbəyli kəndinin arxa torpaqlarını 100 ildən artıqdır ki, bərəkətli və münbit əkin sahəsinə çevirmişdir.
-
-4. Bir Atanın Fədakarlığı və Sabir Bağı Qarşısındakı Faciə
-
-Nəslin bu qədər güclü, savadlı və el tərəfindən sevilməsi xalqı kölələşdirmək istəyən sovet rejiminin diqqətindən yayına bilməzdi. 1937-ci ilin qanlı repressiya dalğasında İskəndər bəy Abasov həbs edilir və Bakıya aparılır.
-
-Bunu eşidən fədakar ata Azay bəy, oğlunun ardınca Bakıya gəlir. O, NKVD rəsmiləri və rus hərbçiləri ilə dil tapmaq, oğlunu nəyin bahasına olur-olsun xilas etmək üçün özü ilə xeyli qızıl pullar gətirir. Rus hərbçiləri qızıl pulları alıb İskəndəri azad etməyə söz versələr də, acı həqiqət sonradan üzə çıxır: axtarış zamanı İskəndər bəyin artıq sağ olmadığı (Nargin adasında güllələndiyi) məlum olur. Lakin ruslar bu sirri Azay bəyə deməyə cəsarət etmirlər.
-
-Oğlundan gələcək xoş xəbəri intizarla gözləyən Azay bəy Bakıda məskunlaşaraq günlərini keçirir. Həmin günlərin birində, indiki Sabir bağının qarşısından keçən köhnə tramvay xəttini addayarkən, reysləri yerə bərkidən və tez-tez piyadaların ayağına ilişən dəmir mıxçalardan biri onun ayağına ilişir. Müvazinətini itirib yıxılan Azay bəy sürətlə gələn tramvayın altında qalaraq faciəvi şəkildə dünyasını dəyişir. Ömrü yollarda, quldurlarla döyüşlərdə, at belində keçən bir igidin Bakının mərkəzində tramvay altında qalaraq həyatla vidalaşması taleyin ən böyük və acı ironiyası idi. Azay bəy Bakıda, Bibiheybət məscidinin yaxınlığındakı "Qəriblər Qəbristanlığı"nda bir kimsəsiz kimi dəfn olunur.
-
-5. Müharibə İlləri: Böyük Vətən Müharibəsi, Ölməz Batalyon və Şirinbəyimin Fədakarlığı
-
-Ailənin növbəti nəslinin taleyi də sınaqlardan xali olmur. İskəndər bəyin oğlu Qulam Abasov, Böyük Vətən müharibəsində "Ölməz Batalyon"un tərkibində təyyarəçi (pilot) döyüşçü kimi tam 5 il cəbhədə vuruşur. 1945-ci ildə ağır yaralanan Qulam Bakıdakı hərbi qospitala yerləşdirilir. Ailəsinə "Oğlunuz ağır yaralıdır, filan ünvandadır" deyə teleqram vurulur.
-
-Həmin vaxt cəmi 16-17 yaşlarında olan böyük bacısı Şirinbəyim, Bakını heç vaxt görməməsinə və dövrün bütün çətinliklərinə baxmayaraq, qardaşını xilas etmək üçün dərhal hərəkətə keçir. O, kömək üçün ailənin doğma sığınacağına — atasının xalası oğlu Kəlbəlayı Şirinin qızı Xanım Şirinqızına (1910-1984) müraciət edir. Xanım Şirinqızı heç bir tərəddüd etmədən Şirinbəyimə dayaq durur. Onlar birlikdə pul, ərzaq, xəstə üçün təmiz paltarlar toplayaraq Bakıya yollanırlar və qospitalda Qulamı tapırlar.
-
-6. Qospitalda Doğulan Sevgi və "Izvestiya" Qəzetinin Baş Redaktoru
-
-Bacısının və yaxınlarının göstərdiyi bu böyük qayğı sayəsində Qulam sağalır. O, müalicə aldığı həmin hərbi qospitalda həkim işləyən Nazlı xanım adlı nəcib bir xanımla tanış olur və onlar ailə həyatı qururlar. Bu evlilikdən ailənin yeni nəsli — qızı Gülzadə (1947) və oğlu Mübariz (1951) dünyaya gəlir.
-
-Qulam İskəndər oğlu Abasov sonradan dövrünün ən nüfuzlu ziyalılarından birinə çevrilir və ömrünün sonuna qədər (1986-cı ilə kimi) SSRİ-nin ən böyük mətbuat orqanlarından olan "Izvestiya" qəzetinin Zaqafqaz üzrə baş redaktoru vəzifəsində çalışır. Nazlı xanım isə ömrü boyu həkimlik fəaliyyətini davam etdirir. Dövlət tərəfindən Qulam müəllimə Azadlıq prospektindəki yeni tikilmiş 16 mərtəbəli binadan mənzil verilir.
-
-Nazlı xanım sonrakı illərdə də ailənin bu şanlı tarixini unudulmağa qoymur. O, 1989-1994-cü illərdə Bakıda tələbə olan nəvə-nəticələrini tez-tez həmin mənzilə qonaq çağırar, babaların şanlı tarixini, Azay bəyin qızıl pullarla Bakıya gəlişini və tramvay xəttindəki o məşum faciəni şəxsən nəql edərək bu tarixi yaddaşı gələcək nəsillərə ötürərdi.
-
-7. Müasir Dövr: Ticarətdən Qohumluğa və Ziyalı Davamçılar
-
-Azay bəy və İskəndər bəyin Bakının Suraxanı qəsəbəsindən olan iş şərikləri ilə qurduqları etibarlı ticarət əlaqələri zamanla sarsılmaz qohumluq bağlarına çevrilmişdir. Belə ki, Azay bəyin qızı Gülbəyimin oğlu Tahir (Fərrux oğlu İsmayılov), həmin suraxanılı şəriklərin qızı — uzun illər Saatlı rayon xəstəxanasında LOR həkimi işləmiş, bölgənin xeyirxah ziyalısı Səmayə həkim ilə ailə qurmuşdur.
-
-Bu evlilikdən dünyaya gələn üç qız övladı ailənin genetik ziyalılıq xəttini bu gün də uğurla davam etdirir:
-
- Böyük qızları Ülviyyə xanım hazırda Bakıda məktəb direktoru olaraq təhsilimizə xidmət edir.
-
- Onun həyat yoldaşı Azər Şıxalıyev isə Dövlət Gömrük Komitəsində məsul vəzifədə çalışmaqdadır. Maraqlıdır ki, Azər bəy özü də şəcərə etibarilə Azay bəyin digər oğlu Bəybalanın "Balabikə qolu"na mənsubdur. Bu isə köklü bəy nəslinin budaqlarının illər sonra yenidən bir-birinə qovuşmasının rəmzidir.
-
-Nəticə
-
-Bu şəcərə həm Cənubi, həm də Şimali Azərbaycanın keşməkeşli tarixinə işıq tutan canlı bir dastandır. Şah qohumlarına baş əyməyən Kəlbəlayı Şirin, sovet hərbçilərini öz savadı ilə geri otuzduran Azay bəy, xalq üçün canını fəda edib arx qazdıran İskəndər bəy və göylərdə Vətəni qoruyan təyyarəçi Qulam Abasov... Bu insanların qanını daşıyan müasir nəsil, öz keçmişi ilə nə qədər qürur duysa, azdır. Onların mirası təkcə bir ailənin deyil, bütöv bir millətin mənəvi sərvətidir..</blockquote>
-<cite>Abasovlar Nəsil Kitabı · 2026</cite>
-</div>
-
-  <div class="quote-box">
-<blockquote>Bir Yurdun İnşası: Azay bəyin Uzaqgörənliyi və Seyid Mirəziz Ocağının Hekayəsi
-
-Hər bir kəndin tarixi sadəcə torpaq sahələrinin bölünməsi ilə deyil, həm də oraya köçən insanların ruhu, inancları və qurduqları nizamla yazılır. Bizim kəndimizin formalaşma tarixi isə bütövlükdə bir idarəçilik, uzaqgörənlik və mənəvi dəyərlərə ehtiram nümunəsidir. Bu tarihin baş qəhrəmanı, kəndin təməlini qoyan və onu böyük bir el-obaya çevirən Azay bəydir.
-
-Qohum-Əqraba Yurdu: Nizami Məhəllənin Qurulması
-
-Azay bəy kəndi formalaşdırmağa başlayarkən ilk növbədə insanların burada kök salması üçün şərait yaradır. O, gələn hər bir ailəyə yaşamaq üçün torpaq bəxş edir, ərazini su ilə təmin edir. Kəndin böyüməsi və etibarlı bir sığınacağa çevrilməsi üçün Azay bəy öz qohum-əqrabasını da bu yurda toplamaq qərarına gəlir.
-
-Azay bəyin ömür-gün yoldaşının doqquz bacı-qardaşı var idi. Bəy onların hər birini ailəlikcə kəndə köçürür, hər kəsə ev tikmək və yurd salmaq üçün bərabər şərait yaradır. O, kənd nizamını qorumaq məqsədilə hər bir ailəyə eni 40 metr olan, uzunluğu isə birbaşa su kanalına qədər uzanan xüsusi yurd payları ayırır. Bu uzaqgörən planlaşdırma nəticəsində kənddə həm kənd təsərrüfatı üçün əlverişli, həm də gözəl bir sıra (məhəllə) formalaşır.
-
-Xalqın Tələbi və Mənəvi Ehtiyac
-
-Kənd sürətlə böyüyür, evlərin sayı artır, lakin bir gün kənd camaatı Azay bəyin hüzuruna gələrək mühüm bir mənəvi ehtiyacı dilə gətirir:
-
-"Bəy, kəndi saldın, hər bir şəraiti yaratdın, Allah səndən razı olsun. Amma hər bir köklü kənddə olduğu kimi, bizim kəndimizdə də xalqın pənah aparacağı bir seyid ocağı, bir inanc yeri yoxdur. Biz kəndimizdə bir seyid ailəsinin yaşamasını istəyirik."
-
-Camaatın bu haqlı və mənəvi tələbini böyük hörmətlə qarşılayan Azay bəy, zaman itirmədən hərəkətə keçir. O, köç üçün at arabasını hazırlayaraq Sabirabad ərazisinə yollanır.
-
-Sabirabaddan Gələn Nur: Qənbərovlar Nəsli
-
-Azay bəy Sabirabadda bölgənin tanınmış və hörmətli simalarından olan Seyid Mirəziz kişinin ailəsi ilə görüşür və onları öz kəndinə dəvət edir. Seyid ailəsinin yeni yurdda heç bir çətinlik çəkməməsi üçün Azay bəy bütün maddi məsuliyyəti öz üzərinə götürür. O, öz şəxsi hesabı ilə Seyid Mirəziz üçün ev tikir, həyət-baca salır və dolanışıqları üçün mal-qara payı ayırır. Beləliklə, Seyid Mirəziz ailəsi ilə birlikdə kəndə köçür.
-
-Bu müqəddəs köçdən sonra Seyid Mirəziz ocağı kəndin mənəvi sütununa, and və inanc yerinə çevrilir. Zaman keçir, nəsillər bir-birini əvəz edir. Bu gün kəndimizdə Qənbərovlar soyadı ilə tanınan və kökləri Seyid Mirəzizə bağlanan bu nəslin nümayəndələri kəndin ən ağır və mötəbər ailəsi kimi yaşamaqdadırlar. Bu ocağın adları hörmətlə çəkilən əsas simaları:
-
- Mir-Zami,
-
- Mir-Kamal,
-
- Mir-Səkinə,
-
- Mir-Zalı,
-
- Mir-Sahib,
-
- Mir-Nayıb,
-
-kimi şəxsiyyətlər kəndin həm maddi, həm də mənəvi tarixində dərin izlər qoymuşlar.
-
-Nəticə
-
-Azay bəyin qurduğu bu nizam — həm su kanallarına uzanan nizamlı yurd yerləri, həm də kəndin ruhunu qoruyan seyid ocağının gətirilməsi — bu gün də kəndimizin kimliyini müəyyən edən ən mühüm tarixi hadisələrdəndir. Bu hekayə, sadəcə bir coğrafiyanın məskunlaşması deyil, bütöv bir icmanın bir ailəyə çevrilməsinin dastanıdır..</blockquote>
-<cite>Abasovlar Nəsil Kitabı · 2026</cite>
-</div>
-
-  <div class="quote-box">
-<blockquote>1948-ci İl Köçü: Qərbi Azərbaycandan Gələn Əskərovlar Nəsli
-
-Zaman keçdikcə kənd bura sığınan yeni ailələrlə daha da böyüyür və genişlənir. Kəndin tarixində ən önəmli mərhələlərdən biri 1948-ci illərdə baş verir. Qərbi Azərbaycanın Zəngibasar mahalının Aşağı Axta (Razdan) kəndindən deportasiya olunan Əskərovlar ailəsi bu kəndə pənah gətirir və buranın bir az da genişlənməsində, canlanmasında böyük rol oynayırlar. Kəndə köçən Əskərovlar ailəsinin böyükləri bura yeni bir nəfəs gətirir:
-
- Məhərrəm Əskərov, Abbas Əskərov və onların anaları Qarı arvad;
-
- Oruc Əskərov və həyat yoldaşı Badış arvad;
-
- Məmməd Əskərov və həyat yoldaşı Ruhiyyə xanım;
-
- Vəli Əskərov və həyat yoldaşı Sirayyə xanım.
-
-Bu çətin günlərdə kənd həm də elm və maarif tərəfdən güclənir. Gürcüstanın Marneuli rayonundan kəndə gələn rəhmətlik Yudif Babayev müəllim təyinatla riyaziyyat müəllimi kimi fəaliyyətə başlayır. O, öz ailəsi ilə bu kəndə köçərək burada kök salır, nəslini artırır və kənd uşaqlarının savadlanmasında əvəzsiz xidmətlər göstərir.
-
-İki Köklü Nəslin Qovuşması və Xeyriyyəçi Kərəm Əskərov
-
-Kəndin yerli nəsilləri ilə sonradan köçüb gələn ailələr zamanla qaynayıb-qarışır, qohum olurlar. Bu qohumluq bağlarının ən gözəl nümunəsi Məhərrəm Əskərovun evliliyi olur. Məhərrəm Əskərov, Azay bəyin doğma nəvəsi olan Abas Abasovun qızı Şölə Abasova ilə ailə həyatı qurur. Bu müqəddəs evlilikdən ailənin iki oğlu — Kərəm və Ramiz dünyaya gəlir. Bu evlilik həm də Azay bəyin qurucu ruhu ilə Əskərovlar nəslinin zəhmətkeşliyini bir araya gətirir.
-
-Bu şəcərənin davamçısı olan Kərəm Məhərrəm oğlu Əskərov öz doğma kəndi üçün canı-dildən çalışan, elin-obanın hörmətini qazanan bir şəxsiyyətə çevrilir. O, kəndin iqtisadiyyatını və dolanışığını rahatlaşdırmaq üçün böyük xeyirli işlər görür: kənddə un dəyirmanı tikdirir və kəndin inkişafına təkan verən böyük fermer təsərrüfatı salır. Onun atdığı bu addımlar bu gün də kənd camaatının yaddaşında xeyriyyəçilik rəmzi kimi yaşayır.
-
-Nəticə
-
-Azay bəyin qurduğu ilk nizamlı küçələrdən su kanallarına uzanan yurd yerlərinə, Sabirabaddan gələn mənəvi sütun Seyid ocağından Qərbi Azərbaycandan və Marneulidən gələn zəhmətkeş və ziyalı ailələrə qədər — bu kənd böyük bir tarixin canlı şahididir. Bu hekayə, fərqli talelərin bir torpaqda necə birləşdiyini, doğmalaşdığını və birgə tərəqqi etdiyini göstərən ən dəyərli mirasımızdır..</blockquote>
-<cite>Abasovlar Nəsil Kitabı · 2026</cite>
-</div>
-
+<div class="quote-box"><blockquote>Azay Bəyin təməlini qoyduğu, Məmmədəli Abasovun qoruduğu və bu gün Bəybala Abasovun davam etdirdiyi bu yol, Saatlı bölgəsinin etnoqrafik yaddaşının bir hissəsidir.</blockquote><cite>Abasovlar Nəsil Kitabı · 2026</cite></div>
 <h2>Coğrafi Yayılma</h2>
 <p><strong>Kök:</strong> Saatlı rayonu — Əhmədbəyli kəndi (1945-ci ilə qədər Əfəndi kənd, 1999-a qədər: Telmankənd). <strong>Müasir:</strong> Bakı, Sumqayıt, Moskva, Vaşinqton, London. <strong>Qazaxıstan:</strong> Sayram rayonu — Aldost Bəyin sürgündəki nəsli.</p>
-
 </div>
 </div>
 </div>
@@ -2078,26 +481,16 @@ Azay bəyin qurduğu ilk nizamlı küçələrdən su kanallarına uzanan yurd ye
   <p>📸 Foto arxivini yalnız sayt administratoru idarə edə bilər.</p>
   <button class="admin-login-btn" onclick="openAdminModal()">Admin Girişi</button>
 </div>
-<div id="photoZone" class="upload-zone"
-ondragover="event.preventDefault();this.classList.add('drag-over')"
-ondragleave="this.classList.remove('drag-over')"
-ondrop="handlePhotoDrop(event)"
-onclick="document.getElementById('photoInput').click()">
+<div id="photoZone" class="upload-zone" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handlePhotoDrop(event)" onclick="document.getElementById('photoInput').click()">
 <span class="upload-icon">📸</span>
 <div class="upload-title">Foto Yüklə</div>
 <div class="upload-hint">Köhnə foto, şəxsiyyət vəsiqəsi, həyat anları — hamısını buraya əlavə edin</div>
 <button class="upload-btn" onclick="event.stopPropagation();document.getElementById('photoInput').click()">Foto Seç</button>
-<div class="type-row">
-<span class="type-badge">JPG</span><span class="type-badge">PNG</span>
-<span class="type-badge">WEBP</span><span class="type-badge">GIF</span><span class="type-badge">HEIC</span>
-</div>
+<div class="type-row"><span class="type-badge">JPG</span><span class="type-badge">PNG</span><span class="type-badge">WEBP</span><span class="type-badge">GIF</span><span class="type-badge">HEIC</span></div>
 </div>
 <input type="file" id="photoInput" accept="image/*" multiple onchange="addPhotos(this.files)">
 <div id="galleryGrid" class="gallery-grid"></div>
-<div id="emptyGallery" class="empty">
-<div class="ei">🖼️</div>
-<p><p></p>Hələ foto əlavə edilməyib.</p>
-</div>
+<div id="emptyGallery" class="empty"><div class="ei">🖼️</div><p>Hələ foto əlavə edilməyib.</p></div>
 </div>
 </div>
 
@@ -2111,100 +504,49 @@ onclick="document.getElementById('photoInput').click()">
 <button onclick="showSubtab('audio',this)">🎙️ Audio</button>
 <button onclick="showSubtab('diger',this)">📦 Digər</button>
 </div>
-
 <div id="subtab-docs" class="subtab-content active">
-<div id="docAdminMsg" class="admin-only-msg">
-  <p>📄 Sənədləri yalnız sayt administratoru yükləyə bilər.</p>
-  <button class="admin-login-btn" onclick="openAdminModal()">Admin Girişi</button>
-</div>
-<div id="docUpload" class="upload-zone"
-ondragover="event.preventDefault();this.classList.add('drag-over')"
-ondragleave="this.classList.remove('drag-over')"
-ondrop="handleFileDrop(event,'docs')"
-onclick="document.getElementById('docInput').click()">
-<span class="upload-icon">📄</span>
-<div class="upload-title">Sənəd Yüklə</div>
-<div class="upload-hint">Doğum şəhadətnaməsi, hərbi bilet, diplom, vəsiqə, arxiv çıxarışı</div>
+<div id="docAdminMsg" class="admin-only-msg"><p>📄 Sənədləri yalnız sayt administratoru yükləyə bilər.</p><button class="admin-login-btn" onclick="openAdminModal()">Admin Girişi</button></div>
+<div id="docUpload" class="upload-zone" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleFileDrop(event,'docs')" onclick="document.getElementById('docInput').click()">
+<span class="upload-icon">📄</span><div class="upload-title">Sənəd Yüklə</div><div class="upload-hint">Doğum şəhadətnaməsi, hərbi bilet, diplom, vəsiqə, arxiv çıxarışı</div>
 <button class="upload-btn" onclick="event.stopPropagation();document.getElementById('docInput').click()">Sənəd Seç</button>
-<div class="type-row">
-<span class="type-badge">PDF</span><span class="type-badge">DOCX</span>
-<span class="type-badge">XLSX</span><span class="type-badge">TXT</span>
-<span class="type-badge">JPG</span><span class="type-badge">PNG</span>
-</div>
+<div class="type-row"><span class="type-badge">PDF</span><span class="type-badge">DOCX</span><span class="type-badge">XLSX</span><span class="type-badge">TXT</span><span class="type-badge">JPG</span><span class="type-badge">PNG</span></div>
 </div>
 <input type="file" id="docInput" multiple onchange="addFiles(this.files,'docs')">
 <div id="docList" class="file-list"></div>
 <div id="emptyDocs" class="empty"><div class="ei">📄</div><p>Hələ sənəd əlavə edilməyib.</p></div>
 </div>
-
 <div id="subtab-video" class="subtab-content">
-<div id="videoAdminMsg" class="admin-only-msg">
-  <p>🎬 Videoları yalnız sayt administratoru yükləyə bilər.</p>
-  <button class="admin-login-btn" onclick="openAdminModal()">Admin Girişi</button>
-</div>
-<div id="videoUpload" class="upload-zone"
-ondragover="event.preventDefault();this.classList.add('drag-over')"
-ondragleave="this.classList.remove('drag-over')"
-ondrop="handleFileDrop(event,'video')"
-onclick="document.getElementById('videoInput').click()">
-<span class="upload-icon">🎬</span>
-<div class="upload-title">Video Yüklə</div>
-<div class="upload-hint">Ailə görüşləri, mərasim videolarını buraya əlavə edin</div>
+<div id="videoAdminMsg" class="admin-only-msg"><p>🎬 Videoları yalnız sayt administratoru yükləyə bilər.</p><button class="admin-login-btn" onclick="openAdminModal()">Admin Girişi</button></div>
+<div id="videoUpload" class="upload-zone" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleFileDrop(event,'video')" onclick="document.getElementById('videoInput').click()">
+<span class="upload-icon">🎬</span><div class="upload-title">Video Yüklə</div><div class="upload-hint">Ailə görüşləri, mərasim videolarını buraya əlavə edin</div>
 <button class="upload-btn" onclick="event.stopPropagation();document.getElementById('videoInput').click()">Video Seç</button>
-<div class="type-row">
-<span class="type-badge">MP4</span><span class="type-badge">MOV</span>
-<span class="type-badge">AVI</span><span class="type-badge">MKV</span>
-</div>
+<div class="type-row"><span class="type-badge">MP4</span><span class="type-badge">MOV</span><span class="type-badge">AVI</span><span class="type-badge">MKV</span></div>
 </div>
 <input type="file" id="videoInput" accept="video/*" multiple onchange="addFiles(this.files,'video')">
 <div id="videoList" class="file-list"></div>
 <div id="emptyVideo" class="empty"><div class="ei">🎬</div><p>Hələ video əlavə edilməyib.</p></div>
 </div>
-
 <div id="subtab-audio" class="subtab-content">
-<div id="audioAdminMsg" class="admin-only-msg">
-  <p>🎙️ Audioları yalnız sayt administratoru yükləyə bilər.</p>
-  <button class="admin-login-btn" onclick="openAdminModal()">Admin Girişi</button>
-</div>
-<div id="audioUpload" class="upload-zone"
-ondragover="event.preventDefault();this.classList.add('drag-over')"
-ondragleave="this.classList.remove('drag-over')"
-ondrop="handleFileDrop(event,'audio')"
-onclick="document.getElementById('audioInput').click()">
-<span class="upload-icon">🎙️</span>
-<div class="upload-title">Audio Yüklə</div>
-<div class="upload-hint">Söhbətlər, xatirə hekayələri, mahnılar</div>
+<div id="audioAdminMsg" class="admin-only-msg"><p>🎙️ Audioları yalnız sayt administratoru yükləyə bilər.</p><button class="admin-login-btn" onclick="openAdminModal()">Admin Girişi</button></div>
+<div id="audioUpload" class="upload-zone" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleFileDrop(event,'audio')" onclick="document.getElementById('audioInput').click()">
+<span class="upload-icon">🎙️</span><div class="upload-title">Audio Yüklə</div><div class="upload-hint">Söhbətlər, xatirə hekayələri, mahnılar</div>
 <button class="upload-btn" onclick="event.stopPropagation();document.getElementById('audioInput').click()">Audio Seç</button>
-<div class="type-row">
-<span class="type-badge">MP3</span><span class="type-badge">WAV</span>
-<span class="type-badge">M4A</span><span class="type-badge">OGG</span>
-</div>
+<div class="type-row"><span class="type-badge">MP3</span><span class="type-badge">WAV</span><span class="type-badge">M4A</span><span class="type-badge">OGG</span></div>
 </div>
 <input type="file" id="audioInput" accept="audio/*" multiple onchange="addFiles(this.files,'audio')">
 <div id="audioList" class="file-list"></div>
 <div id="emptyAudio" class="empty"><div class="ei">🎙️</div><p>Hələ audio əlavə edilməyib.</p></div>
 </div>
-
 <div id="subtab-diger" class="subtab-content">
-<div id="digerAdminMsg" class="admin-only-msg">
-  <p>📦 Faylları yalnız sayt administratoru yükləyə bilər.</p>
-  <button class="admin-login-btn" onclick="openAdminModal()">Admin Girişi</button>
-</div>
-<div id="digerUpload" class="upload-zone"
-ondragover="event.preventDefault();this.classList.add('drag-over')"
-ondragleave="this.classList.remove('drag-over')"
-ondrop="handleFileDrop(event,'diger')"
-onclick="document.getElementById('otherInput').click()">
-<span class="upload-icon">📦</span>
-<div class="upload-title">Digər Fayl Yüklə</div>
-<div class="upload-hint">Hər növ fayl əlavə edə bilərsiniz</div>
+<div id="digerAdminMsg" class="admin-only-msg"><p>📦 Faylları yalnız sayt administratoru yükləyə bilər.</p><button class="admin-login-btn" onclick="openAdminModal()">Admin Girişi</button></div>
+<div id="digerUpload" class="upload-zone" ondragover="event.preventDefault();this.classList.add('drag-over')" ondragleave="this.classList.remove('drag-over')" ondrop="handleFileDrop(event,'diger')" onclick="document.getElementById('otherInput').click()">
+<span class="upload-icon">📦</span><div class="upload-title">Digər Fayl Yüklə</div><div class="upload-hint">Hər növ fayl əlavə edə bilərsiniz</div>
 <button class="upload-btn" onclick="event.stopPropagation();document.getElementById('otherInput').click()">Fayl Seç</button>
 </div>
 <input type="file" id="otherInput" multiple onchange="addFiles(this.files,'diger')">
 <div id="digerList" class="file-list"></div>
 <div id="emptyDiger" class="empty"><div class="ei">📦</div><p>Hələ fayl əlavə edilməyib.</p></div>
 </div>
-
 </div>
 </div>
 
@@ -2220,39 +562,26 @@ onclick="document.getElementById('otherInput').click()">
 </footer>
 
 <script>
-// ════════════════════════════════════════
-// KONFİQURASİYA
-// ════════════════════════════════════════
 const ADMIN_PASSWORD = 'Ayla2013';
 let isAdmin = false;
 
-// ════════════════════════════════════════
-// ADMİN SİSTEMİ
-// ════════════════════════════════════════
 function openAdminModal() {
   document.getElementById('adminModal').classList.add('open');
   document.getElementById('adminPass').value = '';
   document.getElementById('adminError').style.display = 'none';
   setTimeout(() => document.getElementById('adminPass').focus(), 100);
 }
-function closeAdminModal() {
-  document.getElementById('adminModal').classList.remove('open');
-}
+function closeAdminModal() { document.getElementById('adminModal').classList.remove('open'); }
 function adminLogin() {
   if (document.getElementById('adminPass').value === ADMIN_PASSWORD) {
-    isAdmin = true;
-    closeAdminModal();
-    updateAdminUI();
+    isAdmin = true; closeAdminModal(); updateAdminUI();
   } else {
     document.getElementById('adminError').style.display = 'block';
     document.getElementById('adminPass').value = '';
     document.getElementById('adminPass').focus();
   }
 }
-function adminLogout() {
-  isAdmin = false;
-  updateAdminUI();
-}
+function adminLogout() { isAdmin = false; updateAdminUI(); }
 function updateAdminUI() {
   document.getElementById('adminBadge').classList.toggle('visible', isAdmin);
   ['photoZone','docUpload','videoUpload','audioUpload','digerUpload'].forEach(id => {
@@ -2272,15 +601,11 @@ function updateAdminUI() {
   ['docs','video','audio','diger'].forEach(renderFileList);
 }
 
-// ════════════════════════════════════════
-// TAB SİSTEMİ
-// ════════════════════════════════════════
 function showTab(id, btn) {
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('nav.tabs button').forEach(el => el.classList.remove('active'));
   document.getElementById('tab-' + id).classList.add('active');
   btn.classList.add('active');
-  // Bio kartları yalnız o tab açılanda init et
   if (id === 'bio') requestAnimationFrame(initBioCards);
 }
 function showSubtab(id, btn) {
@@ -2290,9 +615,6 @@ function showSubtab(id, btn) {
   btn.classList.add('active');
 }
 
-// ════════════════════════════════════════
-// FOTO ARXİVİ
-// ════════════════════════════════════════
 const photos = [];
 function addPhotos(files) {
   if (!isAdmin) return;
@@ -2314,14 +636,7 @@ function renderGallery() {
   const empty = document.getElementById('emptyGallery');
   if (!photos.length) { grid.innerHTML = ''; empty.style.display = 'block'; return; }
   empty.style.display = 'none';
-  grid.innerHTML = photos.map((p, i) => `
-    <div class="gal-item" onclick="openLightbox(${i})">
-      <span class="img-wm" style="display:block;width:100%;height:100%;">
-        <img src="${p.src}" alt="${p.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;">
-      </span>
-      <div class="gal-caption">${p.name}</div>
-      ${isAdmin ? `<button class="gal-remove" onclick="event.stopPropagation();removePhoto(${i})" title="Sil">✕</button>` : ''}
-    </div>`).join('');
+  grid.innerHTML = photos.map((p, i) => `<div class="gal-item" onclick="openLightbox(${i})"><span class="img-wm" style="display:block;width:100%;height:100%;"><img src="${p.src}" alt="${p.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;"></span><div class="gal-caption">${p.name}</div>${isAdmin ? `<button class="gal-remove" onclick="event.stopPropagation();removePhoto(${i})" title="Sil">✕</button>` : ''}</div>`).join('');
 }
 function removePhoto(i) { if (!isAdmin) return; photos.splice(i,1); renderGallery(); }
 function openLightbox(i) {
@@ -2331,17 +646,8 @@ function openLightbox(i) {
 }
 function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
 
-// ════════════════════════════════════════
-// FAYL SİSTEMİ
-// ════════════════════════════════════════
 const fileStore = { docs:[], video:[], audio:[], diger:[] };
-const fileIcons = {
-  pdf:'📕',doc:'📝',docx:'📝',xls:'📊',xlsx:'📊',txt:'📃',
-  mp4:'🎬',mov:'🎬',avi:'🎬',mkv:'🎬',
-  mp3:'🎵',wav:'🎵',m4a:'🎵',ogg:'🎵',
-  jpg:'🖼️',jpeg:'🖼️',png:'🖼️',gif:'🖼️',
-  zip:'📦',rar:'📦',default:'📎'
-};
+const fileIcons = { pdf:'📕',doc:'📝',docx:'📝',xls:'📊',xlsx:'📊',txt:'📃',mp4:'🎬',mov:'🎬',avi:'🎬',mkv:'🎬',mp3:'🎵',wav:'🎵',m4a:'🎵',ogg:'🎵',jpg:'🖼️',jpeg:'🖼️',png:'🖼️',gif:'🖼️',zip:'📦',rar:'📦',default:'📎' };
 const getIcon = name => fileIcons[name.split('.').pop().toLowerCase()] || fileIcons.default;
 const fmtSize = b => b < 1024 ? b+' B' : b < 1048576 ? (b/1024).toFixed(1)+' KB' : (b/1048576).toFixed(1)+' MB';
 
@@ -2362,22 +668,10 @@ function renderFileList(cat) {
   const files = fileStore[cat];
   if (!files.length) { list.innerHTML=''; if(empty) empty.style.display='block'; return; }
   if (empty) empty.style.display='none';
-  list.innerHTML = files.map((f,i) => `
-    <div class="file-item">
-      <span class="file-icon">${getIcon(f.name)}</span>
-      <div class="file-info">
-        <div class="file-name" title="${f.name}">${f.name}</div>
-        <div class="file-meta">${fmtSize(f.size)}</div>
-      </div>
-      ${isAdmin ? `<button class="file-remove admin-visible" onclick="removeFile('${cat}',${i})" title="Sil">✕</button>` : ''}
-    </div>`).join('');
+  list.innerHTML = files.map((f,i) => `<div class="file-item"><span class="file-icon">${getIcon(f.name)}</span><div class="file-info"><div class="file-name" title="${f.name}">${f.name}</div><div class="file-meta">${fmtSize(f.size)}</div></div>${isAdmin ? `<button class="file-remove admin-visible" onclick="removeFile('${cat}',${i})" title="Sil">✕</button>` : ''}</div>`).join('');
 }
 function removeFile(cat,i) { if(!isAdmin) return; fileStore[cat].splice(i,1); renderFileList(cat); }
 
-// ════════════════════════════════════════
-// BİO KARTLARI — "DAHA ÇOX"
-// IntersectionObserver ilə yalnız görünən kartlar init edilir
-// ════════════════════════════════════════
 let bioCardsInited = false;
 function initBioCards() {
   if (bioCardsInited) return;
@@ -2385,7 +679,6 @@ function initBioCards() {
   document.querySelectorAll('.bio-card').forEach(card => {
     const textDiv = card.querySelector('.bio-text');
     if (!textDiv) return;
-    // scrollHeight-i oxumaq reflow yaradır — bütün kartları batch-lə oxuyuruq
     const h = textDiv.scrollHeight;
     if (h <= 126) return;
     textDiv.classList.add('collapsed');
@@ -2403,9 +696,6 @@ function initBioCards() {
   });
 }
 
-// ════════════════════════════════════════
-// İLKLƏNDİRMƏ
-// ════════════════════════════════════════
 renderGallery();
 ['docs','video','audio','diger'].forEach(renderFileList);
 updateAdminUI();
