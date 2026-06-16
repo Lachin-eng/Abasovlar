@@ -49,6 +49,22 @@ body::before { content:''; position:fixed; inset:0; background:radial-gradient(e
 .admin-login-btn { background:none; border:1px solid rgba(201,168,76,0.3); color:var(--gold); font-family:'Cinzel',serif; font-size:10px; letter-spacing:.18em; padding:9px 22px; cursor:pointer; text-transform:uppercase; transition:all .3s; }
 .admin-login-btn:hover { background:rgba(201,168,76,0.08); border-color:var(--gold); }
 
+/* ══ PAYLAŞ DÜYMƏSİ ══ */
+#shareBtn { position:fixed; bottom:22px; right:18px; z-index:450; background:linear-gradient(135deg,#E8C97A,#C9A84C); color:#16130c; border:none; border-radius:50px; padding:13px 22px; font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; cursor:pointer; box-shadow:0 6px 22px rgba(0,0,0,.5); display:flex; align-items:center; gap:8px; transition:transform .25s,box-shadow .25s; }
+#shareBtn:hover { transform:translateY(-2px); box-shadow:0 9px 26px rgba(0,0,0,.55); }
+#shareBtn:active { transform:translateY(0); }
+#shareModal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.88); z-index:2050; align-items:center; justify-content:center; }
+#shareModal.open { display:flex; }
+.share-box { background:linear-gradient(135deg,rgba(28,24,18,0.98),rgba(14,12,8,0.98)); border:1px solid var(--gold); padding:38px 36px; max-width:340px; width:90%; text-align:center; position:relative; }
+.share-box::after { content:''; position:absolute; inset:4px; border:1px solid rgba(201,168,76,0.15); pointer-events:none; }
+.share-title { font-family:'Cinzel',serif; font-size:12.5px; letter-spacing:.24em; color:var(--gold); text-transform:uppercase; margin-bottom:26px; }
+.share-options { display:flex; flex-direction:column; gap:10px; }
+.share-option { display:flex; align-items:center; gap:12px; padding:12px 18px; border:1px solid rgba(201,168,76,.22); color:var(--parchment); text-decoration:none; font-family:'EB Garamond',serif; font-size:15px; transition:all .25s; background:rgba(255,255,255,.02); cursor:pointer; width:100%; text-align:left; }
+.share-option:hover { background:rgba(201,168,76,.1); border-color:var(--gold); }
+.share-option .ic { font-size:17px; }
+.share-cancel { margin-top:20px; background:none; border:none; color:var(--muted); font-size:12px; cursor:pointer; font-family:'Cinzel',serif; letter-spacing:.12em; transition:color .2s; }
+.share-cancel:hover { color:var(--parchment); }
+
 /* ══ WATERMARK ══ */
 .img-wm { position:relative; display:inline-block; }
 .img-wm::after { content:'ABASOVLAR'; position:absolute; bottom:5px; right:5px; font-family:'Cinzel',serif; font-size:7px; font-weight:600; letter-spacing:0.18em; color:rgba(201,168,76,0.35); background:rgba(12,11,9,0.30); padding:2px 5px; border:1px solid rgba(201,168,76,0.18); border-radius:1px; pointer-events:none; user-select:none; backdrop-filter:blur(1px); text-transform:uppercase; white-space:nowrap; z-index:5; }
@@ -244,6 +260,22 @@ footer p { font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:.18em; c
 <div id="adminBadge">
   <span class="admin-badge-text">👑 Admin: Ayla</span>
   <button class="admin-logout" onclick="adminLogout()">Çıxış</button>
+</div>
+
+<!-- ══ PAYLAŞ DÜYMƏSİ ══ -->
+<button id="shareBtn" onclick="openShare()">📤 Paylaş</button>
+<div id="shareModal">
+  <div class="share-box">
+    <div class="share-title">Sosial Şəbəkədə Paylaş</div>
+    <div class="share-options">
+      <a class="share-option" id="shareWhatsapp" href="#" target="_blank" rel="noopener"><span class="ic">💬</span> WhatsApp</a>
+      <a class="share-option" id="shareTelegram" href="#" target="_blank" rel="noopener"><span class="ic">✈️</span> Telegram</a>
+      <a class="share-option" id="shareFacebook" href="#" target="_blank" rel="noopener"><span class="ic">📘</span> Facebook</a>
+      <a class="share-option" id="shareTwitter" href="#" target="_blank" rel="noopener"><span class="ic">𝕏</span> Twitter / X</a>
+      <button class="share-option" onclick="copyShareLink()"><span class="ic">🔗</span> Linki Kopyala</button>
+    </div>
+    <button class="share-cancel" onclick="closeShare()">Bağla</button>
+  </div>
 </div>
 
 <header>
@@ -783,6 +815,34 @@ function adminLogin() {
   }
 }
 function adminLogout() { isAdmin = false; updateAdminUI(); }
+
+function openShare() {
+  const shareData = {
+    title: 'Abasovlar Nəsil Kitabı',
+    text: 'Abasovlar Nəsil Kitabı — Kəlbəlayi Azay Bəy Məmmədəli oğlu Abasov · 6 nəsil · 1861–2026',
+    url: window.location.href
+  };
+  if (navigator.share) {
+    navigator.share(shareData).catch(() => {});
+    return;
+  }
+  const url = encodeURIComponent(shareData.url);
+  const text = encodeURIComponent(shareData.text);
+  document.getElementById('shareWhatsapp').href = `https://wa.me/?text=${text}%20${url}`;
+  document.getElementById('shareTelegram').href = `https://t.me/share/url?url=${url}&text=${text}`;
+  document.getElementById('shareFacebook').href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+  document.getElementById('shareTwitter').href = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+  document.getElementById('shareModal').classList.add('open');
+}
+function closeShare() { document.getElementById('shareModal').classList.remove('open'); }
+function copyShareLink() {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    const btn = document.querySelector('.share-cancel');
+    const orig = btn.textContent;
+    btn.textContent = 'Link kopyalandı ✓';
+    setTimeout(() => { btn.textContent = orig; closeShare(); }, 1100);
+  }).catch(() => closeShare());
+}
 function updateAdminUI() {
   document.getElementById('adminBadge').classList.toggle('visible', isAdmin);
   ['photoZone','docUpload','videoUpload','audioUpload','digerUpload'].forEach(id => {
