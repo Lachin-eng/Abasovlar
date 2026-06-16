@@ -877,7 +877,37 @@ function showSubtab(id, btn) {
   btn.classList.add('active');
 }
 
-const photos = [];
+const photos = [
+  {name:'Azay Məmmədəli oğlu Abasov', src:'Azay.png'},
+  {name:'Bəybala Azay oğlu Abasov', src:'Beybala.png'},
+  {name:'İsgəndər Azay oğlu Abasov', src:'Iskender.png'},
+  {name:'Lumu xanım', src:'Lumu.png'},
+  {name:'Məmmədəli və Lumu', src:'lm.png'},
+  {name:'Maarif Abasov', src:'maarif.png'},
+  {name:'Xanım Abasova', src:'xanim.png'},
+  {name:'Mahir Abasov', src:'Mahir.png'},
+  {name:'İlham Abasov', src:'ilham.png'},
+  {name:'Zərbikə Abasova', src:'Zerbike.png'},
+  {name:'Səfərəli Abasov', src:'Namiz.png'},
+  {name:'Laçın Məmmədəli oğlu Abasov', src:'lachin.png'},
+  {name:'Aftandil Məmmədəli oğlu Abasov', src:'Aftandil.png'},
+  {name:'Bəybala Məmmədəli oğlu Abasov', src:'Azim.png'},
+  {name:'Şamama Abasova', src:'samama.png'},
+  {name:'Ayla Abaslı', src:'ayla.png'},
+  {name:'Abas Abasov', src:'abas.png'},
+  {name:'Kərəm', src:'kerem.png'},
+  {name:'Qulam Məmmədov', src:'Qulam.png'},
+  {name:'Şirinbəyim İskəndər qızı', src:'sirinbeyim.png'},
+  {name:'Kubra İsgəndər qızı', src:'Kubra.png'},
+  {name:'Mirzə İsgəndər oğlu', src:'mirze.png'},
+  {name:'Hacıağa İskəndər oğlu Abasov', src:'hacıağa.png'},
+  {name:'Məmmədağa', src:'memmedaqa.png'},
+  {name:'Sura', src:'Sura.png'},
+  {name:'Mintəzir', src:'mintezil.png'},
+  {name:'Suad', src:'suad.png'},
+  {name:'Maarif', src:'maarif2.png'},
+  {name:'Eldost Səmidağa oğlu Azayev', src:'eldost.png'}
+];
 function addPhotos(files) {
   if (!isAdmin) return;
   Array.from(files).forEach(file => {
