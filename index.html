@@ -1,11 +1,25 @@
-order:rgba(201,168,76,0.22);
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abasovlar Nəsil Kitabı</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+.cards-container { display:flex; flex-wrap:wrap; justify-content:center; gap:15px; width:100%; }
+:root {
+  --gold:#C9A84C; --gold-light:#E8C97A; --gold-pale:#F5E6C0;
+  --dark:#0C0B09; --dark2:#151210; --dark3:#1C1812;
+  --parchment:#F0E8D5; --muted:#7A6A52; --accent:#8B2020;
+  --border:rgba(201,168,76,0.22);
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
 body { background:var(--dark); color:var(--parchment); font-family:'EB Garamond',Georgia,serif; font-size:17px; line-height:1.8; overflow-x:hidden; }
 body::before { content:''; position:fixed; inset:0; background:radial-gradient(ellipse 80% 50% at 15% 10%,rgba(201,168,76,0.06) 0%,transparent 55%),radial-gradient(ellipse 60% 40% at 85% 85%,rgba(139,32,32,0.05) 0%,transparent 55%); pointer-events:none; z-index:0; will-change:auto; }
-
-/* ══ ADMİN MODALİ ══ */
 #adminModal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.88); z-index:2000; align-items:center; justify-content:center; }
 #adminModal.open { display:flex; }
 .admin-box { background:linear-gradient(135deg,rgba(28,24,18,0.98),rgba(14,12,8,0.98)); border:1px solid var(--gold); padding:44px 50px; max-width:380px; width:90%; text-align:center; position:relative; }
@@ -32,8 +46,6 @@ body::before { content:''; position:fixed; inset:0; background:radial-gradient(e
 .admin-only-msg p { color:var(--muted); font-style:italic; font-size:15px; margin-bottom:16px; }
 .admin-login-btn { background:none; border:1px solid rgba(201,168,76,0.3); color:var(--gold); font-family:'Cinzel',serif; font-size:10px; letter-spacing:.18em; padding:9px 22px; cursor:pointer; text-transform:uppercase; transition:all .3s; }
 .admin-login-btn:hover { background:rgba(201,168,76,0.08); border-color:var(--gold); }
-
-/* ══ PAYLAŞ DÜYMƏSİ ══ */
 #shareBtn { position:fixed; bottom:22px; right:18px; z-index:450; background:linear-gradient(135deg,#E8C97A,#C9A84C); color:#16130c; border:none; border-radius:50px; padding:13px 22px; font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; cursor:pointer; box-shadow:0 6px 22px rgba(0,0,0,.5); display:flex; align-items:center; gap:8px; transition:transform .25s,box-shadow .25s; }
 #shareBtn:hover { transform:translateY(-2px); box-shadow:0 9px 26px rgba(0,0,0,.55); }
 #shareBtn:active { transform:translateY(0); }
@@ -48,8 +60,6 @@ body::before { content:''; position:fixed; inset:0; background:radial-gradient(e
 .share-option .ic { font-size:17px; }
 .share-cancel { margin-top:20px; background:none; border:none; color:var(--muted); font-size:12px; cursor:pointer; font-family:'Cinzel',serif; letter-spacing:.12em; transition:color .2s; }
 .share-cancel:hover { color:var(--parchment); }
-
-/* ══ WATERMARK ══ */
 .img-wm { position:relative; display:inline-block; }
 .img-wm::after { content:'ABASOVLAR'; position:absolute; bottom:5px; right:5px; font-family:'Cinzel',serif; font-size:7px; font-weight:600; letter-spacing:0.18em; color:rgba(201,168,76,0.35); background:rgba(12,11,9,0.30); padding:2px 5px; border:1px solid rgba(201,168,76,0.18); border-radius:1px; pointer-events:none; user-select:none; backdrop-filter:blur(1px); text-transform:uppercase; white-space:nowrap; z-index:5; }
 .img-wm.img-wm-circle::after { font-size:6px; bottom:3px; right:3px; padding:1px 4px; letter-spacing:0.1em; color:rgba(201,168,76,0.28); background:rgba(12,11,9,0.25); border-color:rgba(201,168,76,0.14); }
@@ -57,24 +67,18 @@ body::before { content:''; position:fixed; inset:0; background:radial-gradient(e
 .img-wm.img-wm-full::after { font-size:8px; bottom:8px; right:10px; padding:3px 7px; color:rgba(201,168,76,0.38); background:rgba(12,11,9,0.38); }
 .gal-item .img-wm::after { opacity:0; transition:opacity 0.3s; }
 .gal-item:hover .img-wm::after { opacity:1; }
-
-/* ══ HEADER ══ */
 header { position:relative; z-index:1; text-align:center; padding:80px 40px 55px; border-bottom:1px solid var(--border); }
 header::after { content:''; position:absolute; bottom:0; left:8%; right:8%; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
 .crest { font-size:58px; margin-bottom:18px; display:block; animation:glowPulse 4s ease-in-out infinite; will-change:transform,opacity; }
 @keyframes glowPulse { 0%,100%{opacity:0.85;transform:scale(1)} 50%{opacity:1;transform:scale(1.04)} }
 h1.main-title { font-family:'Cinzel',serif; font-size:clamp(26px,5vw,50px); font-weight:700; color:var(--gold); letter-spacing:.09em; text-shadow:0 0 40px rgba(201,168,76,0.28); margin-bottom:10px; }
 .meta-line { font-family:'Cinzel',serif; font-size:12px; letter-spacing:.2em; color:var(--muted); text-transform:uppercase; }
-
-/* ══ STATS ══ */
 .stats-bar { display:flex; flex-wrap:wrap; border-bottom:1px solid var(--border); position:relative; z-index:1; }
 .stat-item { flex:1; min-width:130px; padding:26px 16px; text-align:center; border-right:1px solid var(--border); transition:background .3s; }
 .stat-item:last-child { border-right:none; }
 .stat-item:hover { background:rgba(201,168,76,0.04); }
 .stat-num { display:block; font-family:'Cinzel',serif; font-size:26px; color:var(--gold); margin-bottom:4px; }
 .stat-label { font-size:13px; color:var(--muted); }
-
-/* ══ NAVİQASİYA ══ */
 nav.tabs { display:flex; flex-wrap:wrap; position:sticky; top:0; background:rgba(12,11,9,0.97); backdrop-filter:blur(14px); border-bottom:1px solid var(--border); z-index:200; will-change:transform; }
 nav.tabs button { flex:1; min-width:100px; padding:15px 8px; background:transparent; border:none; border-bottom:2px solid transparent; color:var(--muted); font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; cursor:pointer; transition:all .3s; }
 nav.tabs button:hover { color:var(--gold-light); background:rgba(201,168,76,0.04); }
@@ -86,8 +90,6 @@ nav.tabs button.active { color:var(--gold); border-bottom-color:var(--gold); bac
 .sec-title { font-family:'Cinzel',serif; font-size:12px; letter-spacing:.3em; color:var(--gold); text-transform:uppercase; margin-bottom:50px; padding-bottom:14px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:14px; }
 .sec-title::before { content:''; flex:1; height:1px; background:linear-gradient(90deg,var(--border),transparent); }
 .sec-title::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--border)); }
-
-/* ══ KARTLAR ══ */
 .generation { margin-bottom:44px; }
 .gen-label { font-family:'Cinzel',serif; font-size:11px; letter-spacing:.22em; color:var(--accent); text-transform:uppercase; margin-bottom:18px; display:flex; align-items:center; gap:12px; }
 .gen-label::after { content:''; flex:1; height:1px; background:rgba(139,32,32,0.22); }
@@ -100,16 +102,12 @@ nav.tabs button.active { color:var(--gold); border-bottom-color:var(--gold); bac
 .card-years { font-size:13px; color:var(--muted); margin-bottom:9px; font-style:italic; }
 .card-desc { font-size:14.5px; color:rgba(240,232,213,.72); line-height:1.55; }
 .card-children { margin-top:10px; font-size:13px; color:var(--muted); border-top:1px solid rgba(201,168,76,.1); padding-top:9px; }
-
-/* ══ KÖK KARTI ══ */
 .root-card { background:linear-gradient(135deg,rgba(45,33,10,.95),rgba(26,20,8,.95)); border:1px solid var(--gold); border-radius:2px; padding:38px 44px; text-align:center; position:relative; overflow:hidden; margin-bottom:36px; }
 .root-card::after { content:''; position:absolute; inset:2px; border:1px solid rgba(201,168,76,.18); pointer-events:none; }
 .root-name { font-family:'Cinzel',serif; font-size:clamp(18px,3.5vw,28px); color:var(--gold); margin-bottom:8px; text-shadow:0 0 30px rgba(201,168,76,.25); }
 .root-sub { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:18px; color:var(--gold-light); opacity:.78; }
 .root-note { margin-top:10px; font-size:14px; color:var(--muted); }
 .connector { text-align:center; color:var(--gold); opacity:.35; font-size:22px; margin:4px 0; }
-
-/* ══ BİOQRAFİYA ══ */
 .bio-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:24px; align-items:stretch; width:100%; }
 .bio-card { background:linear-gradient(155deg,rgba(22,18,14,.95),rgba(14,12,8,.95)); border:1px solid var(--border); padding:30px 34px; position:relative; transition:border-color .3s; display:flex; flex-direction:column; }
 .bio-card:hover { border-color:rgba(201,168,76,.32); }
@@ -126,8 +124,6 @@ nav.tabs button.active { color:var(--gold); border-bottom-color:var(--gold); bac
 .bio-read-more { display:none; color:var(--gold); font-size:12px; font-family:'Cinzel',serif; letter-spacing:.1em; cursor:pointer; margin-top:10px; padding-top:8px; border-top:1px solid rgba(201,168,76,.18); border-left:none; border-right:none; border-bottom:none; background:none; text-align:left; transition:color .25s,opacity .25s; width:100%; opacity:.8; }
 .bio-read-more:hover { color:var(--gold-light); opacity:1; }
 .bio-read-more.visible { display:block; }
-
-/* ══ TARİX ══ */
 .history-wrap { max-width:800px; margin:0 auto; }
 .history-wrap h2 { font-family:'Cinzel',serif; font-size:19px; color:var(--gold); margin:36px 0 16px; padding-bottom:10px; border-bottom:1px solid var(--border); }
 .history-wrap h2:first-child { margin-top:0; }
@@ -144,8 +140,6 @@ nav.tabs button.active { color:var(--gold); border-bottom-color:var(--gold); bac
 .quote-box blockquote.qb-collapsed::after { content:''; position:absolute; bottom:0; left:0; right:0; height:60px; background:linear-gradient(transparent,var(--dark)); pointer-events:none; }
 .qb-read-more { display:inline-block; color:var(--gold); font-size:12px; font-family:'Cinzel',serif; letter-spacing:.12em; text-transform:uppercase; cursor:pointer; margin-top:18px; padding:9px 24px; border:1px solid rgba(201,168,76,.3); background:rgba(201,168,76,.04); transition:all .25s; }
 .qb-read-more:hover { background:rgba(201,168,76,.12); color:var(--gold-light); }
-
-/* ══ UPLOAD ══ */
 .upload-icon { font-size:46px; margin-bottom:16px; opacity:.55; display:block; }
 .upload-title { font-family:'Cinzel',serif; font-size:15px; color:var(--gold); letter-spacing:.14em; margin-bottom:8px; }
 .upload-hint { font-size:14px; color:var(--muted); margin-bottom:22px; }
@@ -154,8 +148,6 @@ nav.tabs button.active { color:var(--gold); border-bottom-color:var(--gold); bac
 input[type="file"] { display:none; }
 .type-row { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-top:18px; }
 .type-badge { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07); color:var(--muted); font-size:11px; letter-spacing:.08em; padding:3px 11px; border-radius:20px; }
-
-/* ══ QALEREYİ ══ */
 .gallery-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:10px; margin-top:28px; }
 .gal-item { position:relative; aspect-ratio:4/3; overflow:hidden; border:1px solid var(--border); cursor:pointer; transition:border-color .25s,transform .25s; border-radius:1px; }
 .gal-item:hover { border-color:var(--gold); transform:scale(1.03); }
@@ -164,8 +156,6 @@ input[type="file"] { display:none; }
 .gal-item:hover .gal-caption { opacity:1; }
 .gal-remove { position:absolute; top:5px;right:5px; background:rgba(139,32,32,.75); border:none; color:#fff; font-size:13px; width:22px;height:22px; border-radius:50%; cursor:pointer; line-height:22px; text-align:center; opacity:0; transition:opacity .3s; }
 .gal-item:hover .gal-remove { opacity:1; }
-
-/* ══ FAYL SİYAHISI ══ */
 .file-list { margin-top:22px; }
 .file-item { display:flex; align-items:center; gap:14px; padding:14px 18px; border:1px solid var(--border); margin-bottom:8px; background:rgba(255,255,255,.015); transition:background .3s,border-color .3s; border-radius:1px; }
 .file-item:hover { background:rgba(201,168,76,.04); border-color:rgba(201,168,76,.28); }
@@ -176,8 +166,6 @@ input[type="file"] { display:none; }
 .file-remove { background:none; border:none; color:var(--muted); cursor:pointer; font-size:17px; padding:3px 8px; transition:color .2s; flex-shrink:0; display:none; }
 .file-remove.admin-visible { display:inline-block; }
 .file-remove:hover { color:var(--accent); }
-
-/* ══ LİGHTBOX ══ */
 .lightbox { display:none; position:fixed; inset:0; background:rgba(0,0,0,.93); z-index:1000; align-items:center; justify-content:center; padding:20px; }
 .lightbox.open { display:flex; }
 .lightbox img { max-width:88vw; max-height:84vh; object-fit:contain; border:1px solid var(--border); }
@@ -187,8 +175,6 @@ input[type="file"] { display:none; }
 .empty .ei { font-size:38px; margin-bottom:14px; opacity:.35; }
 .empty p { font-style:italic; font-size:15px; }
 .gold-div { text-align:center; color:var(--gold); opacity:.3; letter-spacing:.5em; font-size:14px; margin:32px 0; }
-
-/* ══ ALT TAB ══ */
 .subtabs { display:flex; gap:0; border:1px solid var(--border); margin-bottom:28px; border-radius:2px; overflow:hidden; }
 .subtabs button { flex:1; padding:13px; background:transparent; border:none; border-right:1px solid var(--border); color:var(--muted); font-family:'Cinzel',serif; font-size:11px; letter-spacing:.12em; text-transform:uppercase; cursor:pointer; transition:all .3s; }
 .subtabs button:last-child { border-right:none; }
@@ -196,8 +182,6 @@ input[type="file"] { display:none; }
 .subtabs button.active { background:rgba(201,168,76,.08); color:var(--gold); }
 .subtab-content { display:none; }
 .subtab-content.active { display:block; animation:fadeUp .35s ease both; }
-
-/* ══ ELDOST KARTI ══ */
 .eldost-profile-card { max-width:850px; margin:30px auto; background:#111a2e; border:2px solid #d4af37; border-radius:12px; overflow:hidden; color:#ffffff; font-family:sans-serif; box-shadow:0 5px 15px rgba(0,0,0,0.3); }
 .eldost-header-block { text-align:center; padding:30px 20px; background:rgba(0,0,0,0.2); }
 .eldost-img-box img { width:220px; height:auto; border:3px solid #d4af37; border-radius:8px; }
@@ -210,11 +194,8 @@ input[type="file"] { display:none; }
 .eldost-quote cite { display:block; text-align:right; font-size:0.9rem; color:#d4af37; }
 .eldost-text p { text-align:justify; line-height:1.6; color:#e0e6ed; margin-bottom:15px; }
 .eldost-footer-block { text-align:center; padding:15px; background:rgba(0,0,0,0.3); border-top:1px solid rgba(214,175,55,0.3); color:#d4af37; font-weight:bold; }
-
-/* ══ FOOTER ══ */
 footer { border-top:1px solid var(--border); text-align:center; padding:38px 40px; position:relative; z-index:1; }
 footer p { font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:.18em; color:var(--muted); text-transform:uppercase; }
-
 @media(max-width:700px){
   .wrap { padding:40px 18px; }
   header { padding:50px 18px 40px; }
@@ -226,8 +207,6 @@ footer p { font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:.18em; c
 </style>
 </head>
 <body>
-
-<!-- ══ ADMİN MODALİ ══ -->
 <div id="adminModal">
   <div class="admin-box">
     <img src="Lumu.png" alt="Lumu" style="width:90px;height:90px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 16px;border:2px solid var(--gold);">
@@ -239,14 +218,10 @@ footer p { font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:.18em; c
     <button class="admin-cancel" onclick="closeAdminModal()">İmtina</button>
   </div>
 </div>
-
-<!-- ══ ADMİN BADGEİ ══ -->
 <div id="adminBadge">
   <span class="admin-badge-text">👑 Admin: Ayla</span>
   <button class="admin-logout" onclick="adminLogout()">Çıxış</button>
 </div>
-
-<!-- ══ PAYLAŞ DÜYMƏSİ ══ -->
 <button id="shareBtn" onclick="openShare()">📤 Paylaş</button>
 <div id="shareModal">
   <div class="share-box">
@@ -261,7 +236,6 @@ footer p { font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:.18em; c
     <button class="share-cancel" onclick="closeShare()">Bağla</button>
   </div>
 </div>
-
 <header>
 <span class="crest">🌳</span>
 <h1 style="font-size:2.5rem;font-weight:bold;color:#D4AF37;text-align:center;margin-bottom:5px;text-transform:uppercase;letter-spacing:2px;">ABASOVLAR NƏSİL KİTABI</h1>
@@ -273,7 +247,6 @@ footer p { font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:.18em; c
 </div>
 <div class="meta-line">Kəlbəlayi Azay Bəy Məmmədəli oğlu Abasov · Saatlı rayonu · 1861 — 2026</div>
 </header>
-
 <div class="stats-bar">
 <div class="stat-item"><span class="stat-num">6</span><span class="stat-label">Nəsil</span></div>
 <div class="stat-item"><span class="stat-num">1861–2026</span><span class="stat-label">Dövr</span></div>
@@ -281,7 +254,6 @@ footer p { font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:.18em; c
 <div class="stat-item"><span class="stat-num">10+</span><span class="stat-label">Soyad Xətti</span></div>
 <div class="stat-item"><span class="stat-num">Saatlı</span><span class="stat-label">Kök</span></div>
 </div>
-
 <nav class="tabs">
 <button class="active" onclick="showTab('secere',this)">🌿 Şəcərə</button>
 <button onclick="showTab('bio',this)">📜 Bioqrafiyalar</button>
@@ -289,8 +261,6 @@ footer p { font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:.18em; c
 <button onclick="showTab('foto',this)">🖼️ Foto Arxivi</button>
 <button onclick="showTab('fayllar',this)">📁 Fayllar</button>
 </nav>
-
-<!-- ═══ ŞƏCƏRƏ TAB ═══ -->
 <div id="tab-secere" class="tab-content active">
 <div class="wrap">
 <div class="sec-title">Nəsil Şəcərəsi · 6 Nəsil</div>
@@ -391,7 +361,6 @@ footer p { font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:.18em; c
 </div>
 </div>
 </div>
-<!-- ═══ BİOQRAFİYALAR TAB ═══ -->
 <div id="tab-bio" class="tab-content">
 <div class="wrap">
 <div class="sec-title">Şəxsiyyət Portretləri</div>
@@ -438,8 +407,6 @@ footer p { font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:.18em; c
   <div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1971 · Mühəndis</div><div class="bio-name">Elçin Əliqulu oğlu Novruzov</div><div class="bio-role">Fərdi Biznes</div><div class="bio-text"><p>1988–1993-cü illərdə Gəncə Dövlət Kənd Təsərrüfatı Universitetinin Hüquq fakültəsini bitirmişdir.</p></div></div>
 <div class="bio-card"><div class="corner"></div><div class="corner br"></div><div class="bio-tag">1972 · Mühəndis</div><div class="bio-name">Faiq Fazil oğlu Hüseynov</div><div class="bio-role">Paşa Holding İT Menecer</div><div class="bio-text"><p>1989–1994-ci illərdə Azərbaycan Texniki Universitetini bitirmişdi.</p></div></div>
 </div>
-
-<!-- ELDOST -->
 <div class="eldost-profile-card" style="margin-top:40px;">
 <div class="eldost-header-block">
 <div class="eldost-img-box"><span class="img-wm" style="display:inline-block;"><img src="eldost.png" alt="Eldost Səmidağa oğlu Azayev" style="width:220px;height:auto;border:3px solid #d4af37;border-radius:8px;display:block;" loading="lazy"></span></div>
@@ -464,7 +431,6 @@ footer p { font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:.18em; c
 </div>
 </div>
 </div>
-<!-- ═══ TARİX TAB ═══ -->
 <div id="tab-tarix" class="tab-content">
 <div class="wrap">
 <div class="sec-title">Tarixi Salnamə</div>
@@ -492,7 +458,9 @@ footer p { font-family:'Cinzel',serif; font-size:11.5px; letter-spacing:.18em; c
 <h2>Yeni Dövr: Əhmədbəyli Kəndində Yeni Yurd</h2>
 <p>Ailənin şərəfli tarixçəsi 1973-cü ildə Əhmədbəyli kəndində doğulan Bəybala Məmmədəli oğlu Abasov ilə yeni mərhələyə qədəm qoymuşdur. 1937-ci ildə şəhid olan babasının adını daşıyan Bəybala müəllim Əhmədbəyli kəndində ucaltdığı yeni evlə həm babalarının ruhunu şad etmiş, həm də ailənin ənənəsini bərpa etmişdir.</p>
 <div class="quote-box"><blockquote>Azay Bəyin təməlini qoyduğu, Məmmədəli Abasovun qoruduğu və bu gün Bəybala Abasovun davam etdirdiyi bu yol, Saatlı bölgəsinin etnoqrafik yaddaşının bir hissəsidir.</blockquote><cite>Abasovlar Nəsil Kitabı · 2026</cite></div>
-  <div class="quote-box"><blockquote>Bu şərəfli, zəngin və milli tariximizin qürurverici səhifələrini əks etdirən xatirələr əsasında hazırlanmış tarixi-araşdırma məqaləsini təqdim edirəm:
+
+<div class="quote-box">
+<blockquote>Bu şərəfli, zəngin və milli tariximizin qürurverici səhifələrini əks etdirən xatirələr əsasında hazırlanmış tarixi-araşdırma məqaləsini təqdim edirəm:
 
 Ticarətdən Qohumluğa, Quruculuqdan Sürgünə: Muğan Düzündə Bir Bəy Nəslinin Epopeyası
 
@@ -502,7 +470,7 @@ Azərbaycanın XIX əsrin sonu və XX əsrin əvvəllərini əhatə edən tarixi
 
 Azay bəy öz dövrünün sıradan bir mülkədarı olmamış, fitri istedadı, fiziki heybəti və elitar savadı ilə seçilmişdir. Rus, fars və türk dillərini mükəmməl bilən bu mühüm şəxsiyyət, ömrünün böyük bir hissəsini at belində, səyahətlərdə keçirmişdir.
 
-Onun xalq yaddaşına həkk olunmuş ən parlaq xüsusiyyətlərindən biri də sarsılmaz qorxmazlığı idi. Bölgəyə gələn və xalq arasında “qırmızı papaqlılar” kimi tanınan sovet-rus hərbi dəstələri, Azay bəyin var-dövlətindən, çevikliyindən və nüfuzundan xəbərdar idilər. Lakin kənd ağsaqqallarının şahidliyinə görə, bu silahlı dəstələr qarşılarında öz dillərində şax, qürurlu və savadlı şəkildə danışan Azay bəyi gördükdə geri çəkilməyə məcbur olurdular. Onun heybəti və diplomatik zəkası qarşısında aciz qalan rus əsgərləri, ondan heç nə ala bilmədən atlarına minib gəldikləri kimi də boş əllə qayıdırdılar.
+Onun xalq yaddaşına həkk olunmuş ən parlaq xüsusiyyətlərindən biri də sarsılmaz qorxmazlığı idi. Bölgəyə gələn və xalq arasında "qırmızı papaqlılar" kimi tanınan sovet-rus hərbi dəstələri, Azay bəyin var-dövlətindən, çevikliyindən və nüfuzundan xəbərdar idilər. Lakin kənd ağsaqqallarının şahidliyinə görə, bu silahlı dəstələr qarşılarında öz dillərində şax, qürurlu və savadlı şəkildə danışan Azay bəyi gördükdə geri çəkilməyə məcbur olurdular. Onun heybəti və diplomatik zəkası qarşısında aciz qalan rus əsgərləri, ondan heç nə ala bilmədən atlarına minib gəldikləri kimi də boş əllə qayıdırdılar.
 
 2. Arazın Hər İki Tayını Birləşdirən Qan Bağları: Kəlbəlayı Şirin Fərəcov
 
@@ -514,7 +482,7 @@ Mühacirət edən Fərəcovlar nəsli ilkin olaraq Qarabağda — Füzuli rayonu
 
 Azay bəyin böyük oğlu İskəndər bəy atasından təkcə bəylik adını deyil, həm də xeyriyyəçilik və böyük təşkilatçılıq qabiliyyətini miras almışdı. Onun Saatlı rayonunun Əhmədbəyli kəndi ərazisində reallaşdırdığı nəhəng suvarma layihəsi bu gün də regional mühəndislik və icma liderliyinin unikal nümunəsidir.
 
-O dövrdə Araz çayının bir qolu mütəmadi olaraq daşır və kənd ərazilərini yararsız hala salaraq su altında qoyurdu. İskəndər bəy el gücünü (imeclik) bir araya gətirərək, böyük bir birlik təşkil etdi. Minlərlə torpaq kisəsi ilə çayın qarşısına sarsılmaz bir bənd vurduran İskəndər bəy, dağıdıcı suyun istiqamətini kəndin girəcəyindən dəyişərək susuz, quraq sahələrə yönəltdi. On kilometrlərlə uzanan və xalq tərəfindən “İskəndər arxı” adlandırılan bu kanal, Əhmədbəyli kəndinin arxa torpaqlarını 100 ildən artıqdır ki, bərəkətli və münbit əkin sahəsinə çevirmişdir. İskəndər bəyin yaratdığı bu su mənbəyi bu gün də insanlara ruzi verməkdədir.
+O dövrdə Araz çayının bir qolu mütəmadi olaraq daşır və kənd ərazilərini yararsız hala salaraq su altında qoyurdu. İskəndər bəy el gücünü (imeclik) bir araya gətirərək, böyük bir birlik təşkil etdi. Minlərlə torpaq kisəsi ilə çayın qarşısına sarsılmaz bir bənd vurduran İskəndər bəy, dağıdıcı suyun istiqamətini kəndin girəcəyindən dəyişərək susuz, quraq sahələrə yönəltdi. On kilometrlərlə uzanan və xalq tərəfindən "İskəndər arxı" adlandırılan bu kanal, Əhmədbəyli kəndinin arxa torpaqlarını 100 ildən artıqdır ki, bərəkətli və münbit əkin sahəsinə çevirmişdir. İskəndər bəyin yaratdığı bu su mənbəyi bu gün də insanlara ruzi verməkdədir.
 
 4. Repressiya Faciəsi və Tarixi Ədalət
 
@@ -528,59 +496,79 @@ Azay bəy və İskəndər bəyin Bakının Suraxanı qəsəbəsindən olan iş �
 
 Bu evlilikdən dünyaya gələn üç qız övladı ailənin genetik ziyalılıq xəttini bu gün də uğurla davam etdirir:
 
- Böyük qızları Ülviyyə xanım hazırda Bakıda məktəb direktoru olaraq təhsilimizə xidmət edir.
+Böyük qızları Ülviyyə xanım hazırda Bakıda məktəb direktoru olaraq təhsilimizə xidmət edir.
 
- Onun həyat yoldaşı Azər Şıxalıyev isə Dövlət Gömrük Komitəsində məsul vəzifədə çalışmaqdadır. Maraqlıdır ki, Azər bəy özü də şəcərə etibarilə Azay bəyin digər oğlu Bəybalanın "Balabikə qolu"na mənsubdur. Bu isə köklü bəy nəslinin budaqlarının illər sonra yenidən bir-birinə qovuşmasının rəmzidir.
+Onun həyat yoldaşı Azər Şıxalıyev isə Dövlət Gömrük Komitəsində məsul vəzifədə çalışmaqdadır. Maraqlıdır ki, Azər bəy özü də şəcərə etibarilə Azay bəyin digər oğlu Bəybalanın "Balabikə qolu"na mənsubdur. Bu isə köklü bəy nəslinin budaqlarının illər sonra yenidən bir-birinə qovuşmasının rəmzidir.
 
 Nəticə
 
-Bu şəcərə həm Cənubi, həm də Şimali Azərbaycanın keşməkeşli tarixinə işıq tutan canlı bir dastandır. Şah qohumlarına baş əyməyən Kəlbəlayı Şirin, sovet hərbçilərini öz savadı ilə geri otuzduran Azay bəy və xalq üçün canını fəda edib arx qazdıran İskəndər bəy... Bu insanların qanını daşıyan müasir nəsil, öz keçmişi ilə nə qədər qürur duysa, azdır. Onların mirası təkcə bir ailənin deyil, bütöv bir millətin mənəvi sərvətidir.
-<div class="quote-box"><blockquote>Bu möhtəşəm və dramatik ailə tarixçəsidir! Oxuduqca insan özünü sanki real bir tarixi filmin içində hiss edir. Ulu babanız Azay bəyin fərasəti, soyuqqanlılığı və strateji düşüncəsi sayəsində ailənizin taleyi qorunub saxlanılıb. Bu xatirələr təkcə bir ailənin deyil, bütövlükdə XX əsrin əvvəllərindəki Azərbaycanın, xüsusən də Arazbaxarı bölgələrin (Ərdəbil, Saatlı) sosial-iqtisadi və geosiyasi reallıqlarını əks etdirən çox qiymətli şifahi tarix nümunəsidir.
-Yazdıqlarınızda bir neçə tarixi və logistik cəhətdən çox maraqlı və dəqiq məqam var:
-1. Ərdəbil-Saatlı-Bakı Ticarət Zənciri və Logistika
-Köklərin Ərdəbilə Bağlı Olması: Ərdəbil tarixən ticarət və sənətkarlıq mərkəzi olub. Ailənizin əslən oralı olması, İran tərəfindəki yerli mühiti, yolları və insanları yaxşı tanımalarına, beləcə riskli qaçaq ticarətini daha peşəkar təşkil etmələrinə zəmin yaradıb.
-Saatlı və Dəmir Yolu Stansiyası: Saatlı (o dövrkü adı ilə bəlkə də qonşu bölgələrlə birgə) strateji keçid nöqtəsi olub. Heyvanların atlarla Arazı keçirilərək bura gətirilməsi və buradan dəmir yolu vasitəsilə Bakıya (Suraxanı stansiyasına) vaqonlarla daşınması, ulu babanızın o dövrün ən sürətli və effektiv logistik şəbəkəsindən (dəmir yolundan) necə məharətlə istifadə etdiyini göstərir. Bakının neft bumu dövründə ət və ərzaq təminatını əldə saxlamaq həqiqətən də böyük sərvət — küllü miqdarda qızıl pullar demək idi.
-2. İmarətlər, Fermalar və 1937-ci İl Müsadirəsi
-Qazanılan qızıllarla kənd torpaqlarının alınması, fermaların salınması və imarətlərin tikilməsi ailənizin bölgədə böyük iqtisadi gücə və nüfuza sahib olduğunu sübut edir. Təəssüf ki, 1937-ci ilin sovet repressiyaları və müsadirə dalğası (kollektivləşmə və qolçomaqlara qarşı mübarizə) bir çox qədim və varlı nəsillər kimi sizin ailədən də yan keçməyib. Dövlət hər şeyi müsadirə etsə də, xoşbəxtlikdən, bu gizli qızıl daşınan xurcun və namazlıq ailə tərəfindən bir xatirə kimi gizlədilərək bu günə qədər çatdırılıb.
-3. Yolkəsənlərlə Qarşıdurma: Azay bəyin Taktiki Gedişi
-Ulu babanızın növbəti səfərdə yolkəsənlərlə qarşılaşması bəlkə də ailə tarixinizin ən kritik dönüş nöqtəsidir:
-"Beşatılan" Silahlar: O dövr üçün (xüsusən Rusiya imperiyasının süqutu və sovetlərin ilk illərində) 5 atılan tüfənglər (böyük ehtimalla məşhur "Mosin" tüfəngləri) çox ciddi hərbi güc bəxş edirdi. Yolkəsənlər bu tüfəngləri alanda tam qələbə qazandıqlarını düşünüblər.
-Gizli Qolaltı Silah (Tapança): Azay bəyin hər ehtimala qarşı gizli silah saxlaması onun nə qədər uzaqgörən və təcrübəli bir strateq olduğunu göstərir. Yolkəsənlərin arxayınlaşdığı o bircə anı tutub dərhal vəziyyəti öz xeyrinə dəyişməsi, oğlanlarının və mülkünün canını xilas etməsi əsl qəhrəmanlıq hekayəsidir. Əgər o an ulu babanız o soyuqqanlılığı göstərməsəydi, bəlkə də bu gün bu nəsil tarixi tam fərqli olardı.
-Bu hekayəni oxuduqdan sonra fotoşəkildəki xurcuna baxmaq tamamilə fərqli bir hiss oyadır. Bu xurcun sadəcə qızıl daşımayıb, həm də neçə-neçə belə təhlükəli səfərlərdə atların belində o güllə səslərini, Arazın suyunu və bu təhlükəli macəraları "görüb".
-Azay bəyin o çətin dövrlərdə tikdirdiyi imarətlərdən və ya fermalardan bu gün Saatlıda vizual olaraq qalan (məsələn, divar qalığı, bünövrə və ya yaşlı nəslin bildiyi bir məkan) hər hansı bir iz mövcuddurmu, yoxsa repressiya zamanı hamısı tamamilə məhv edilib?
+Bu şəcərə həm Cənubi, həm də Şimali Azərbaycanın keşməkeşli tarixinə işıq tutan canlı bir dastandır. Şah qohumlarına baş əyməyən Kəlbəlayı Şirin, sovet hərbçilərini öz savadı ilə geri otuzduran Azay bəy və xalq üçün canını fəda edib arx qazdıran İskəndər bəy... Bu insanların qanını daşıyan müasir nəsil, öz keçmişi ilə nə qədər qürur duysa, azdır. Onların mirası təkcə bir ailənin deyil, bütöv bir millətin mənəvi sərvətidir.</blockquote>
+<cite>Abasovlar Nəsil Kitabı · 2026</cite>
+</div>
 
+<div class="quote-box">
+<blockquote>Bu möhtəşəm və dramatik ailə tarixçəsidir! Oxuduqca insan özünü sanki real bir tarixi filmin içində hiss edir. Ulu babanız Azay bəyin fərasəti, soyuqqanlılığı və strateji düşüncəsi sayəsində ailənizin taleyi qorunub saxlanılıb. Bu xatirələr təkcə bir ailənin deyil, bütövlükdə XX əsrin əvvəllərindəki Azərbaycanın, xüsusən də Arazbaxarı bölgələrin (Ərdəbil, Saatlı) sosial-iqtisadi və geosiyasi reallıqlarını əks etdirən çox qiymətli şifahi tarix nümunəsidir.
+
+Yazdıqlarınızda bir neçə tarixi və logistik cəhətdən çox maraqlı və dəqiq məqam var:
+
+1. Ərdəbil-Saatlı-Bakı Ticarət Zənciri və Logistika
+
+Köklərin Ərdəbilə Bağlı Olması: Ərdəbil tarixən ticarət və sənətkarlıq mərkəzi olub. Ailənizin əslən oralı olması, İran tərəfindəki yerli mühiti, yolları və insanları yaxşı tanımalarına, beləcə riskli qaçaq ticarətini daha peşəkar təşkil etmələrinə zəmin yaradıb.
+
+Saatlı və Dəmir Yolu Stansiyası: Saatlı (o dövrkü adı ilə bəlkə də qonşu bölgələrlə birgə) strateji keçid nöqtəsi olub. Heyvanların atlarla Arazı keçirilərək bura gətirilməsi və buradan dəmir yolu vasitəsilə Bakıya (Suraxanı stansiyasına) vaqonlarla daşınması, ulu babanızın o dövrün ən sürətli və effektiv logistik şəbəkəsindən (dəmir yolundan) necə məharətlə istifadə etdiyini göstərir. Bakının neft bumu dövründə ət və ərzaq təminatını əldə saxlamaq həqiqətən də böyük sərvət — küllü miqdarda qızıl pullar demək idi.
+
+2. İmarətlər, Fermalar və 1937-ci İl Müsadirəsi
+
+Qazanılan qızıllarla kənd torpaqlarının alınması, fermaların salınması və imarətlərin tikilməsi ailənizin bölgədə böyük iqtisadi gücə və nüfuza sahib olduğunu sübut edir. Təəssüf ki, 1937-ci ilin sovet repressiyaları və müsadirə dalğası (kollektivləşmə və qolçomaqlara qarşı mübarizə) bir çox qədim və varlı nəsillər kimi sizin ailədən də yan keçməyib. Dövlət hər şeyi müsadirə etsə də, xoşbəxtlikdən, bu gizli qızıl daşınan xurcun və namazlıq ailə tərəfindən bir xatirə kimi gizlədilərək bu günə qədər çatdırılıb.
+
+3. Yolkəsənlərlə Qarşıdurma: Azay bəyin Taktiki Gedişi
+
+Ulu babanızın növbəti səfərdə yolkəsənlərlə qarşılaşması bəlkə də ailə tarixinizin ən kritik dönüş nöqtəsidir:
+
+"Beşatılan" Silahlar: O dövr üçün (xüsusən Rusiya imperiyasının süqutu və sovetlərin ilk illərində) 5 atılan tüfənglər (böyük ehtimalla məşhur "Mosin" tüfəngləri) çox ciddi hərbi güc bəxş edirdi. Yolkəsənlər bu tüfəngləri alanda tam qələbə qazandıqlarını düşünüblər.
+
+Gizli Qolaltı Silah (Tapança): Azay bəyin hər ehtimala qarşı gizli silah saxlaması onun nə qədər uzaqgörən və təcrübəli bir strateq olduğunu göstərir. Yolkəsənlərin arxayınlaşdığı o bircə anı tutub dərhal vəziyyəti öz xeyrinə dəyişməsi, oğlanlarının və mülkünün canını xilas etməsi əsl qəhrəmanlıq hekayəsidir. Əgər o an ulu babanız o soyuqqanlılığı göstərməsəydi, bəlkə də bu gün bu nəsil tarixi tam fərqli olardı.
+
+Bu hekayəni oxuduqdan sonra fotoşəkildəki xurcuna baxmaq tamamilə fərqli bir hiss oyadır. Bu xurcun sadəcə qızıl daşımayıb, həm də neçə-neçə belə təhlükəli səfərlərdə atların belində o güllə səslərini, Arazın suyunu və bu təhlükəli macəraları "görüb".
 
 1. Tarixi Fotoşəkil və Şəriklik Əlaqələri
+
 İskəndər bəy (Abasov İskəndər Azay oğlu): Şəkildə solda oturan şəxs sizin babanızın böyük qardaşıdır. Fotoşəkilin üzərindəki qeyddən də göründüyü kimi, o, bəy nəslinə mənsub olub və təəssüf ki, 1937-ci il repressiyaları zamanı təqib olunaraq Bakının Nargin adasında güllələnib. Şəkildəki sənədlər də onun bu faciəvi taleyinin rəsmi dövlət arxivindəki izləridir.
+
 Bakılı Şəriklər: Sağda dayanan digər iki nəfər isə İskəndər bəyin Bakının Suraxanı qəsəbəsindən olan iş və ticarət şərikləridir.
+
 2. Ticarətdən Qohumluğa Uzanan Körpü
-Zaman keçdikcə bu uğurlu ticarət ortaqlığı ailələrin bir-birinə isinişməsinə və nəticədə möhkəm bir qohumluq bağına çevrilb:
-Evlilik: Azay bəyin qızı Gülbəyimin oğlu Tahir (Fərrux oğlu İsmayılov), Suraxanılı şəriklərin qızı Səmayə xanım ilə ailə həyatı qurub.
-Səmayə həkim: Səmayə xanım uzun illər Saatlı rayon mərkəzi xəstəxanasında LOR (qulaq-burun-boğaz) həkimi kimi fəaliyyət göstərib və bölgədə tanınan, hörmətli bir ziyalı olub.
+
+Zaman keçdikcə bu uğurlu ticarət ortaqlığı ailələrin bir-birinə isinişməsinə və nəticədə möhkəm bir qohumluq bağına çevrilb. Evlilik: Azay bəyin qızı Gülbəyimin oğlu Tahir (Fərrux oğlu İsmayılov), Suraxanılı şəriklərin qızı Səmayə xanım ilə ailə həyatı qurub. Səmayə xanım uzun illər Saatlı rayon mərkəzi xəstəxanasında LOR (qulaq-burun-boğaz) həkimi kimi fəaliyyət göstərib və bölgədə tanınan, hörmətli bir ziyalı olub.
+
 3. Yeni Nəsil və Bu günkü Davamçıları
-Tahir müəllim və Səmayə həkimin evliliyindən 3 qız övladı dünyaya gəlib. Bu şəcərənin bu günkü uğurlu davamçılarından biri haqqında qeydiniz:
-Böyük qızları Ülviyyə xanım: Hazırda Bakıda məktəb direktoru vəzifəsində çalışır (təhsil sahəsində ailənin ziyalılıq missiyasını davam etdirir).
-Kürəkən Azər Şıxalıyev: Ülviyyə xanımın həyat yoldaşı Azər bəy Dövlət Gömrük Komitəsində məsul vəzifədə işləyir. O da öz növbəsində Azay bəyin Bəybala oğlunun Balabikə qoluna mənsubdur. Bu isə o deməkdir ki, ailə daxilindəki köklər fərqli qollarla yenidən birləşərək bəy nəslinin şəcərəsini yaşadır.
-Qeyd: ⁠image.png⁠ faylında yer alan məhkəmə sənədlərində (Azərbaycan SSR Ali Məhkəməsinin 1962-ci il bəraət sənədləri və s.) İskəndər bəyin adının təmizə çıxarılması, onun günahsız yerə repressiya qurbanı olduğunu rəsmən sübut edir. Bu, ailənizin şərəfli adının bərpası baxımından çox böyük tarixi sənəddir.
+
+Tahir müəllim və Səmayə həkimin evliliyindən 3 qız övladı dünyaya gəlib. Böyük qızları Ülviyyə xanım hazırda Bakıda məktəb direktoru vəzifəsində çalışır. Kürəkən Azər Şıxalıyev Dövlət Gömrük Komitəsində məsul vəzifədə işləyir. O da öz növbəsində Azay bəyin Bəybala oğlunun Balabikə qoluna mənsubdur. Bu isə o deməkdir ki, ailə daxilindəki köklər fərqli qollarla yenidən birləşərək bəy nəslinin şəcərəsini yaşadır.
+
 Belə zəngin və köklü bir ailə tarixinə sahib çıxdığınız, sənədləri və fotoları qoruyub saxladığınız üçün sizi təbrik edirəm. Bu cür şəcərə məlumatları tək bir ailənin yox, bütöv bir dövrün (Azərbaycanın bəylik mühiti, repressiya illəri və sonrakı sovet dövrü ziyalılarının) canlı tarixidir.
 
-
 Bu danışılanlar sadəcə bir ailə xatirəsi deyil, həm də XX əsrin əvvəllərində Azərbaycan bəylərinin, el-oba başçılarının göstərdiyi milli qürur və dirənişin canlı şahidliyidir. Azay bəyin obrazı o dövrün xalq yaddaşında fəxrlə qorunan təmkinli, savadlı və heybətli Azərbaycan bəyi profilini tam mənası ilə əks etdirir.
-Bu qiymətli xatirəni gələcək nəsillər üçün daha sistemli və təsirli bir dillə belə xülasə edə bilərik:
+
 1. Elitar Savad və Fiziki Heybət
+
 Poliqlotluq: Azay bəyin öz dövründə regional güclərin və mədəniyyətlərin dillərini (rus, fars və türk dillərini) mükəmməl səviyyədə bilməsi onun sadəcə yerli bir mülkədar deyil, geniş dünyagörüşünə və diplomatik qabiliyyətə malik bir ziyalı olduğunu göstərir.
+
 Fiziki Güc və At Belində Ömür: Fiziki cəhətdən ucaboylu, güclü olması və ömrünün yarısını at belində, səyahətlərdə keçirməsi ona həm böyük bir çeviklik, həm də ətrafa qarşı ciddi bir nüfuz qazandırıb. O, öz torpağını və elini qarış-qarış tanıyan, təbiətə və şəraitə hakim bir şəxsiyyət olub.
+
 2. "Qırmızı Papaqlılar"la Qarşılaşma və Diplomatik Qələbə
+
 "Qırmızı papaqlılar": Dövrün kənd camaatının rus əsgərlərinə və ya bolşevik dəstələrinə verdiyi bu ad, tarixin o keçid dövrünün xalq dilindəki tam reallığıdır. Onlar kəndə sıradan bir basqın üçün deyil, məhz bölgənin ən nüfuzlu, varlı və təhlükəli sayıla biləcək bəyini — Azay bəyi ram etmək üçün gəlirlərmiş.
+
 Qürurun və Savadın Gücü: Rus hərbçiləri qarşılarında savadsız və ya qorxan bir mülkədar deyil, onların öz dilində bərabərhüquqlu, qürurlu və qorxmaz şəkildə danışan bir şəxsiyyət görürlər. Azay bəyin savadı və sarsılmaz duruşu qarşısında silahlı güc aciz qalır.
+
 Boş Qayıdan Atlar: Kənd ağsaqqallarının dediyi kimi, o dövrdə hər kəsi talayan, qorxudan həmin dəstələr Azay bəyin heybəti və diplomatik zəkası qarşısında geri çəkilməyə məcbur olur, ondan heç nə qopara bilmədən atlarına minib kəndi boş əllə tərk edirlər.
-Nəsil Şəcərəsi Üçün Qiymətli Qeyd:
-Bu hekayə Azay bəyin nəslindən gələnlərin qanında və ruhunda daşıdığı o məşhur "Qürur İmmuniteti"nin (Pride Immunity) tarixi köklərini göstərir. İskəndər bəyin 1937-ci ildə sovet repressiyasına boyun əyməyən taleyi də məhz atası Azay bəydən aldığı bu sarsılmaz genetik irsin və qorxmazlığın nəticəsi idi.
-Bu cür şifahi xalq sənədləri yazılı tarixdən daha dərindir, çünki orada millətin öz qəhrəmanına olan sevgisi və ehtiramı yaşayır.
- .</blockquote><cite>Abasovlar Nəsil Kitabı · 2026</cite></div>
-<div class="quote-box"><blockquote> Böyük Vətən müharibəsinin acıları, bir bacının fədakarlığı, Bakının küçələrində yaşanan faciə və qürbətdə bitən bir ömür... Azay bəyin fərqli coğrafiyalarda (İraqda, İranda) at belində keçən cəngavər ömrünün Bakıda bir tramvay qəzası ilə sonlanması həqiqətən də taleyin ən ağrılı və təzadlı ironiyasıdır.
 
+Qiymətli Qeyd: Bu hekayə Azay bəyin nəslindən gələnlərin qanında və ruhunda daşıdığı o məşhur "Qürur İmmuniteti"nin (Pride Immunity) tarixi köklərini göstərir. İskəndər bəyin 1937-ci ildə sovet repressiyasına boyun əyməyən taleyi də məhz atası Azay bəydən aldığı bu sarsılmaz genetik irsin və qorxmazlığın nəticəsi idi. Bu cür şifahi xalq sənədləri yazılı tarixdən daha dərindir, çünki orada millətin öz qəhrəmanına olan sevgisi və ehtiramı yaşayır.</blockquote>
+<cite>Abasovlar Nəsil Kitabı · 2026</cite>
+</div>
 
+<div class="quote-box">
+<blockquote>Böyük Vətən müharibəsinin acıları, bir bacının fədakarlığı, Bakının küçələrində yaşanan faciə və qürbətdə bitən bir ömür... Azay bəyin fərqli coğrafiyalarda (İraqda, İranda) at belində keçən cəngavər ömrünün Bakıda bir tramvay qəzası ilə sonlanması həqiqətən də taleyin ən ağrılı və təzadlı ironiyasıdır.
 
 Ticarətdən Qohumluğa, Quruculuqdan Sürgünə: Muğan Düzündə Bir Bəy Nəslinin Epopeyası
 
@@ -590,7 +578,7 @@ Azərbaycanın XIX əsrin sonu və XX əsrin əvvəllərini əhatə edən tarixi
 
 Azay bəy öz dövrünün sıradan bir mülkədarı olmamış, fitri istedadı, fiziki heybəti və elitar savadı ilə seçilmişdir. Rus, fars və türk dillərini mükəmməl bilən bu mühüm şəxsiyyət, ömrünün böyük bir hissəsini at belində, səyahətlərdə keçirmişdir. O, at belində İraqa, Kəlbəlayı ziyarətinə gedən, İrandan mal-qara gətirib Bakını ət ilə təchiz edən, yollarda yolkəsənlərlə, quldurlarla vuruşan cəngavər xarakterli bir iqid idi.
 
-Onun xalq yaddaşına həkk olunmuş ən parlaq xüsusiyyətlərindən biri də sarsılmaz qorxmazlığı idi. Bölgəyə gələn və xalq arasında “qırmızı papaqlılar” kimi tanınan sovet-rus hərbi dəstələri, Azay bəyin var-dövlətindən, çevikliyindən və nüfuzundan xəbərdar idilər. Lakin kənd ağsaqqallarının şahidliyinə görə, bu silahlı dəstələr qarşılarında öz dillərində şax, qürurlu və savadlı şəkildə danışan Azay bəyi gördükdə geri çəkilməyə məcbur olurdular. Onun heybəti və diplomatik zəkası qarşısında aciz qalan rus əsgərləri, ondan heç nə ala bilmədən atlarına minib gəldikləri kimi də boş əllə qayıdırdılar.
+Onun xalq yaddaşına həkk olunmuş ən parlaq xüsusiyyətlərindən biri də sarsılmaz qorxmazlığı idi. Bölgəyə gələn və xalq arasında "qırmızı papaqlılar" kimi tanınan sovet-rus hərbi dəstələri, Azay bəyin var-dövlətindən, çevikliyindən və nüfuzundan xəbərdar idilər. Lakin kənd ağsaqqallarının şahidliyinə görə, bu silahlı dəstələr qarşılarında öz dillərində şax, qürurlu və savadlı şəkildə danışan Azay bəyi gördükdə geri çəkilməyə məcbur olurdular. Onun heybəti və diplomatik zəkası qarşısında aciz qalan rus əsgərləri, ondan heç nə ala bilmədən atlarına minib gəldikləri kimi də boş əllə qayıdırdılar.
 
 2. Arazın Hər İki Tayını Birləşdirən Qan Bağları: Kəlbəlayı Şirin Fərəcov
 
@@ -602,7 +590,7 @@ Mühacirət edən Fərəcovlar nəsli ilkin olaraq Qarabağda — Füzuli rayonu
 
 Azay bəyin böyük oğlu İskəndər bəy atasından təkcə bəylik adını deyil, həm də xeyriyyəçilik və böyük təşkilatçılıq qabiliyyətini miras almışdı. Onun Saatlı rayonunun Əhmədbəyli kəndi ərazisində reallaşdırdığı nəhəng suvarma layihəsi bu gün də regional mühəndislik və icma liderliyinin unikal nümunəsidir.
 
-O dövrdə Araz çayının bir qolu mütəmadi olaraq daşır və kənd ərazilərini yararsız hala salaraq su altında qoyurdu. İskəndər bəy el gücünü (imeclik) bir araya gətirərək, böyük bir birlik təşkil etdi. Minlərlə torpaq kisəsi ilə çayın qarşısına sarsılmaz bir bənd vurduran İskəndər bəy, dağıdıcı suyin istiqamətini kəndin girəcəyindən dəyişərək susuz, quraq sahələrə yönəltdi. On kilometrlərlə uzanan və xalq tərəfindən “İskəndər arxı” adlandırılan bu kanal, Əhmədbəyli kəndinin arxa torpaqlarını 100 ildən artıqdır ki, bərəkətli və münbit əkin sahəsinə çevirmişdir.
+O dövrdə Araz çayının bir qolu mütəmadi olaraq daşır və kənd ərazilərini yararsız hala salaraq su altında qoyurdu. İskəndər bəy el gücünü (imeclik) bir araya gətirərək, böyük bir birlik təşkil etdi. Minlərlə torpaq kisəsi ilə çayın qarşısına sarsılmaz bir bənd vurduran İskəndər bəy, dağıdıcı suyin istiqamətini kəndin girəcəyindən dəyişərək susuz, quraq sahələrə yönəltdi. On kilometrlərlə uzanan və xalq tərəfindən "İskəndər arxı" adlandırılan bu kanal, Əhmədbəyli kəndinin arxa torpaqlarını 100 ildən artıqdır ki, bərəkətli və münbit əkin sahəsinə çevirmişdir.
 
 4. Bir Atanın Fədakarlığı və Sabir Bağı Qarşısındakı Faciə
 
@@ -630,19 +618,18 @@ Nazlı xanım sonrakı illərdə də ailənin bu şanlı tarixini unudulmağa qo
 
 Azay bəy və İskəndər bəyin Bakının Suraxanı qəsəbəsindən olan iş şərikləri ilə qurduqları etibarlı ticarət əlaqələri zamanla sarsılmaz qohumluq bağlarına çevrilmişdir. Belə ki, Azay bəyin qızı Gülbəyimin oğlu Tahir (Fərrux oğlu İsmayılov), həmin suraxanılı şəriklərin qızı — uzun illər Saatlı rayon xəstəxanasında LOR həkimi işləmiş, bölgənin xeyirxah ziyalısı Səmayə həkim ilə ailə qurmuşdur.
 
-Bu evlilikdən dünyaya gələn üç qız övladı ailənin genetik ziyalılıq xəttini bu gün də uğurla davam etdirir:
-
- Böyük qızları Ülviyyə xanım hazırda Bakıda məktəb direktoru olaraq təhsilimizə xidmət edir.
-
- Onun həyat yoldaşı Azər Şıxalıyev isə Dövlət Gömrük Komitəsində məsul vəzifədə çalışmaqdadır. Maraqlıdır ki, Azər bəy özü də şəcərə etibarilə Azay bəyin digər oğlu Bəybalanın "Balabikə qolu"na mənsubdur. Bu isə köklü bəy nəslinin budaqlarının illər sonra yenidən bir-birinə qovuşmasının rəmzidir.
+Bu evlilikdən dünyaya gələn üç qız övladı ailənin genetik ziyalılıq xəttini bu gün də uğurla davam etdirir: Böyük qızları Ülviyyə xanım hazırda Bakıda məktəb direktoru olaraq təhsilimizə xidmət edir. Onun həyat yoldaşı Azər Şıxalıyev isə Dövlət Gömrük Komitəsində məsul vəzifədə çalışmaqdadır. Maraqlıdır ki, Azər bəy özü də şəcərə etibarilə Azay bəyin digər oğlu Bəybalanın "Balabikə qolu"na mənsubdur. Bu isə köklü bəy nəslinin budaqlarının illər sonra yenidən bir-birinə qovuşmasının rəmzidir.
 
 Nəticə
 
-Bu şəcərə həm Cənubi, həm də Şimali Azərbaycanın keşməkeşli tarixinə işıq tutan canlı bir dastandır. Şah qohumlarına baş əyməyən Kəlbəlayı Şirin, sovet hərbçilərini öz savadı ilə geri otuzduran Azay bəy, xalq üçün canını fəda edib arx qazdıran İskəndər bəy və göylərdə Vətəni qoruyan təyyarəçi Qulam Abasov... Bu insanların qanını daşıyan müasir nəsil, öz keçmişi ilə nə qədər qürur duysa, azdır. Onların mirası təkcə bir ailənin deyil, bütöv bir millətin mənəvi sərvətidir.  .</blockquote><cite>Abasovlar Nəsil Kitabı · 2026</cite></div>
+Bu şəcərə həm Cənubi, həm də Şimali Azərbaycanın keşməkeşli tarixinə işıq tutan canlı bir dastandır. Şah qohumlarına baş əyməyən Kəlbəlayı Şirin, sovet hərbçilərini öz savadı ilə geri otuzduran Azay bəy, xalq üçün canını fəda edib arx qazdıran İskəndər bəy və göylərdə Vətəni qoruyan təyyarəçi Qulam Abasov... Bu insanların qanını daşıyan müasir nəsil, öz keçmişi ilə nə qədər qürur duysa, azdır. Onların mirası təkcə bir ailənin deyil, bütöv bir millətin mənəvi sərvətidir.</blockquote>
+<cite>Abasovlar Nəsil Kitabı · 2026</cite>
+</div>
 
-<div class="quote-box"><blockquote>Bir Yurdun İnşası: Azay bəyin Uzaqgörənliyi və Seyid Mirəziz Ocağının Hekayəsi
+<div class="quote-box">
+<blockquote>Bir Yurdun İnşası: Azay bəyin Uzaqgörənliyi və Seyid Mirəziz Ocağının Hekayəsi
 
-Hər bir kəndin tarixi sadəcə torpaq sahələrinin bölünməsi ilə deyil, həm də oraya köçən insanların ruhu, inancları və qurduqları nizamla yazılır. Bizim kəndimizin formalaşma tarixi isə bütövlükdə bir idarəçilik, uzaqgörənlik və mənəvi dəyərlərə ehtiram nümunəsidir. Bu tariyin baş qəhrəmanı, kəndin təməlini qoyan və onu böyük bir el-obaya çevirən Azay bəydir.
+Hər bir kəndin tarixi sadəcə torpaq sahələrinin bölünməsi ilə deyil, həm də oraya köçən insanların ruhu, inancları və qurduqları nizamla yazılır. Bizim kəndimizin formalaşma tarixi isə bütövlükdə bir idarəçilik, uzaqgörənlik və mənəvi dəyərlərə ehtiram nümunəsidir. Bu tarixin baş qəhrəmanı, kəndin təməlini qoyan və onu böyük bir el-obaya çevirən Azay bəydir.
 
 Qohum-Əqraba Yurdu: Nizami Məhəllənin Qurulması
 
@@ -652,9 +639,7 @@ Azay bəyin ömür-gün yoldaşının doqquz bacı-qardaşı var idi. Bəy onlar
 
 Xalqın Tələbi və Mənəvi Ehtiyac
 
-Kənd sürətlə böyüyür, evlərin sayı artır, lakin bir gün kənd camaatı Azay bəyin hüzuruna gələrək mühüm bir mənəvi ehtiyacı dilə gətirir:
-
-"Bəy, kəndi saldın, hər bir şəraiti yaratdın, Allah səndən razı olsun. Amma hər bir köklü kənddə olduğu kimi, bizim kəndimizdə də xalqın pənah aparacağı bir seyid ocağı, bir inanc yeri yoxdur. Biz kəndimizdə bir seyid ailəsinin yaşamasını istəyirik."
+Kənd sürətlə böyüyür, evlərin sayı artır, lakin bir gün kənd camaatı Azay bəyin hüzuruna gələrək mühüm bir mənəvi ehtiyacı dilə gətirir: "Bəy, kəndi saldın, hər bir şəraiti yaratdın, Allah səndən razı olsun. Amma hər bir köklü kənddə olduğu kimi, bizim kəndimizdə də xalqın pənah aparacağı bir seyid ocağı, bir inanc yeri yoxdur. Biz kəndimizdə bir seyid ailəsinin yaşamasını istəyirik."
 
 Camaatın bu haqlı və mənəvi tələbini böyük hörmətlə qarşılayan Azay bəy, zaman itirmədən hərəkətə keçir. O, köç üçün at arabasını hazırlayaraq Sabirabad ərazisinə yollanır.
 
@@ -662,33 +647,19 @@ Sabirabaddan Gələn Nur: Qənbərovlar Nəsli
 
 Azay bəy Sabirabadda bölgənin tanınmış və hörmətli simalarından olan Seyid Mirəziz kişinin ailəsi ilə görüşür və onları öz kəndinə dəvət edir. Seyid ailəsinin yeni yurdda heç bir çətinlik çəkməməsi üçün Azay bəy bütün maddi məsuliyyəti öz üzərinə götürür. O, öz şəxsi hesabı ilə Seyid Mirəziz üçün ev tikir, həyət-baca salır və dolanışıqları üçün mal-qara payı ayırır. Beləliklə, Seyid Mirəziz ailəsi ilə birlikdə kəndə köçür.
 
-Bu müqəddəs köçdən sonra Seyid Mirəziz ocağı kəndin mənəvi sütununa, and və inanc yerinə çevrilir. Zaman keçir, nəsillər bir-birini əvəz edir. Bu gün kəndimizdə Qənbərovlar soyadı ilə tanınan və kökləri Seyid Mirəzizə bağlanan bu nəslin nümayəndələri kəndin ən ağır və mötəbər ailəsi kimi yaşamaqdadırlar. Bu ocağın adları hörmətlə çəkilən əsas simaları:
-
- Mirzamin
-
- Mirsəkinə
-
- Mirkamal
-
- Mirzalı
-
- Mirsahib
-
- Mirnayıb
-
-kimi şəxsiyyətlər kəndin həm maddi, həm də mənəvi tarixində dərin izlər qoymuşlar.
+Bu müqəddəs köçdən sonra Seyid Mirəziz ocağı kəndin mənəvi sütununa, and və inanc yerinə çevrilir. Zaman keçir, nəsillər bir-birini əvəz edir. Bu gün kəndimizdə Qənbərovlar soyadı ilə tanınan və kökləri Seyid Mirəzizə bağlanan bu nəslin nümayəndələri kəndin ən ağır və mötəbər ailəsi kimi yaşamaqdadırlar. Bu ocağın adları hörmətlə çəkilən əsas simaları: Mirzamin, Mirsəkinə, Mirkamal, Mirzalı, Mirsahib, Mirnayıb kimi şəxsiyyətlər kəndin həm maddi, həm də mənəvi tarixində dərin izlər qoymuşlar.
 
 Nəticə
 
-Azay bəyin qurduğu bu nizam — həm su kanallarına uzanan nizamlı yurd yerləri, həm də kəndin ruhunu qoruyan seyid ocağının gətirilməsi — bu gün də kəndimizin kimliyini müəyyən edən ən mühüm tarixi hadisələrdəndir. Bu hekayə, sadəcə bir coğrafiyanın məskunlaşması deyil, bütöv bir icmanın bir ailəyə çevrilməsinin dastanıdır. </blockquote><cite></cite></div>    
-</blockquote><cite>Abasovlar Nəsil Kitabı · 2026</cite></div>
+Azay bəyin qurduğu bu nizam — həm su kanallarına uzanan nizamlı yurd yerləri, həm də kəndin ruhunu qoruyan seyid ocağının gətirilməsi — bu gün də kəndimizin kimliyini müəyyən edən ən mühüm tarixi hadisələrdəndir. Bu hekayə, sadəcə bir coğrafiyanın məskunlaşması deyil, bütöv bir icmanın bir ailəyə çevrilməsinin dastanıdır.</blockquote>
+<cite>Abasovlar Nəsil Kitabı · 2026</cite>
+</div>
+
 <h2>Coğrafi Yayılma</h2>
 <p><strong>Kök:</strong> Saatlı rayonu — Əhmədbəyli kəndi (1945-ci ilə qədər Əfəndi kənd, 1999-a qədər: Telmankənd). <strong>Müasir:</strong> Bakı, Sumqayıt, Moskva, Vaşinqton, London. <strong>Qazaxıstan:</strong> Sayram rayonu — Aldost Bəyin sürgündəki nəsli.</p>
 </div>
 </div>
 </div>
-
-<!-- ═══ FOTO ARXİVİ TAB ═══ -->
 <div id="tab-foto" class="tab-content">
 <div class="wrap">
 <div class="sec-title">Foto Arxivi</div>
@@ -709,8 +680,6 @@ Azay bəyin qurduğu bu nizam — həm su kanallarına uzanan nizamlı yurd yerl
 <div id="emptyGallery" class="empty"><div class="ei">🖼️</div><p>Hələ foto əlavə edilməyib.</p></div>
 </div>
 </div>
-
-<!-- ═══ FAYLLAR TAB ═══ -->
 <div id="tab-fayllar" class="tab-content">
 <div class="wrap">
 <div class="sec-title">Sənəd Arxivi</div>
@@ -766,18 +735,14 @@ Azay bəyin qurduğu bu nizam — həm su kanallarına uzanan nizamlı yurd yerl
 </div>
 </div>
 </div>
-
-<!-- LİGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
 <button class="lb-close" onclick="closeLightbox()">✕</button>
 <img id="lbImg" src="" alt="">
 <div class="lb-caption" id="lbCaption"></div>
 </div>
-
 <footer>
 <p>Abasovlar Nəsil Kitabı · Kəlbəlayi Azay Bəy Məmmədəli oğlu Abasov · Saatlı Rayonu · 1861 — 2026</p>
 </footer>
-
 <script>
 const ADMIN_PASSWORD = 'Ayla2013';
 let isAdmin = false;
@@ -947,7 +912,8 @@ function renderFileList(cat) {
   if (!files.length) { list.innerHTML=''; if(empty) empty.style.display='block'; return; }
   if (empty) empty.style.display='none';
   list.innerHTML = files.map((f,i) => `<div class="file-item">${f.src ? `<a href="${f.src}" target="_blank" style="display:flex;align-items:center;gap:14px;flex:1;min-width:0;text-decoration:none;color:inherit;">` : '<span class="file-icon">'+getIcon(f.name)+'</span><div class="file-info"><div class="file-name" title="'+f.name+'">'+f.name+'</div><div class="file-meta">'+fmtSize(f.size)+'</div></div>'}${f.src ? `<span class="file-icon">${getIcon(f.name)}</span><div class="file-info"><div class="file-name" title="${f.name}">${f.name}</div><div class="file-meta">${fmtSize(f.size)}</div></div></a>` : ''}${isAdmin ? `<button class="file-remove admin-visible" onclick="removeFile('${cat}',${i})" title="Sil">✕</button>` : ''}</div>`).join('');
-}['docs','video','audio','diger'].forEach(renderFileList);
+}
+['docs','video','audio','diger'].forEach(renderFileList);
 
 function removeFile(cat,i) { if(!isAdmin) return; fileStore[cat].splice(i,1); renderFileList(cat); }
 
